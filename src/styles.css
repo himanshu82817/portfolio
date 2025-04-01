@@ -1,1 +1,120 @@
-/* You can add global styles to this file, and also import other style files */
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300..900&display=swap');
+html {
+    scroll-behavior: smooth;
+}
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+:root {
+    --blue: #4285F4;
+    --red: #EA4335;
+    --yellow: #FBBC05;
+    --green: #34A853;
+    --text-dark: #202124;
+    --background-light: #ffffff;
+    --background: #ffffff;
+    --background-dark: #121212;
+    --box-shadow: rgba(0, 0, 0, 0.2);
+    --radius-small: 25px;
+    --text-color: black;
+    --text-light: #434343;
+    --background-blue: #b0ceffba;
+    --background-yellow:#ffdd77a1;
+    --background-green:#59a56ddf;
+    --hover-background:rgb(224, 224, 224);
+}
+
+.dark-mode {
+    --background: #121212;
+    --text-color: #ffffff;
+    --box-shadow: rgba(255, 255, 255, 0.1);
+    --text-light: #bebebe;
+    --background-blue: #122646aa;
+    --background-yellow:#2d2200b8;
+    --background-green:#1e6431db;
+    --hover-background:rgb(37, 37, 37);
+}
+
+body {
+    background-color: var(--background);
+    color: var(--text-color);
+    /* font-family: 'Roboto', 'Google Sans', sans-serif; */
+    font-family: 'Inter', sans-serif;
+    font-size: 16px;
+    line-height: 1.6;
+    /* color: #333; */
+  
+    /* Smooth text rendering */
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+    text-rendering: optimizeLegibility;
+    font-optical-sizing: auto;
+}
+
+h1,
+h2,
+h3 {
+    /* font-family: 'Google Sans', sans-serif; */
+    font-weight: 700;
+}
+
+p,
+a,
+span {
+    /* font-family: 'Roboto', sans-serif; */
+}
+
+.container {
+    min-height: 100vh;
+    width: 100%;
+    padding:5% 10%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.header{
+    background-color: var(--background);
+    box-shadow: 0 2px 5px var(--box-shadow);
+    display: flex;
+    gap: 5px;
+    border-radius: var(--radius-small);
+    padding:5px;
+}
+
+.header-item{
+    position: relative;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 5px 30px;
+    text-decoration: none;
+    color: var(--text-color);
+    font-size: 15px;
+    border-radius: var(--radius-small);
+    transition: color 0.3s, transform 0.2s;
+}
+.header-item span{
+    z-index: 1;
+}
+.header-item:hover{
+    background-color: var(--hover-background);
+    cursor: pointer;
+}
+.header .header-item::after{
+    position: absolute;
+    content: '';
+    width: 50%;
+    height: 100%;
+    transition: .4s;
+}
+.header .header-item.active::after{
+    transition: .4s;
+    width: 100%;
+    height: 100%;
+    border-radius: var(--radius-small);
+}

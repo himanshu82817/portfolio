@@ -1,0 +1,19 @@
+.about-container{
+    position: relative;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    width: 100%;
+    height: 100%;
+}
+  .about-container::after{
+    border-radius: var(--radius-small);
+    position: absolute;
+    content: '';
+    border: 2px solid var(--text-color);
+    background-color: var(--background-blue);
+    width: 100%;
+    height: 70%;
+    top: 15%;
+    z-index: -1;
+  }

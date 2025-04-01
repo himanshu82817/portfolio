@@ -1,0 +1,13 @@
+.projects-container{
+    position: relative;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    flex-direction: column;
+    width: 80vw;
+    height: 70vh;
+    border: 2px solid var(--text-color);
+    background-color: var(--background-green);
+    border-radius: var(--radius-small);
+    padding: 2% 5%;
+}
