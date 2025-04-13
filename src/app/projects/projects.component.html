@@ -1,3 +1,50 @@
 <div class="projects-container" >
-    <p>projects works!</p>
+    @for (item of projects; track $index) {
+        <div class="project-card">
+            <img [src]="item.images[0]" class="project-snap" alt="">
+            <div class="project-content">
+                <h3>{{item.heading}}</h3>
+                <div class="tech-used">
+                    @for (tech of item.techStack; track $index) {
+                        <div [title]="tech.name" class="tech-icon">
+                            <img [src]="tech.icon" alt="">
+                        </div>
+                    }
+                </div>
+                <p>{{item.about.description.slice(0,100)}}</p>
+                <span (click)="readMore($index)" class="read-more" >
+                    <span class="material-symbols-outlined">read_more</span>
+                </span>
+            </div>
+        </div>
+    }
+</div>
+
+
+<div *ngIf="activeItem!=-1" class="dialog">
+    <div (click)="clear()" class="dialog-overlay"></div>
+    <div class="dialogHolder">
+        <div class="dialogContent">
+            <span (click)="clear()" class="close" >
+                <span class="material-symbols-outlined">close</span>
+            </span>
+            <img [src]="projects[activeItem].images[0]" class="project-snap" alt="">
+            <h1>{{projects[activeItem].heading}}</h1>
+            <div class="tech-used">
+                @for (tech of projects[activeItem].techStack; track $index) {
+                    <div [title]="tech.name" class="tech-icon">
+                        <img [src]="tech.icon" alt="">
+                    </div>
+                }
+            </div>
+            <p>{{projects[activeItem].about.description}}</p>
+
+            <ul>
+                @for (item of projects[activeItem].contributions; track $index) {
+                    <li>{{item}}</li>
+                }
+            </ul>
+            <h2>{{projects[activeItem].summery}}</h2>
+        </div>
+    </div>
 </div>

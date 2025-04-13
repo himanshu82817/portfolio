@@ -9,6 +9,7 @@ html {
     box-sizing: border-box;
 }
 
+
 :root {
     --blue: #4285F4;
     --red: #EA4335;
@@ -23,9 +24,10 @@ html {
     --text-color: black;
     --text-light: #434343;
     --background-blue: #b0ceffba;
-    --background-yellow:#ffdd77a1;
+    --background-yellow:#ffdd77;
     --background-green:#59a56ddf;
     --hover-background:rgb(224, 224, 224);
+    --background-overlay:rgba(0, 0, 0, 0.6)
 }
 
 .dark-mode {
@@ -34,9 +36,10 @@ html {
     --box-shadow: rgba(255, 255, 255, 0.1);
     --text-light: #bebebe;
     --background-blue: #122646aa;
-    --background-yellow:#2d2200b8;
+    --background-yellow:#5c4500;
     --background-green:#1e6431db;
     --hover-background:rgb(37, 37, 37);
+    --background-overlay:rgba(255, 255, 255, 0.3)
 }
 
 body {
@@ -68,35 +71,44 @@ span {
     /* font-family: 'Roboto', sans-serif; */
 }
 
-.container {
-    min-height: 100vh;
+.w-full{
     width: 100%;
-    padding:5% 10%;
+}
+
+.container {
+    /* height: 100vh; */
+    width: 100%;
+    padding:5% 5%;
     display: flex;
     align-items: center;
     justify-content: center;
 }
-
+header{
+    padding: 1% 5%;
+}
 .header{
     background-color: var(--background);
     box-shadow: 0 2px 5px var(--box-shadow);
     display: flex;
-    gap: 5px;
+    justify-content: space-between;
     border-radius: var(--radius-small);
     padding:5px;
+    width: 50%;
 }
+
 
 .header-item{
     position: relative;
     display: flex;
     align-items: center;
     justify-content: center;
-    padding: 5px 30px;
+    padding: 5px 0px;
     text-decoration: none;
     color: var(--text-color);
     font-size: 15px;
     border-radius: var(--radius-small);
     transition: color 0.3s, transform 0.2s;
+    width:16%;
 }
 .header-item span{
     z-index: 1;
@@ -117,4 +129,131 @@ span {
     width: 100%;
     height: 100%;
     border-radius: var(--radius-small);
+}
+
+
+.wavy-hr {
+    border: none;
+    height: 16px;
+    width: 100%;
+    background: url("data:image/svg+xml;utf8,<svg width='400' height='16' xmlns='http://www.w3.org/2000/svg'><path d='M0 8 Q 10 0 20 8 T 40 8 T 60 8 T 80 8 T 100 8 T 120 8 T 140 8 T 160 8 T 180 8 T 200 8 T 220 8 T 240 8 T 260 8 T 280 8 T 300 8 T 320 8 T 340 8 T 360 8 T 380 8 T 400 8' stroke='gray' fill='transparent' stroke-width='2'/></svg>") repeat-x;
+    background-size: auto 100%;
+    background-repeat: repeat-x;
+    display: block;
+}
+
+
+.dialog{
+    width: 100%;
+    height: 100%;
+    position: fixed;
+    top: 0;
+    left: 0;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 1000;
+    padding: 10% 20%;
+}
+.dialog-overlay{
+    background-color: var(--background-overlay);
+    width: 100%;
+    height: 100%;
+    top: 0;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    position: fixed;
+}
+.dialogHolder{
+    position: relative;
+    background-color: var(--background);
+    border-radius: var(--radius-small);
+    width: 100%;
+}
+.dialogContent{
+    max-width: 60vw;
+    max-height: 90vh;
+    overflow-y: scroll;
+    padding: 2%;
+}
+
+
+.dialogContent .close{
+    background:none ;
+    cursor: pointer;
+    border-radius: 100%;
+    padding: 5px;
+    text-align: center;
+    display: flex;
+    align-items: center;
+    width: fit-content;
+    border: 1px solid rgba(255, 255, 255, 0) ;
+    position: absolute;
+    right: 0.5%;
+    top: 0.5%;
+    transition: .4s ;
+}
+
+.dialogContent .close:hover{
+    background-color: var(--hover-background);
+    transition: .4s ;
+}
+
+/* WebKit-based browsers (Chrome, Edge, Safari) */
+::-webkit-scrollbar {
+  width: 6px;
+  height: 6px;
+}
+
+::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+::-webkit-scrollbar-thumb {
+  background-color: #888; /* medium gray */
+  border-radius: 3px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background-color: #555; /* slightly darker on hover */
+}
+
+  
+
+
+
+
+
+
+
+
+
+
+/*--------------- responsive media querys -------------*/
+
+/* 📱 Mobile (up to 600px) */
+@media (max-width: 600px) {
+    .header{
+        width: 100%;
+    }
+    .container{
+        padding:1% 5%;
+        margin-top: 7%;
+    }   
+}
+
+
+/* 📺 Tablets (600px - 1024px) */
+@media (min-width: 600px) and (max-width: 1024px) {
+    .header{
+        width: 70%;
+    }    
+}
+
+/* 💻 Laptops & Small Screens (1024px - 1440px) */
+@media (min-width: 1024px) and (max-width: 1440px) {
+    .header{
+        width: 50%;
+    }    
 }

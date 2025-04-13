@@ -1,20 +1,31 @@
 <div class="experience-container" >
-    <nav class="header" >
-        <a (click)="activeitem=i" class="header-item" [class.active]="activeitem === i"  *ngFor="let item of experiences; let i = index">
-            <span>{{item.company}}</span>
-        </a>
-    </nav>
-
-    <section class="about-experience" >
-        <div class="experience-images" >
-            <img [src]="experiences[activeitem].logo" alt="">
-        </div>
-        <div class="experience-content" >
-            <small>{{experiences[activeitem].timePeriod}}</small>
-            <h1>{{experiences[activeitem].company}}</h1>
-            <p>{{experiences[activeitem].about.slice(0,500)}}</p>
-        </div>
-    </section>
+    <hr class="wavy-hr">
+    <div class="timeline-container">
+        @for (item of experiences; track $index) {
+            <div  class="experience">
+                <div  [ngStyle]="{'background-color':item.bgColor}" class="experience-content">
+                    <div class="company">
+                        <img [src]="item.logo" alt="">
+                        <h4>{{item.company}}</h4>
+                    </div>
+                    <p>{{item.about.slice(0,100)}}... </p> 
+                    <!-- <p *ngIf="activeitem==$index" >{{item.about}}  </p>  -->
+                    <span (click)="readMore($index)"  [ngStyle]="{'color':item.color}" class="read-more" >
+                        <span class="material-symbols-outlined">read_more</span>
+                    </span>
+                </div>
+            </div>
+        }
+            
+    </div>
+    <hr class="wavy-hr">
 </div>
+
+
+<!-- <div [ngClass]="activeitem!=-1?'active-experience':''">
+    <span (click)="clear()" [ngStyle]="{'color':experiences[activeitem].color}" class="close" >
+        <span class="material-symbols-outlined">close</span>
+    </span>
+</div> -->
 
 

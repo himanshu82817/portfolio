@@ -6,7 +6,6 @@ header {
     display: flex;
     justify-content: center;
     align-items: center;
-    padding: 10px 20px;
     z-index: 1000;
     user-select: none; /* Prevents text selection */
     -webkit-user-select: none; /* Safari */
@@ -33,14 +32,6 @@ header {
 nav a:hover .tooltip {
     opacity: 1;
     visibility: visible;
-}
-
-.theme-toggle {
-    background: none;
-    border: none;
-    cursor: pointer;
-    font-size: 24px;
-    color: var(--text-color);
 }
 .nav-button:nth-child(1) {
     color: var(--blue);

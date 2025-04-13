@@ -5,6 +5,20 @@ canvas {
     width: 100vw;
     height: 100vh;
     z-index: -1;
-    background: linear-gradient(to bottom, #87CEEB, #E0F7FA);
+    background: linear-gradient(to bottom, #5ba2ff, #E0F7FA);
   }
   
+  .cloudleft{
+    position: fixed;
+    left: 0;
+    top: 10%;
+    width: 20rem;
+    z-index: -1;
+  }
+  .cloudright{
+    position: fixed;
+    right: 0;
+    bottom: 10%;
+    width: 20rem;
+    z-index: -1;
+  }
