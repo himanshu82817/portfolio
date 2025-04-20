@@ -12,8 +12,9 @@ export class ExperienceComponent {
   experiences = [
     {
       company:'Almondz Global',
+      role:"Full Stack Developer",
       logo:'assets/companies/almondz.png',
-      gallery:[],
+      gallery:["assets/profile.png"],
       bgColor:'rgba(239, 114, 31, 0.24)',
       color:'#ef721f',
       timePeriod:'June 2021 - September 2022',
@@ -22,8 +23,9 @@ export class ExperienceComponent {
     },
     {
       company:'iTech Mission',
+      role:"Full Stack Developer",
       logo:'assets/companies/itm.png',
-      gallery:[],
+      gallery:["assets/profile.png"],
       bgColor:'rgba(207, 60, 72, 0.24)',
       color:'#cf3c48',
       timePeriod:'September 2022 - August 2023',
@@ -32,8 +34,9 @@ export class ExperienceComponent {
     },
     {
       company:'SMC Finance',
+      role:"Software Developer",
       logo:'assets/companies/smc.png',
-      gallery:[],
+      gallery:["assets/profile.png"],
       bgColor:'rgba(48, 156, 29, 0.24)',
       color:'#309c1d',
       timePeriod:'October 2023 - working',

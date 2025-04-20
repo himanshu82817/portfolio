@@ -4,9 +4,18 @@
         @for (item of experiences; track $index) {
             <div  class="experience">
                 <div  [ngStyle]="{'background-color':item.bgColor}" class="experience-content">
-                    <div class="company">
+                    <div class="logo">
                         <img [src]="item.logo" alt="">
-                        <h4>{{item.company}}</h4>
+                    </div>
+                    <h4>{{item.company}}</h4>
+                    <img class="company-snaps" [src]="item.gallery[0]" alt="">
+                    <div class="company">
+                        <div class="about-work">
+                            <h3>{{item.role}}</h3>
+                            <h5>
+                                <i>{{item.timePeriod}}</i>
+                            </h5>
+                        </div>
                     </div>
                     <p>{{item.about.slice(0,100)}}... </p> 
                     <!-- <p *ngIf="activeitem==$index" >{{item.about}}  </p>  -->

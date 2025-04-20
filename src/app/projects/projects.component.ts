@@ -1,9 +1,10 @@
 import { CommonModule } from '@angular/common';
 import { Component } from '@angular/core';
+import { ImageCarouselComponent } from "../components/image-carousel/image-carousel.component";
 
 @Component({
   selector: 'app-projects',
-  imports: [CommonModule],
+  imports: [CommonModule, ImageCarouselComponent,ImageCarouselComponent],
   templateUrl: './projects.component.html',
   styleUrl: './projects.component.css'
 })
@@ -13,7 +14,13 @@ export class ProjectsComponent {
     projects = [
       {
         images:[
-          "assets/profile.png"
+          "assets/profile.png",
+          "assets/profile.png",
+          "assets/profile.png",
+          "assets/profile.png",
+          "assets/profile.png",
+          "assets/profile.png",
+          "assets/profile.png",
         ],
         heading:'Loan Origination System (SMC Finance)',
         techStack:[

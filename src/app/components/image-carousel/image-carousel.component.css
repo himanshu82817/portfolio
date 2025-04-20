@@ -1,0 +1,87 @@
+.carousel{
+    display: flex;
+    position: relative;
+}
+
+
+.carousel .navButtons{
+    position: absolute;
+    top: 46%;
+    z-index: 1;
+    background-color: rgba(211, 211, 211, 0.518);
+    border-radius: 50px;
+    cursor: pointer;
+}
+
+.carousel .navButtons:hover{
+    background-color: aliceblue;
+}
+
+.carousel .navButtons:nth-child(1){
+    left: 0;
+}
+.carousel .navButtons:nth-child(2){
+    right: 0;
+}
+
+.carousel .image-holder{
+    display: flex;
+    width: 100%;
+    overflow: scroll;
+    gap: 2%;
+    scroll-behavior: smooth;
+    /* justify-content: center; */
+    border-radius: var(--radius-small);
+    scroll-snap-type: x mandatory;
+    scroll-snap-align: center;
+}
+
+
+.carousel .image-holder::-webkit-scrollbar{
+    display: none;
+}
+.indicator-holder{
+    width: 100%;
+    display: flex;
+    justify-content: center;
+    padding: 2%;
+}
+.item-indicator{
+    display: flex;
+    justify-content: center;
+    background-color:var(--hover-background);
+    gap: 5px;
+    border-radius: var(--radius-small);
+    padding: 1%;
+}
+
+.indicator{
+    width: 5px;
+    height: 5px;
+    border-radius: 50%;
+    border: 1px solid grey;
+    transition: .4s;
+}
+
+.indicator:hover{
+    scale: 150%;
+    transition: .4s;
+    cursor: pointer;
+}
+.active-indicator{
+    background-color:var(--text-color);
+}
+.image-holder img{
+    width: 70%;
+    border-radius: var(--radius-small);
+    transition: .4s;
+}
+
+.image-holder .inActiveImg{
+    opacity: .4;
+    transition: .4s;
+}
+
+.dummy{
+    width:30%;
+}

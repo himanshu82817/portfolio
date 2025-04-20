@@ -1,0 +1,22 @@
+<div class="carousel" >
+    <span (click)="left()" class="material-symbols-outlined navButtons">chevron_left</span>
+    <span (click)="right()" class="material-symbols-outlined navButtons">chevron_right</span>
+    <div #wrapper 
+    (pointerup)="onPointerUp($event)"
+    (touchend)="onTouchEnd($event)"
+    (touchstart)="onTouchStart($event)"
+        class="image-holder">
+        <div  class="dummy"></div>
+        @for (item of images; track $index) {
+            <img [ngClass]="$index!=activeIndex?'inActiveImg':''"  [id]="'carousel-item-'+$index" [src]="item" alt="">
+        }
+        <div class="dummy"></div>
+    </div>
+</div>
+<div class="indicator-holder">
+    <div class="item-indicator" >
+        @for (item of images; track $index) {
+            <span (click)="activeIndex=$index;scrollToIndex($index)" [ngClass]="activeIndex==$index?'active-indicator':''" class="indicator" ></span>
+        }
+    </div>
+</div>
