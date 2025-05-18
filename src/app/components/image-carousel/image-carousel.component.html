@@ -1,10 +1,10 @@
 <div class="carousel" >
     <span (click)="left()" class="material-symbols-outlined navButtons">chevron_left</span>
     <span (click)="right()" class="material-symbols-outlined navButtons">chevron_right</span>
+    //(pointerup)="onPointerUp($event)"
+    //(touchend)="onTouchEnd($event)"
+    //(touchstart)="onTouchStart($event)"
     <div #wrapper 
-    (pointerup)="onPointerUp($event)"
-    (touchend)="onTouchEnd($event)"
-    (touchstart)="onTouchStart($event)"
         class="image-holder">
         <div  class="dummy"></div>
         @for (item of images; track $index) {
