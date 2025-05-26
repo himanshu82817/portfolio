@@ -85,3 +85,10 @@
 .dummy{
     width:30%;
 }
+
+
+@media (max-width: 600px) {
+    .navButtons{
+        display:none;
+    } 
+}

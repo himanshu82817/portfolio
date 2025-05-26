@@ -1,8 +1,8 @@
 <div class="projects-container" >
     @for (item of projects; track $index) {
         <div class="project-card">
-            <app-image-carousel [images]="item.images" ></app-image-carousel>
-            <!-- <img [src]="item.images[0]" class="project-snap" alt=""> -->
+            <!-- <app-image-carousel [images]="item.images" ></app-image-carousel> -->
+            <img [src]="item.images[0]" class="project-snap" alt="">
             <div class="project-content">
                 <h3>{{item.heading}}</h3>
                 <div class="tech-used">
@@ -30,7 +30,8 @@
             <span (click)="clear()" class="close" >
                 <span class="material-symbols-outlined">close</span>
             </span>
-            <img [src]="projects[activeItem].images[0]" class="project-snap" alt="">
+            <app-image-carousel [images]="projects[activeItem].images" ></app-image-carousel>
+            <!-- <img [src]="projects[activeItem].images[0]" class="project-snap" alt=""> -->
             <h1>{{projects[activeItem].heading}}</h1>
             <div class="tech-used">
                 @for (tech of projects[activeItem].techStack; track $index) {
