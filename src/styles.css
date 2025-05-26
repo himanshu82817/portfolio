@@ -32,7 +32,7 @@ html {
     --background-yellow:#ffdd77;
     --background-green:#59a56ddf;
     --hover-background:rgb(224, 224, 224);
-    --background-overlay:rgba(0, 0, 0, 0.6)
+    --background-overlay:rgba(0, 0, 0, 0.2)
 }
 
 .dark-mode {
@@ -44,7 +44,7 @@ html {
     --background-yellow:#5c4500;
     --background-green:#1e6431db;
     --hover-background:rgb(37, 37, 37);
-    --background-overlay:rgba(255, 255, 255, 0.3)
+    --background-overlay:rgba(255, 255, 255, 0.2)
 }
 
 body {
@@ -125,7 +125,7 @@ header{
 .header .header-item::after{
     position: absolute;
     content: '';
-    width: 50%;
+    width: 0%;
     height: 100%;
     transition: .4s;
 }
@@ -169,16 +169,18 @@ header{
     left: 0;
     right: 0;
     position: fixed;
+    backdrop-filter: blur(6px);
 }
 .dialogHolder{
     position: relative;
     background-color: var(--background);
     border-radius: var(--radius-small);
     width: 100%;
+    padding: 2% 0 ;
 }
 .dialogContent{
     max-width: 60vw;
-    max-height: 90vh;
+    max-height: 80vh;
     overflow-y: scroll;
     padding: 2%;
 }
@@ -245,7 +247,16 @@ header{
     .container{
         padding:1% 5%;
         margin-top: 7%;
-    }   
+    } 
+    .dialogHolder{
+        padding: 10% 0 ;
+    }
+    .dialog{
+        padding: 10% 5%;
+    } 
+    .dialogContent{
+        max-width: 100%;
+    } 
 }
 
 

@@ -21,6 +21,7 @@ export class HeaderComponent {
   }
 
   scrollTo(section: string) {
+    this.activeSection = section;
     document.getElementById(section)?.scrollIntoView({ behavior: 'smooth' });
   }
 
