@@ -72,7 +72,7 @@
     background-color:var(--text-color);
 }
 .image-holder img{
-    width: 70%;
+    width: 90%;
     border-radius: var(--radius-small);
     transition: .4s;
 }
