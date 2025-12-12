@@ -1,0 +1,43 @@
+<section class="py-24 px-6 relative" id="blog">
+  <div class="max-w-6xl mx-auto">
+    
+    <div class="text-center mb-16">
+      <h2 class="text-4xl font-black mb-4 dark:text-white">Latest Insights</h2>
+      <p class="text-gray-600 dark:text-gray-400">Thoughts on development, design, and technology.</p>
+    </div>
+
+    <div class="flex overflow-x-auto gap-6 pb-8 snap-x snap-mandatory md:grid md:grid-cols-2 lg:grid-cols-3 scrollbar-hide">
+      
+      <div *ngFor="let post of posts" 
+           class="min-w-[200px] snap-center bg-white dark:bg-[#2d2d2a] rounded-[2rem] p-8 hover:shadow-elevation-2 transition-all cursor-pointer group border border-gray-100 dark:border-white/10 relative overflow-hidden">
+        
+        <div class="absolute top-0 right-0 w-16 h-16 rounded-bl-full -z-0 transition-colors"
+             [ngClass]="post.decorationClass">
+        </div>
+
+        <div class="flex items-center justify-between mb-4 relative z-10">
+          <span class="font-bold text-xs uppercase tracking-wider px-2 py-1 rounded-md"
+                [ngClass]="post.categoryClass">
+            {{ post.category }}
+          </span>
+          <span class="text-gray-400 text-xs font-medium">{{ post.readTime }}</span>
+        </div>
+
+        <h3 class="text-xl font-bold mb-3 group-hover:text-tertiary transition-colors relative z-10 dark:text-white">
+          {{ post.title }}
+        </h3>
+        
+        <p class="text-gray-600 dark:text-gray-400 text-sm mb-6 line-clamp-3 relative z-10">
+          {{ post.description }}
+        </p>
+
+        <div class="flex items-center gap-2 text-sm font-bold relative z-10 dark:text-gray-200 group-hover:text-tertiary dark:group-hover:text-tertiary transition-colors">
+           Read Article 
+           <span class="material-symbols-outlined text-base group-hover:translate-x-1 transition-transform">arrow_forward</span>
+        </div>
+
+      </div>
+
+    </div>
+  </div>
+</section>

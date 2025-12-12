@@ -1,0 +1,36 @@
+<nav class="fixed top-0 left-0 right-0 z-50 flex justify-center pt-4 px-4 pointer-events-none">
+  <div class="pointer-events-auto bg-white/80 dark:bg-[#2d2d2a]/80 backdrop-blur-xl rounded-full shadow-elevation-1 border border-white/40 dark:border-white/10 px-6 py-3 flex items-center justify-between gap-8 max-w-[960px] w-full transition-all duration-300 hover:shadow-elevation-2">
+    
+    <a href="#" class="flex items-center gap-2 group">
+      <div class="size-10 bg-primary rounded-xl rotate-3 group-hover:rotate-12 transition-transform duration-300 flex items-center justify-center text-on-primary font-bold text-xl shadow-sm">
+        H
+      </div>
+      <span class="font-bold text-lg tracking-tight hidden sm:block dark:text-white">Himanshu</span>
+    </a>
+
+    <div class="hidden md:flex items-center gap-1">
+      <a href="#about" class="px-4 py-2 rounded-full text-sm font-medium text-gray-700 dark:text-gray-200 hover:bg-surface-variant/50 dark:hover:bg-white/10 hover:text-tertiary transition-all">About</a>
+      <a href="#experience" class="px-4 py-2 rounded-full text-sm font-medium text-gray-700 dark:text-gray-200 hover:bg-surface-variant/50 dark:hover:bg-white/10 hover:text-tertiary transition-all">Experience</a>
+      <a href="#projects" class="px-4 py-2 rounded-full text-sm font-medium text-gray-700 dark:text-gray-200 hover:bg-surface-variant/50 dark:hover:bg-white/10 hover:text-tertiary transition-all">Projects</a>
+      <a href="#blog" class="px-4 py-2 rounded-full text-sm font-medium text-gray-700 dark:text-gray-200 hover:bg-surface-variant/50 dark:hover:bg-white/10 hover:text-tertiary transition-all">Blog</a>
+    </div>
+
+    <div class="flex items-center gap-3">
+      
+      <button 
+        (click)="themeService.toggleTheme()" 
+        class="size-10 rounded-full flex items-center justify-center hover:bg-gray-100 dark:hover:bg-white/10 text-gray-600 dark:text-gray-200 transition-colors"
+        aria-label="Toggle Dark Mode"
+      >
+        <span class="material-symbols-outlined">
+          {{ themeService.darkMode() ? 'light_mode' : 'dark_mode' }}
+        </span>
+      </button>
+
+      <a href="#contact" class="bg-black text-white dark:bg-white dark:text-black hover:bg-tertiary hover:text-white dark:hover:bg-tertiary px-6 py-2.5 rounded-full text-sm font-bold transition-all hover:shadow-lg active:scale-95 flex items-center gap-2">
+        <span>Let's Talk</span>
+      </a>
+    </div>
+
+  </div>
+</nav>

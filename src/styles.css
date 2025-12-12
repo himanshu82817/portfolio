@@ -1,1 +1,27 @@
-/* You can add global styles to this file, and also import other style files */
+/* Import Fonts */
+@import url('https://fonts.googleapis.com/css2?family=Spline+Sans:wght@300;400;500;600;700&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200');
+
+/* Tailwind Directives */
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+html {
+  font-size: 80%;
+}
+
+.bg-dot-grid {
+    background-color: #fffff0;
+    background-image: radial-gradient(#e0e0e0 2px, transparent 2px);
+    background-size: 32px 32px;
+    background-attachment: fixed; /* Optional: keeps dots static while scrolling */
+  }
+  
+  /* Dark mode override for dot grid */
+  /* This triggers when the <html> tag has the 'dark' class */
+  .dark .bg-dot-grid {
+    background-color: #1a1a16;
+    background-image: radial-gradient(#333333 2px, transparent 2px);
+  }
+/* ... Rest of  custom CSS ... */
