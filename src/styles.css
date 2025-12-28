@@ -25,3 +25,21 @@ html {
     background-image: radial-gradient(#333333 2px, transparent 2px);
   }
 /* ... Rest of  custom CSS ... */
+
+/* Disable Text Selection */
+.no-select, .no-select * {
+  user-select: none;
+  -webkit-user-select: none; /* For Safari */
+  -moz-user-select: none;    /* For Firefox */
+  -ms-user-select: none;     /* For Internet Explorer/Edge */
+}
+
+/* Remove Tap Highlight on Mobile */
+.no-tap-highlight, .no-tap-highlight * {
+  -webkit-tap-highlight-color: transparent;
+}
+
+/* Apply to the whole app */
+body {
+  @apply no-select no-tap-highlight;
+}
