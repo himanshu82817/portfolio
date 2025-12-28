@@ -8,10 +8,13 @@ import { ContactComponent } from './features/portfolio/components/contact/contac
 import { ExperienceComponent } from './features/portfolio/components/experience/experience.component';
 import { ProjectsComponent } from './features/portfolio/components/projects/projects.component';
 import { FooterComponent } from './shared/components/footer/footer.component';
+import { CommonModule } from '@angular/common';
 
 @Component({
   selector: 'app-root',
+  standalone: true,
   imports: [
+    CommonModule,
     // RouterOutlet,
     NavbarComponent, 
     HeroComponent, 
