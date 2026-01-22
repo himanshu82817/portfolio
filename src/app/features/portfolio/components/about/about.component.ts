@@ -11,7 +11,12 @@ import { CommonModule } from '@angular/common';
 export class AboutComponent {
   // Easily manage your skills here
   skills = [
-    'JavaScript', 'TypeScript', 'React', 'Next.js',
-    'PostgreSQL', 'Node.js', 'AWS', 'Tailwind'
+    'JavaScript', 'TypeScript', 'C++', 'SQL',
+    'Angular', 'React', 'React Native', 'HTML', 'CSS',
+    'Node.js', 'NestJS', 'MySQL', 'PostgreSQL',
+    'Git', 'VS Code', 'Docker', 'Google Cloud Platform',
+    'Angular Material', 'PrimeNG', 'Material-UI',
+    'Data Structures & Algorithms', 'Operating Systems', 'Database Management Systems', 'Computer Networks',
+    'Low-Level Design (LLD)', 'High-Level Design (HLD)', 'OOP', 'Design Patterns'
   ];
 }

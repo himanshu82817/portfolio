@@ -13,39 +13,42 @@ export class ExperienceComponent implements AfterViewInit {
 
   experiences = [
     {
-      role: 'Full Stack Developer',
-      company: 'Tech Solutions Inc.',
-      period: 'Jan 2022 - Present',
+      role: 'Software Developer',
+      company: 'SMC Finance',
+      period: 'Oct 2023 - Present',
       description: [
-        'Developed and maintained web applications using Angular, Node.js, and MongoDB.',
-        'Collaborated with cross-functional teams to deliver high-quality software.',
-        'Implemented responsive designs with Tailwind CSS.'
+        'Worked on a Loan Origination System used by credit and operations teams.',
+        'Built and enhanced multiple frontend modules using Angular.',
+        'Improved UI performance by optimizing Angular reactive forms, significantly reducing load time.',
+        'Reduced API calls by implementing caching and efficient state management.'
       ],
-      tags: ['Angular', 'Node.js', 'MongoDB', 'Tailwind CSS'],
+      tags: ['Angular', 'TypeScript', 'Performance Optimization', 'Caching', 'SQL'],
       dotColor: 'bg-primary'
     },
     {
-      role: 'Frontend Developer',
-      company: 'Creative Minds',
-      period: 'Jun 2020 - Dec 2021',
+      role: 'Solution Developer',
+      company: 'iTech Mission Pvt. Ltd.',
+      period: 'Sep 2022 - Aug 2023',
       description: [
-        'Built and optimized user interfaces for various clients.',
-        'Worked with React and Vue.js to create engaging user experiences.',
-        'Ensured cross-browser compatibility and performance.'
+        'Built interactive data visualization and chart dashboards for internal and external stakeholders.',
+        'Integrated business intelligence modules with backend services to display real-time insights.',
+        'Worked on web application features using Angular and REST APIs.',
+        'Collaborated with cross-functional teams to refine requirements and implement UI enhancements.'
       ],
-      tags: ['React', 'Vue.js', 'SCSS'],
+      tags: ['Angular', 'Data Visualization', 'REST APIs', 'BI', 'TypeScript'],
        dotColor: 'bg-tertiary'
     },
     {
-      role: 'Junior Web Developer',
-      company: 'Digital Dreams',
-      period: 'May 2019 - May 2020',
+      role: 'Full Stack Developer',
+      company: 'Almondz Global Securities Ltd.',
+      period: 'Dec 2021 - Sep 2022',
       description: [
-        'Assisted in the development of WordPress websites.',
-        'Learned the fundamentals of web development and best practices.',
-        'Provided support and maintenance for existing sites.'
+        'Developed the Learning Management System used for internal training and employee upskilling.',
+        'Worked on internal financial and operations management systems.',
+        'Built frontend features using Angular and backend services with Node.js.',
+        'Integrated SQL databases and optimized complex queries for reporting modules.'
       ],
-      tags: ['HTML', 'CSS', 'JavaScript', 'WordPress'],
+      tags: ['Angular', 'Node.js', 'SQL', 'Full Stack', 'JavaScript'],
       dotColor: 'bg-surface-variant'
     }
   ];

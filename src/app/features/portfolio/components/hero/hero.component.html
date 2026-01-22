@@ -16,7 +16,34 @@
         </svg>
     </div>
     <div class="max-w-7xl mx-auto w-full grid md:grid-cols-2 gap-12 items-center">
-        <div class="flex flex-col gap-8 items-start z-10">
+        <!-- Hero Image (now first) -->
+        <div class="relative flex justify-center items-center lg:translate-x-10 md:order-last">
+            <div
+                class="absolute w-[120%] h-[120%] border border-dashed border-tertiary/20 rounded-full animate-[spin_40s_linear_infinite]">
+            </div>
+            <div class="absolute top-0 right-0 w-32 h-32 bg-secondary-container rounded-full blur-2xl -z-10"></div>
+            <div
+                class="relative w-full max-w-md aspect-[4/5] rounded-t-[10rem] rounded-b-[3rem] overflow-hidden shadow-elevation-3 hover:scale-[1.02] transition-transform duration-500 group bg-surface-elevated">
+                <div class="absolute inset-0 bg-gradient-to-t from-black/50 via-transparent to-transparent z-10"></div>
+                <img alt="Himanshu" class="w-full h-full object-cover"
+                    data-alt="Portrait of Himanshu looking confident with a slight smile" src="/profile.png" />
+                <div
+                    class="absolute bottom-6 right-6 z-20 bg-white/90 backdrop-blur-md p-4 rounded-2xl shadow-lg border border-white/50 max-w-[180px]">
+                    <div class="flex items-center gap-2 text-tertiary mb-1">
+                        <span class="material-symbols-outlined text-xl">location_on</span>
+                        <span class="text-xs font-bold uppercase tracking-wider">Located in</span>
+                    </div>
+                    <p class="font-bold text-gray-900 leading-tight">New Delhi, India</p>
+                </div>
+            </div>
+            <div
+                class="absolute -bottom-8 left-10 w-[10%] h-[10%] bg-primary rounded-3xl rotate-12 flex items-center justify-center shadow-elevation-2 z-20 animate-float">
+                <span class="material-symbols-outlined text-4xl text-on-primary">emoji_objects</span>
+            </div>
+        </div>
+
+        <!-- Text Div (now second) -->
+        <div class="flex flex-col gap-8 items-start z-10 md:order-first">
             <div
                 class="inline-flex items-center gap-3 px-4 py-2 rounded-full bg-surface-elevated/50 backdrop-blur border border-outline/20 text-sm font-bold text-gray-600 shadow-sm">
                 <span class="relative flex h-3 w-3">
@@ -26,7 +53,7 @@
                 </span>
                 Hello World
             </div>
-            <h1 class="text-6xl md:text-8xl font-display font-black leading-[1.05] tracking-tight">
+            <h1 class="text-6xl md:text-8xl font-display font-black dark:text-gray-300 leading-[1.05] tracking-tight">
                 I’m <br />Himanshu.
                 <span class="block text-4xl md:text-6xl mt-2 font-bold text-tertiary">Full Stack Engineer</span>
             </h1>
@@ -53,7 +80,7 @@
                         <span class="material-symbols-outlined">code_blocks</span>
                     </div>
                     <div>
-                        <p class="text-2xl font-black leading-none">4+</p>
+                        <p class="text-2xl dark:text-gray-300 font-black leading-none">4+</p>
                         <p class="text-sm font-medium text-gray-500">Years Exp.</p>
                     </div>
                 </div>
@@ -63,34 +90,10 @@
                         <span class="material-symbols-outlined">rocket_launch</span>
                     </div>
                     <div>
-                        <p class="text-2xl font-black leading-none">20+</p>
+                        <p class="text-2xl dark:text-gray-300 font-black leading-none">20+</p>
                         <p class="text-sm font-medium text-gray-500">Projects</p>
                     </div>
                 </div>
-            </div>
-        </div>
-        <div class="relative flex justify-center items-center lg:translate-x-10">
-            <div
-                class="absolute w-[120%] h-[120%] border border-dashed border-tertiary/20 rounded-full animate-[spin_40s_linear_infinite]">
-            </div>
-            <div class="absolute top-0 right-0 w-32 h-32 bg-secondary-container rounded-full blur-2xl -z-10"></div>
-            <div
-                class="relative w-full max-w-md aspect-[4/5] rounded-t-[10rem] rounded-b-[3rem] overflow-hidden shadow-elevation-3 hover:scale-[1.02] transition-transform duration-500 group bg-surface-elevated">
-                <div class="absolute inset-0 bg-gradient-to-t from-black/50 via-transparent to-transparent z-10"></div>
-                <img alt="Himanshu" class="w-full h-full object-cover"
-                    data-alt="Portrait of Himanshu looking confident with a slight smile" src="/profile.png" />
-                <div
-                    class="absolute bottom-6 right-6 z-20 bg-white/90 backdrop-blur-md p-4 rounded-2xl shadow-lg border border-white/50 max-w-[180px]">
-                    <div class="flex items-center gap-2 text-tertiary mb-1">
-                        <span class="material-symbols-outlined text-xl">location_on</span>
-                        <span class="text-xs font-bold uppercase tracking-wider">Located in</span>
-                    </div>
-                    <p class="font-bold text-gray-900 leading-tight">New Delhi, India</p>
-                </div>
-            </div>
-            <div
-                class="absolute -bottom-8 left-10 w-[10%] h-[10%] bg-primary rounded-3xl rotate-12 flex items-center justify-center shadow-elevation-2 z-20 animate-float">
-                <span class="material-symbols-outlined text-4xl text-on-primary">emoji_objects</span>
             </div>
         </div>
     </div>

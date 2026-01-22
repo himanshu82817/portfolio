@@ -37,48 +37,62 @@
 
 <nav class="fixed bottom-6 left-0 right-0 z-50 flex justify-center px-4 pointer-events-none">
   <div
-    class="pointer-events-auto bg-[#fdfdfc]/90 dark:bg-[#1a1a16]/90 backdrop-blur-3xl rounded-full shadow-elevation-2 border border-white/40 dark:border-white/10  p-2 flex items-center gap-1 transition-all duration-500 hover:shadow-elevation-3">
-    <a href="#" class="flex items-center gap-2 group">
-      <div class="size-10 bg-primary rounded-xl rotate-3 hover:rotate-12 transition-transform duration-300 flex items-center justify-center text-on-primary font-bold text-xl shadow-sm cursor-pointer">
+    class="pointer-events-auto bg-[#fdfdfc]/90 dark:bg-[#1a1a16]/90 backdrop-blur-3xl rounded-full shadow-elevation-2 border border-white/40 dark:border-white/10  py-2 px-6 flex items-center gap-3 transition-all duration-500 hover:shadow-elevation-3">
+    <a routerLink="/" class="flex items-center gap-2 group">
+      <div
+        class="size-10 bg-primary rounded-xl rotate-3 hover:rotate-12 transition-transform duration-300 flex items-center justify-center text-on-primary font-bold text-xl shadow-sm cursor-pointer">
         H
       </div>
     </a>
 
     <div class="flex items-center bg-gray-200 dark:bg-white/5 rounded-full p-1 md:p-1.5 gap-1">
-      <a class="py-2 px-4 md:px-5 md:py-3 rounded-full flex items-center justify-center gap-2 text-sm font-bold text-gray-700 dark:text-gray-200 hover:bg-white dark:hover:bg-white/10 hover:shadow-sm hover:text-tertiary active:scale-95 active:bg-secondary-container transition-all duration-300 group relative overflow-hidden"
-        href="#about">
+      <a routerLink="/about"
+         routerLinkActive #rlaAbout="routerLinkActive"
+         [ngClass]="rlaAbout.isActive ? 'bg-[#4286f5] text-on-primary shadow-elevation-1' : 'hover:bg-white dark:hover:bg-white/10 hover:shadow-sm hover:text-tertiary'"
+         class="py-2 px-4 md:px-5 md:py-3 rounded-full flex items-center justify-center gap-2 text-sm font-bold text-gray-700 dark:text-gray-200 active:scale-95 active:bg-secondary-container transition-all duration-300 group relative overflow-hidden">
         <span class="material-symbols-outlined text-[20px] group-hover:fill-1 transition-all">person</span>
         <span class="hidden md:block">About</span>
       </a>
-      <a class="py-2 px-4 md:px-5 md:py-3 rounded-full flex items-center justify-center gap-2 text-sm font-bold text-gray-700 dark:text-gray-200 hover:bg-white dark:hover:bg-white/10 hover:shadow-sm hover:text-tertiary active:scale-95 active:bg-secondary-container transition-all duration-300 group"
-        href="#experience">
+      <a routerLink="/experience"
+         routerLinkActive #rlaExp="routerLinkActive"
+         [ngClass]="rlaExp.isActive ? 'bg-[#ea4335] text-on-primary shadow-elevation-1' : 'hover:bg-white dark:hover:bg-white/10 hover:shadow-sm hover:text-tertiary'"
+         class="py-2 px-4 md:px-5 md:py-3 rounded-full flex items-center justify-center gap-2 text-sm font-bold text-gray-700 dark:text-gray-200 active:scale-95 active:bg-secondary-container transition-all duration-300 group">
         <span class="material-symbols-outlined text-[20px] group-hover:fill-1 transition-all">work_history</span>
         <span class="hidden md:block">Experience</span>
       </a>
-      <a class="py-2 px-4 md:px-5 md:py-3 rounded-full flex items-center justify-center gap-2 text-sm font-bold text-gray-700 dark:text-gray-200 hover:bg-white dark:hover:bg-white/10 hover:shadow-sm hover:text-tertiary active:scale-95 active:bg-secondary-container transition-all duration-300 group"
-        href="#projects">
+      <a routerLink="/projects"
+         routerLinkActive #rlaProj="routerLinkActive"
+         [ngClass]="rlaProj.isActive ? 'bg-[#fabc05] text-on-primary shadow-elevation-1' : 'hover:bg-white dark:hover:bg-white/10 hover:shadow-sm hover:text-tertiary'"
+         class="py-2 px-4 md:px-5 md:py-3 rounded-full flex items-center justify-center gap-2 text-sm font-bold text-gray-700 dark:text-gray-200 active:scale-95 active:bg-secondary-container transition-all duration-300 group">
         <span class="material-symbols-outlined text-[20px] group-hover:fill-1 transition-all">grid_view</span>
         <span class="hidden md:block">Projects</span>
       </a>
-      <a class="py-2 px-4 md:px-5 md:py-3 rounded-full flex items-center justify-center gap-2 text-sm font-bold text-gray-700 dark:text-gray-200 hover:bg-white dark:hover:bg-white/10 hover:shadow-sm hover:text-tertiary active:scale-95 active:bg-secondary-container transition-all duration-300 group"
-        href="#blog">
+      <a routerLink="/blog"
+         routerLinkActive #rlaBlog="routerLinkActive"
+         [ngClass]="rlaBlog.isActive ? 'bg-[#4286f5] text-on-primary shadow-elevation-1' : 'hover:bg-white dark:hover:bg-white/10 hover:shadow-sm hover:text-tertiary'"
+         class="py-2 px-4 md:px-5 md:py-3 rounded-full flex items-center justify-center gap-2 text-sm font-bold text-gray-700 dark:text-gray-200 active:scale-95 active:bg-secondary-container transition-all duration-300 group">
         <span class="material-symbols-outlined text-[20px] group-hover:fill-1 transition-all">rss_feed</span>
         <span class="hidden md:block">Blog</span>
       </a>
+      <a routerLink="/contact"
+         routerLinkActive #rlaContact="routerLinkActive"
+         [ngClass]="rlaContact.isActive ? 'bg-[#36a852] text-on-primary shadow-elevation-1' : 'hover:bg-white dark:hover:bg-white/10 hover:shadow-sm hover:text-tertiary'"
+         class="py-2 px-4 md:px-5 md:py-3 rounded-full flex items-center justify-center gap-2 text-sm font-bold text-gray-700 dark:text-gray-200 active:scale-95 active:bg-secondary-container transition-all duration-300 group">
+        <span class="material-symbols-outlined text-[20px] group-hover:fill-1 transition-all">send</span>
+        <span class="hidden md:block">Let's Talk</span>
+      </a>
     </div>
-    <button 
-        (click)="toggleTheme()" 
-        class="size-10 rounded-full flex items-center justify-center hover:bg-gray-100 dark:hover:bg-white/10 text-gray-600 dark:text-gray-200 transition-colors"
-        aria-label="Toggle Dark Mode"
-      >
-        <span class="material-symbols-outlined">
-          {{ themeService.darkMode() ? 'light_mode' : 'dark_mode' }}
-        </span>
-      </button>
-    <a class="ml-1 md:ml-2 p-3 md:pl-5 md:pr-6 md:py-3 bg-tertiary text-on-tertiary-container rounded-full flex items-center justify-center gap-2 font-bold shadow-lg shadow-tertiary/20 hover:shadow-xl hover:shadow-tertiary/30 hover:scale-105 active:scale-95 transition-all duration-300 text-white group shrink-0"
+    <button (click)="toggleTheme()"
+      class="size-10 rounded-full flex items-center justify-center hover:bg-gray-100 dark:hover:bg-white/10 text-gray-600 dark:text-gray-200 transition-colors"
+      aria-label="Toggle Dark Mode">
+      <span class="material-symbols-outlined">
+        {{ themeService.darkMode() ? 'light_mode' : 'dark_mode' }}
+      </span>
+    </button>
+    <!-- <a class="ml-1 md:ml-2 p-3 md:pl-5 md:pr-6 md:py-3 bg-tertiary text-on-tertiary-container rounded-full flex items-center justify-center gap-2 font-bold shadow-lg shadow-tertiary/20 hover:shadow-xl hover:shadow-tertiary/30 hover:scale-105 active:scale-95 transition-all duration-300 text-white group shrink-0"
       href="#contact">
       <span class="hidden md:block group-hover:translate-x-0.5 transition-transform">Let's Talk</span>
       <span class="material-symbols-outlined text-[20px] group-hover:rotate-12 transition-transform">send</span>
-    </a>
+    </a> -->
   </div>
 </nav>

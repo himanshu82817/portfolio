@@ -15,7 +15,7 @@ import { CommonModule } from '@angular/common';
   standalone: true,
   imports: [
     CommonModule,
-    // RouterOutlet,
+    RouterOutlet,
     NavbarComponent, 
     HeroComponent, 
     AboutComponent,
