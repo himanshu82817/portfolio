@@ -35,8 +35,8 @@ export class ExperienceComponent implements AfterViewInit {
         'Worked on web application features using Angular and REST APIs.',
         'Collaborated with cross-functional teams to refine requirements and implement UI enhancements.'
       ],
-      tags: ['Angular', 'Data Visualization', 'REST APIs', 'BI', 'TypeScript'],
-       dotColor: 'bg-tertiary'
+      tags: ['Angular', 'Data Visualization', 'TypeScript','React','MongoDB'],
+       dotColor: 'bg-surface-variant'
     },
     {
       role: 'Full Stack Developer',
@@ -48,7 +48,7 @@ export class ExperienceComponent implements AfterViewInit {
         'Built frontend features using Angular and backend services with Node.js.',
         'Integrated SQL databases and optimized complex queries for reporting modules.'
       ],
-      tags: ['Angular', 'Node.js', 'SQL', 'Full Stack', 'JavaScript'],
+      tags: ['Angular', 'Node.js', 'SQL', 'Full Stack', 'JavaScript', 'MongoDB'],
       dotColor: 'bg-surface-variant'
     }
   ];

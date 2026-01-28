@@ -1,5 +1,5 @@
 <!-- <nav class="fixed top-0 left-0 right-0 z-50 flex justify-center pt-4 px-4 pointer-events-none">
-  <div class="pointer-events-auto bg-white/80 dark:bg-[#2d2d2a]/80 backdrop-blur-xl rounded-full shadow-elevation-1 border border-white/40 dark:border-white/10 px-6 py-3 flex items-center justify-between gap-8 max-w-[960px] w-full transition-all duration-300 hover:shadow-elevation-2">
+  <div class="pointer-events-auto bg-white/80 dark:bg-[#2d2d2a]/80 backdrop-blur-xl rounded-full shadow-elevation-1 md:border border-white/40 dark:border-white/10 px-6 py-3 flex items-center justify-between gap-8 max-w-[960px] w-full transition-all duration-300 hover:shadow-elevation-2">
     
     <a href="#" class="flex items-center gap-2 group">
       <div class="size-10 bg-primary rounded-xl rotate-3 group-hover:rotate-12 transition-transform duration-300 flex items-center justify-center text-on-primary font-bold text-xl shadow-sm">
@@ -48,36 +48,52 @@
     <div class="flex items-center bg-gray-200 dark:bg-white/5 rounded-full p-1 md:p-1.5 gap-1">
       <a routerLink="/about"
          routerLinkActive #rlaAbout="routerLinkActive"
-         [ngClass]="rlaAbout.isActive ? 'bg-[#4286f5] text-on-primary shadow-elevation-1' : 'hover:bg-white dark:hover:bg-white/10 hover:shadow-sm hover:text-tertiary'"
-         class="py-2 px-4 md:px-5 md:py-3 rounded-full flex items-center justify-center gap-2 text-sm font-bold text-gray-700 dark:text-gray-200 active:scale-95 active:bg-secondary-container transition-all duration-300 group relative overflow-hidden">
+         [ngClass]="rlaAbout.isActive ? 'md:border bg-[#4286f5] text-on-primary shadow-elevation-1' : ' hover:text-tertiary custom-hover '"
+         class="py-2 px-4 md:px-5 md:py-3 rounded-full flex items-center justify-center gap-2 text-sm font-bold text-gray-700 dark:text-gray-200 active:scale-95 active:bg-secondary-container transition-all duration-300 group relative overflow-hidden"
+         (click)="triggerAnimation('about')" 
+         [@iconClick]="iconAnimationState['about']" 
+         (@iconClick.done)="onAnimationEnd('about')"
+      >
         <span class="material-symbols-outlined text-[20px] group-hover:fill-1 transition-all">person</span>
         <span class="hidden md:block">About</span>
       </a>
       <a routerLink="/experience"
          routerLinkActive #rlaExp="routerLinkActive"
-         [ngClass]="rlaExp.isActive ? 'bg-[#ea4335] text-on-primary shadow-elevation-1' : 'hover:bg-white dark:hover:bg-white/10 hover:shadow-sm hover:text-tertiary'"
-         class="py-2 px-4 md:px-5 md:py-3 rounded-full flex items-center justify-center gap-2 text-sm font-bold text-gray-700 dark:text-gray-200 active:scale-95 active:bg-secondary-container transition-all duration-300 group">
+         [ngClass]="rlaExp.isActive ? 'md:border bg-[#ea4335] text-on-primary shadow-elevation-1' : 'hover:text-tertiary custom-hover '"
+         class="py-2 px-4 md:px-5 md:py-3 rounded-full flex items-center justify-center gap-2 text-sm font-bold text-gray-700 dark:text-gray-200 active:scale-95 active:bg-secondary-container transition-all duration-300 group"
+         (click)="triggerAnimation('experience')" 
+         [@iconClick]="iconAnimationState['experience']" 
+         (@iconClick.done)="onAnimationEnd('experience')"
+      >
         <span class="material-symbols-outlined text-[20px] group-hover:fill-1 transition-all">work_history</span>
         <span class="hidden md:block">Experience</span>
       </a>
       <a routerLink="/projects"
          routerLinkActive #rlaProj="routerLinkActive"
-         [ngClass]="rlaProj.isActive ? 'bg-[#fabc05] text-on-primary shadow-elevation-1' : 'hover:bg-white dark:hover:bg-white/10 hover:shadow-sm hover:text-tertiary'"
-         class="py-2 px-4 md:px-5 md:py-3 rounded-full flex items-center justify-center gap-2 text-sm font-bold text-gray-700 dark:text-gray-200 active:scale-95 active:bg-secondary-container transition-all duration-300 group">
+         [ngClass]="rlaProj.isActive ? 'md:border bg-[#fabc05] text-on-primary shadow-elevation-1' : 'hover:text-tertiary custom-hover '"
+         class="py-2 px-4 md:px-5 md:py-3 rounded-full flex items-center justify-center gap-2 text-sm font-bold text-gray-700 dark:text-gray-200 active:scale-95 active:bg-secondary-container transition-all duration-300 group"
+         (click)="triggerAnimation('projects')" 
+         [@iconClick]="iconAnimationState['projects']" 
+         (@iconClick.done)="onAnimationEnd('projects')"
+      >
         <span class="material-symbols-outlined text-[20px] group-hover:fill-1 transition-all">grid_view</span>
         <span class="hidden md:block">Projects</span>
       </a>
-      <a routerLink="/blog"
+      <!-- <a routerLink="/blog"
          routerLinkActive #rlaBlog="routerLinkActive"
-         [ngClass]="rlaBlog.isActive ? 'bg-[#4286f5] text-on-primary shadow-elevation-1' : 'hover:bg-white dark:hover:bg-white/10 hover:shadow-sm hover:text-tertiary'"
+         [ngClass]="rlaBlog.isActive ? 'md:border bg-[#4286f5] text-on-primary shadow-elevation-1' : 'hover:text-tertiary custom-hover '"
          class="py-2 px-4 md:px-5 md:py-3 rounded-full flex items-center justify-center gap-2 text-sm font-bold text-gray-700 dark:text-gray-200 active:scale-95 active:bg-secondary-container transition-all duration-300 group">
         <span class="material-symbols-outlined text-[20px] group-hover:fill-1 transition-all">rss_feed</span>
         <span class="hidden md:block">Blog</span>
-      </a>
+      </a> -->
       <a routerLink="/contact"
          routerLinkActive #rlaContact="routerLinkActive"
-         [ngClass]="rlaContact.isActive ? 'bg-[#36a852] text-on-primary shadow-elevation-1' : 'hover:bg-white dark:hover:bg-white/10 hover:shadow-sm hover:text-tertiary'"
-         class="py-2 px-4 md:px-5 md:py-3 rounded-full flex items-center justify-center gap-2 text-sm font-bold text-gray-700 dark:text-gray-200 active:scale-95 active:bg-secondary-container transition-all duration-300 group">
+         [ngClass]="rlaContact.isActive ? 'md:border bg-[#36a852] text-on-primary shadow-elevation-1' : 'hover:text-tertiary custom-hover '"
+         class="py-2 px-4 md:px-5 md:py-3 rounded-full flex items-center justify-center gap-2 text-sm font-bold text-gray-700 dark:text-gray-200 active:scale-95 active:bg-secondary-container transition-all duration-300 group"
+         (click)="triggerAnimation('contact')" 
+         [@iconClick]="iconAnimationState['contact']" 
+         (@iconClick.done)="onAnimationEnd('contact')"
+      >
         <span class="material-symbols-outlined text-[20px] group-hover:fill-1 transition-all">send</span>
         <span class="hidden md:block">Let's Talk</span>
       </a>

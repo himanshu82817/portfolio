@@ -9,6 +9,7 @@
 
 html {
   font-size: 80%;
+  --bg-hover: rgba(255, 255, 255, 1);
 }
 
 .bg-dot-grid {
@@ -37,6 +38,37 @@ html {
 /* Remove Tap Highlight on Mobile */
 .no-tap-highlight, .no-tap-highlight * {
   -webkit-tap-highlight-color: transparent;
+}
+
+
+html.dark{
+  --bg-hover: rgba(255, 255, 255, 0.1);
+}
+
+.custom-hover{
+  position: relative;
+}
+
+.custom-hover::after{
+  content: "";
+  position: absolute;
+  top: 25%;
+  left: 50%;
+  width: 0%;
+  height: 50%;
+  background-color: var(--bg-hover);
+  z-index: -1;
+  transition:.2s;
+  border-radius: 30px;
+}
+
+.custom-hover:hover::after{
+  width: 100%;
+  z-index: -1;
+  left:0;
+  top:0;
+  transition:.2s;
+  height: 100%;
 }
 
 /* Apply to the whole app */

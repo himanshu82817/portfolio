@@ -9,26 +9,32 @@ import { HeroComponent } from './features/portfolio/components/hero/hero.compone
 export const routes: Routes = [
     {
         path: '',
-        component:HeroComponent
+        component:HeroComponent,
+        data: { animation: 'home' }
     },
     {
         path: 'about',
-        component:AboutComponent
+        component:AboutComponent,
+        data: { animation: 'about' }
     },
     {
         path: 'experience',
-        component:ExperienceComponent
+        component:ExperienceComponent,
+        data: { animation: 'experience' }
     },
     {
         path: 'projects',
-        component:ProjectsComponent
+        component:ProjectsComponent,
+        data: { animation: 'projects' }
     },
     {
         path: 'blog',
-        component:BlogComponent
+        component:BlogComponent,
+        data: { animation: 'blog' }
     },
     {
         path: 'contact',
-        component:ContactComponent
+        component:ContactComponent,
+        data: { animation: 'contact' }
     }
 ];

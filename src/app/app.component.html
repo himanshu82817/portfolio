@@ -1,11 +1,8 @@
 <app-navbar></app-navbar>
-<main class="bg-dot-grid min-h-screen w-screen">
+<main class="  overflow-x-hidden min-h-screen max-w-screen">
   <!-- <app-hero></app-hero> -->
-  <router-outlet></router-outlet>
-  <!-- <app-about></app-about>
-  <app-experience></app-experience>
-  <app-projects></app-projects>
-  <app-blog></app-blog>
-  <app-contact></app-contact> -->
+  <div [@routeAnimations]="getRouteAnimationData()">
+    <router-outlet></router-outlet>
+  </div>
 </main>
-<!-- <app-footer></app-footer> -->
+<app-footer></app-footer>
