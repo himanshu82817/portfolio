@@ -14,7 +14,7 @@ jobs:
       - name: Setup Node.js
         uses: actions/setup-node@v4
         with:
-          node-version: 18 # Ensure this matches your Angular requirement
+          node-version: 20 # Ensure this matches your Angular requirement
           
       - name: Install Dependencies
         run: npm ci
@@ -28,6 +28,6 @@ jobs:
           host: ${{ secrets.GCP_HOST }}
           username: ${{ secrets.GCP_USERNAME }}
           key: ${{ secrets.GCP_SSH_KEY }}
-          source: "dist/*" # Note: If using Angular 17+, this path might be "dist/your-project-name/browser/*"
+          source: "dist/portfolio/browser/*"
           target: "/var/www/html"
-          strip_components: 2 # Strips the parent folders so only the raw index.html and assets land in the target folder
+          strip_components: 3
