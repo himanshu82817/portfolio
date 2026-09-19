@@ -1,77 +1,355 @@
-/* Import Fonts */
-@import url('https://fonts.googleapis.com/css2?family=Spline+Sans:wght@300;400;500;600;700&display=swap');
-@import url('https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200');
+/* Fonts are linked from <head> in src/index.html, not @import-ed here —
+   an @import inside the stylesheet serialises the font request behind it. */
 
-/* Tailwind Directives */
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
 
-html {
-  font-size: 80%;
-  --bg-hover: rgba(255, 255, 255, 1);
-}
+@layer base {
+  :root {
+    /* Brand tokens, as space-separated RGB channels so Tailwind can compose them
+       with an alpha modifier (`bg-primary/20`). tailwind.config.js consumes these
+       via rgb(var(--primary) / <alpha-value>), and TypeScript reads the same
+       variables at runtime — one definition, three consumers.
+       Change a brand colour here and nowhere else. */
+    --primary: 57 224 121;            /* #39E079 */
+    --on-primary: 24 24 17;           /* #181811 */
+    --secondary: 242 240 194;
+    --secondary-container: 242 240 194;
+    /* Deepened from #6B4EFF, which only reaches 4.1:1 on the kraft ground —
+       short of AA for the body-sized links and labels that use it. */
+    --tertiary: 90 61 232;            /* #5A3DE8 */
+    --tertiary-container: 234 221 255;
+    --on-tertiary-container: 33 0 93;
+    --surface-variant: 240 240 235;
+    --surface-elevated: 255 255 255;
+    --outline: 121 116 126;
 
-.bg-dot-grid {
-    background-color: #fffff0;
-    background-image: radial-gradient(#e0e0e0 2px, transparent 2px);
-    background-size: 32px 32px;
-    background-attachment: fixed; /* Optional: keeps dots static while scrolling */
+    /* Page ground, under the .site-backdrop artwork. Matched to the kraft paper
+       behind the portrait (sampled at #E9D9C6) but a shade lighter, so white
+       cards still lift off it. */
+    --surface: 241 230 214;           /* #F1E6D6 */
+
+    /* Hover wash behind nav pills. */
+    --bg-hover: rgba(0, 0, 0, 0.06);
+
+    /* How much room the fixed bottom nav needs. Owned by the navbar; the footer
+       and scroll padding both read it so the three can never drift apart. */
+    --nav-clearance: 7rem;
+
+    color-scheme: light;
   }
-  
-  /* Dark mode override for dot grid */
-  /* This triggers when the <html> tag has the 'dark' class */
-  .dark .bg-dot-grid {
-    background-color: #1a1a16;
-    background-image: radial-gradient(#333333 2px, transparent 2px);
+
+  html.dark {
+    /* Only the tokens that actually differ. `--primary` and `--on-primary` stay
+       put: the green is legible on both grounds, and it reads as the brand. */
+    /* The dark neutrals are cool ink rather than warm grey: against a night-sky
+       ground, warm greys read as muddy slabs instead of surfaces in the scene. */
+    --secondary: 23 27 50;
+    --secondary-container: 23 27 50;
+    /* Lifted from #6B4EFF — the light-mode violet only reaches ~3.4:1 on the dark
+       ground, which fails AA for the body-sized text that uses it. */
+    --tertiary: 167 145 255;          /* #A791FF */
+    --tertiary-container: 47 37 69;
+    --on-tertiary-container: 233 221 255;
+    --surface-variant: 30 34 54;
+    --surface-elevated: 21 25 43;     /* #15192B */
+    --outline: 143 138 153;
+
+    --surface: 5 6 15;                /* #05060F */
+    --bg-hover: rgba(255, 255, 255, 0.1);
+
+    color-scheme: dark;
   }
-/* ... Rest of  custom CSS ... */
 
-/* Disable Text Selection */
-.no-select, .no-select * {
-  user-select: none;
-  -webkit-user-select: none; /* For Safari */
-  -moz-user-select: none;    /* For Firefox */
-  -ms-user-select: none;     /* For Internet Explorer/Edge */
+  html {
+    /* The design is drawn against a 12.8px root. Note this scales with the
+       visitor's own browser font setting, so it stays accessible — but it does
+       mean every rem here is 0.8x what the Tailwind docs show. */
+    font-size: 80%;
+    scroll-behavior: smooth;
+    scroll-padding-bottom: var(--nav-clearance);
+  }
+
+  /* Form controls must stay at a true 16px or iOS Safari zooms the viewport on
+     focus. This is the one place the 80% root has to be overridden.
+     `input[type]` rather than plain `input`: @tailwindcss/forms styles these with
+     [type='text']-style attribute selectors, which outrank a bare element
+     selector — a plain `input` rule here silently loses. */
+  input[type],
+  input:not([type]),
+  select,
+  textarea {
+    font-size: 16px;
+  }
+
+  body {
+    /* Spline Sans was being downloaded on every load and then applied to nothing —
+       only `font-display` on the hero h1 referenced it, so the whole site rendered
+       in the system stack. Set it here so the font that is paid for is the font
+       that is used. */
+    @apply font-body;
+    -webkit-tap-highlight-color: transparent;
+  }
+
+  /* A single, consistent focus ring for keyboard users across the whole site. */
+  :focus-visible {
+    outline: 2px solid rgb(var(--tertiary));
+    outline-offset: 2px;
+    border-radius: 4px;
+  }
+
+  html.dark :focus-visible {
+    outline-color: rgb(var(--primary));
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    html {
+      scroll-behavior: auto;
+    }
+
+    *,
+    *::before,
+    *::after {
+      animation-duration: 0.01ms !important;
+      animation-iteration-count: 1 !important;
+      transition-duration: 0.01ms !important;
+      scroll-behavior: auto !important;
+    }
+  }
 }
 
-/* Remove Tap Highlight on Mobile */
-.no-tap-highlight, .no-tap-highlight * {
-  -webkit-tap-highlight-color: transparent;
+/* Theme backdrop -----------------------------------------------------------
+   Light mode is the sketchbook the portrait is drawn on; dark mode is the sky
+   those doodles are of. The artwork lives in public/backgrounds (the star tiles
+   are generated by scripts/generate-starfield.mjs), and each image is only
+   fetched while its theme is showing.
+
+   Painted on fixed pseudo-elements rather than on <body> itself:
+   `background-attachment: fixed` repaints the viewport on every scroll frame
+   and iOS Safari ignores it outright, whereas a fixed layer is rasterised once
+   and composited. With no stacking context on <body>, z-index -1 lands the
+   layer above the canvas colour but beneath every piece of content. */
+.site-backdrop {
+  background-color: rgb(var(--surface));
+  transition: background-color 300ms ease;
 }
 
-
-html.dark{
-  --bg-hover: rgba(255, 255, 255, 0.1);
-}
-
-.custom-hover{
-  position: relative;
-}
-
-.custom-hover::after{
-  content: "";
-  position: absolute;
-  top: 25%;
-  left: 50%;
-  width: 0%;
-  height: 50%;
-  background-color: var(--bg-hover);
-  z-index: -1;
-  transition:.2s;
-  border-radius: 30px;
-}
-
-.custom-hover:hover::after{
+.site-backdrop::before,
+.site-backdrop::after {
+  content: '';
+  position: fixed;
+  top: 0;
+  left: 0;
   width: 100%;
+  /* lvh is sized for a retracted mobile URL bar, so no strip of bare ground
+     shows while the bar slides away. vh is the fallback. */
+  height: 100vh;
+  height: 100lvh;
   z-index: -1;
-  left:0;
-  top:0;
-  transition:.2s;
-  height: 100%;
+  pointer-events: none;
 }
 
-/* Apply to the whole app */
-body {
-  @apply no-select no-tap-highlight;
+/* Deliberately faint: at these values grey-600 body copy still clears 4.5:1
+   where it crosses a paper crease and an ink line at the same time. The
+   doodles come up to full strength only under the pointer (.backdrop__reveal).
+   The paper's odd offset keeps its 600px repeat off the viewport edges, where
+   a tile boundary is easiest to spot. */
+.site-backdrop::before {
+  background: url('/backgrounds/paper-grain.svg') -137px -211px / 600px 600px;
+  mix-blend-mode: multiply;
+  opacity: 0.55;
+}
+
+.site-backdrop::after {
+  background: url('/backgrounds/sketchbook-doodles.svg') 0 0 / 1000px 1000px;
+  opacity: 0.12;
+}
+
+/* Tile sizes are deliberately non-multiples of each other so the layers never
+   line up into a visible repeat. The washes are repeated inside black-hole.ts
+   (ground()) so the canvas fading in over them changes nothing; the warm one
+   at the bottom-left is the accretion disk's light spilling onto the sky. */
+html.dark .site-backdrop::before {
+  background:
+    url('/backgrounds/stars-near.svg') 0 0 / 740px 740px,
+    url('/backgrounds/stars-far.svg') 0 0 / 420px 420px,
+    radial-gradient(ellipse 55% 45% at 10% 90%, rgb(255 120 41 / 0.07), transparent 70%),
+    radial-gradient(ellipse 45% 35% at 90% 15%, rgb(56 88 200 / 0.12), transparent 70%),
+    radial-gradient(ellipse 40% 30% at 30% 20%, rgb(var(--tertiary) / 0.06), transparent 70%);
+  mix-blend-mode: normal;
+  opacity: 1;
+}
+
+/* The twinkle tile gets a layer to itself so that only its opacity animates —
+   a compositor-only change that never repaints the sky behind it. The global
+   reduced-motion rule collapses this to a still sky. */
+html.dark .site-backdrop::after {
+  background: url('/backgrounds/stars-twinkle.svg') 137px 211px / 560px 560px;
+  opacity: 1;
+  animation: twinkle 6s ease-in-out infinite alternate;
+}
+
+@keyframes twinkle {
+  from {
+    opacity: 0.2;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+/* Interactive layer (BackdropComponent) ------------------------------------
+   Sits between the two body pseudo-elements in paint order: above the paper /
+   star tiles, below the doodle / twinkle layer. */
+.backdrop {
+  position: fixed;
+  inset: 0;
+  z-index: -1;
+  overflow: hidden;
+  pointer-events: none;
+}
+
+.backdrop__canvas {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  opacity: 0;
+  transition: opacity 600ms ease;
+}
+
+.backdrop__canvas.is-live {
+  opacity: 1;
+}
+
+/* Once the canvas is painting the sky, the CSS stars beneath it are dead
+   weight — and the twinkle layer above it would double the stars. */
+html.dark .site-backdrop.has-canvas::before,
+html.dark .site-backdrop.has-canvas::after {
+  display: none;
+}
+
+/* The ink reveal: the doodle tile, masked to a soft disc, positioned by
+   BackdropComponent so it stays registered with the static layer beneath. */
+.backdrop__reveal {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 380px;
+  height: 380px;
+  background: url('/backgrounds/sketchbook-doodles.svg') 0 0 / 1000px 1000px;
+  opacity: 0;
+  transition: opacity 400ms ease;
+  will-change: transform;
+  -webkit-mask-image: radial-gradient(circle closest-side, #000 15%, transparent 100%);
+  mask-image: radial-gradient(circle closest-side, #000 15%, transparent 100%);
+}
+
+.backdrop__reveal.is-active {
+  opacity: 0.3;
+}
+
+/* Nothing to reveal in the dark; and a finger has no hover position. */
+html.dark .backdrop__reveal {
+  display: none;
+}
+
+@media (hover: none) {
+  .backdrop__reveal {
+    display: none;
+  }
+}
+
+/* Click splash: an ink ring with a few dots that the ring's own scale-up
+   throws outward. Dark mode without WebGL reuses it in the accent violet. */
+.backdrop__ripple {
+  position: absolute;
+  top: -80px;
+  left: -80px;
+  width: 160px;
+  height: 160px;
+  border-radius: 50%;
+  border: 2px solid rgb(35 28 20 / 0.6);
+  will-change: transform, opacity;
+}
+
+.backdrop__ripple > i {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 6px;
+  height: 6px;
+  margin: -3px 0 0 -3px;
+  border-radius: 50%;
+  background: rgb(35 28 20 / 0.7);
+}
+
+html.dark .backdrop__ripple {
+  border-color: rgb(var(--tertiary) / 0.55);
+  box-shadow: 0 0 24px rgb(var(--tertiary) / 0.25);
+}
+
+html.dark .backdrop__ripple > i {
+  background: rgb(255 255 255 / 0.8);
+}
+
+/* Forced-colours mode swaps in system text colours, which carry no contrast
+   guarantee against decorative imagery. */
+@media (forced-colors: active) {
+  .site-backdrop::before,
+  .site-backdrop::after,
+  .backdrop {
+    display: none;
+  }
+}
+
+/* Material Symbols ---------------------------------------------------------
+   The icon font is subsetted in index.html to the glyphs used here. `display=block`
+   keeps the ligature text ("arrow_forward") from flashing before the font loads. */
+.material-symbols-outlined {
+  font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+  transition: font-variation-settings 200ms ease;
+  user-select: none;
+}
+
+/* Replaces the `group-hover:fill-1` class used in the templates, which is not a
+   real Tailwind utility and compiled to nothing. */
+.group:hover .material-symbols-outlined,
+.group:focus-visible .material-symbols-outlined {
+  font-variation-settings: 'FILL' 1, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+}
+
+/* Nav pill hover wash ------------------------------------------------------
+   `isolation: isolate` is load-bearing: it gives the link its own stacking
+   context so the z-index:-1 pseudo-element sits behind the link's text but in
+   front of the pill's background. Without it the wash paints behind the pill
+   and is invisible. */
+.custom-hover {
+  position: relative;
+  isolation: isolate;
+}
+
+.custom-hover::after {
+  content: '';
+  position: absolute;
+  inset: 25% 50%;
+  background-color: var(--bg-hover);
+  border-radius: 30px;
+  z-index: -1;
+  transition: inset 200ms ease;
+}
+
+.custom-hover:hover::after,
+.custom-hover:focus-visible::after {
+  inset: 0;
+}
+
+/* Opt-in, not site-wide. Applied to chrome (nav pills, buttons) where a stray
+   drag-select looks broken — never to prose, and never to the contact details,
+   which visitors need to be able to copy. */
+.no-select,
+.no-select * {
+  user-select: none;
+  -webkit-user-select: none;
 }

@@ -1,21 +1,33 @@
 {
-  "name": "Portfolio",
-  "short_name": "Portfolio",
-  "description": "A personal portfolio website.",
+  "name": "Himanshu Sehlangia — Full Stack Engineer",
+  "short_name": "Himanshu",
+  "description": "Full Stack Engineer in New Delhi building Angular front-ends and Node/SQL services for fintech and edtech.",
+  "lang": "en",
+  "dir": "ltr",
   "start_url": "/",
+  "scope": "/",
   "display": "standalone",
-  "background_color": "#1c1b1f",
-  "theme_color": "#D0BCFF",
+  "background_color": "#f1e6d6",
+  "theme_color": "#39e079",
+  "categories": ["portfolio", "productivity"],
   "icons": [
     {
-      "src": "assets/icons/icon-192x192.png",
+      "src": "/icons/icon-192x192.png",
       "type": "image/png",
-      "sizes": "192x192"
+      "sizes": "192x192",
+      "purpose": "any"
     },
     {
-      "src": "assets/icons/icon-512x512.png",
+      "src": "/icons/icon-512x512.png",
       "type": "image/png",
-      "sizes": "512x512"
+      "sizes": "512x512",
+      "purpose": "any"
+    },
+    {
+      "src": "/icons/icon-512x512-maskable.png",
+      "type": "image/png",
+      "sizes": "512x512",
+      "purpose": "maskable"
     }
   ]
 }

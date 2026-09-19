@@ -1,0 +1,59 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 600 400" width="600" height="400" role="img" aria-label="Abstract illustration of LifeBoard: notes pinned on an infinite canvas above an activity heatmap">
+  <defs>
+    <linearGradient id="lb-bg" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0%" stop-color="#1f1d17"/>
+      <stop offset="100%" stop-color="#131210"/>
+    </linearGradient>
+    <pattern id="lb-grid" width="24" height="24" patternUnits="userSpaceOnUse">
+      <circle cx="2" cy="2" r="1.3" fill="#ffffff" opacity="0.08"/>
+    </pattern>
+  </defs>
+
+  <rect width="600" height="400" fill="url(#lb-bg)"/>
+  <rect width="600" height="400" fill="url(#lb-grid)"/>
+
+  <!-- life map path -->
+  <path d="M40 292 C 140 232, 190 322, 290 252 S 450 168, 560 206" fill="none" stroke="#a791ff" stroke-opacity="0.55" stroke-width="3" stroke-dasharray="2 9" stroke-linecap="round"/>
+  <circle cx="40" cy="292" r="6" fill="#6b4eff"/>
+  <circle cx="290" cy="252" r="6" fill="#a791ff"/>
+  <circle cx="560" cy="206" r="7" fill="#39e079"/>
+
+  <!-- note -->
+  <g transform="translate(62 58) rotate(-4)">
+    <rect width="150" height="122" rx="14" fill="#fabc05"/>
+    <rect x="16" y="20" width="84" height="9" rx="4.5" fill="#181811" opacity="0.72"/>
+    <rect x="16" y="44" width="118" height="7" rx="3.5" fill="#181811" opacity="0.3"/>
+    <rect x="16" y="60" width="100" height="7" rx="3.5" fill="#181811" opacity="0.3"/>
+    <rect x="16" y="76" width="110" height="7" rx="3.5" fill="#181811" opacity="0.3"/>
+    <rect x="16" y="92" width="70" height="7" rx="3.5" fill="#181811" opacity="0.3"/>
+  </g>
+
+  <!-- checklist -->
+  <g transform="translate(236 38) rotate(3)">
+    <rect width="152" height="134" rx="14" fill="#2d2d2a" stroke="#ffffff" stroke-opacity="0.09"/>
+    <rect x="16" y="20" width="72" height="9" rx="4.5" fill="#ffffff" opacity="0.62"/>
+    <rect x="16" y="46" width="14" height="14" rx="4" fill="#39e079"/>
+    <path d="M19.5 53l3 3 5-6" stroke="#181811" stroke-width="2" fill="none" stroke-linecap="round" stroke-linejoin="round"/>
+    <rect x="38" y="49" width="92" height="7" rx="3.5" fill="#ffffff" opacity="0.34"/>
+    <rect x="16" y="72" width="14" height="14" rx="4" fill="#39e079"/>
+    <path d="M19.5 79l3 3 5-6" stroke="#181811" stroke-width="2" fill="none" stroke-linecap="round" stroke-linejoin="round"/>
+    <rect x="38" y="75" width="72" height="7" rx="3.5" fill="#ffffff" opacity="0.34"/>
+    <rect x="16.75" y="98.75" width="12.5" height="12.5" rx="3.5" fill="none" stroke="#ffffff" stroke-opacity="0.35" stroke-width="1.5"/>
+    <rect x="38" y="101" width="82" height="7" rx="3.5" fill="#ffffff" opacity="0.2"/>
+  </g>
+
+  <!-- media note -->
+  <g transform="translate(418 66) rotate(-2)">
+    <rect width="132" height="104" rx="14" fill="#6b4eff"/>
+    <circle cx="66" cy="46" r="19" fill="#ffffff" opacity="0.2"/>
+    <path d="M60 35 L77 46 L60 57 z" fill="#ffffff"/>
+    <rect x="16" y="80" width="72" height="7" rx="3.5" fill="#ffffff" opacity="0.5"/>
+  </g>
+
+  <!-- activity heatmap -->
+  <g transform="translate(180 320)" fill="#39e079">
+    <rect x="0" y="0" width="16" height="16" rx="4" opacity="0.15"/><rect x="20" y="0" width="16" height="16" rx="4" opacity="0.6"/><rect x="40" y="0" width="16" height="16" rx="4" opacity="0.3"/><rect x="60" y="0" width="16" height="16" rx="4" opacity="0.9"/><rect x="80" y="0" width="16" height="16" rx="4" opacity="0.15"/><rect x="100" y="0" width="16" height="16" rx="4" opacity="0.45"/><rect x="120" y="0" width="16" height="16" rx="4" opacity="0.75"/><rect x="140" y="0" width="16" height="16" rx="4" opacity="0.3"/><rect x="160" y="0" width="16" height="16" rx="4" opacity="0.9"/><rect x="180" y="0" width="16" height="16" rx="4" opacity="0.6"/><rect x="200" y="0" width="16" height="16" rx="4" opacity="0.15"/><rect x="220" y="0" width="16" height="16" rx="4" opacity="0.75"/>
+    <rect x="0" y="20" width="16" height="16" rx="4" opacity="0.45"/><rect x="20" y="20" width="16" height="16" rx="4" opacity="0.15"/><rect x="40" y="20" width="16" height="16" rx="4" opacity="0.9"/><rect x="60" y="20" width="16" height="16" rx="4" opacity="0.3"/><rect x="80" y="20" width="16" height="16" rx="4" opacity="0.75"/><rect x="100" y="20" width="16" height="16" rx="4" opacity="0.9"/><rect x="120" y="20" width="16" height="16" rx="4" opacity="0.15"/><rect x="140" y="20" width="16" height="16" rx="4" opacity="0.6"/><rect x="160" y="20" width="16" height="16" rx="4" opacity="0.3"/><rect x="180" y="20" width="16" height="16" rx="4" opacity="0.9"/><rect x="200" y="20" width="16" height="16" rx="4" opacity="0.45"/><rect x="220" y="20" width="16" height="16" rx="4" opacity="0.3"/>
+    <rect x="0" y="40" width="16" height="16" rx="4" opacity="0.75"/><rect x="20" y="40" width="16" height="16" rx="4" opacity="0.3"/><rect x="40" y="40" width="16" height="16" rx="4" opacity="0.15"/><rect x="60" y="40" width="16" height="16" rx="4" opacity="0.6"/><rect x="80" y="40" width="16" height="16" rx="4" opacity="0.45"/><rect x="100" y="40" width="16" height="16" rx="4" opacity="0.15"/><rect x="120" y="40" width="16" height="16" rx="4" opacity="0.9"/><rect x="140" y="40" width="16" height="16" rx="4" opacity="0.45"/><rect x="160" y="40" width="16" height="16" rx="4" opacity="0.75"/><rect x="180" y="40" width="16" height="16" rx="4" opacity="0.15"/><rect x="200" y="40" width="16" height="16" rx="4" opacity="0.9"/><rect x="220" y="40" width="16" height="16" rx="4" opacity="0.6"/>
+  </g>
+</svg>

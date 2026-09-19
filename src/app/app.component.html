@@ -1,8 +1,22 @@
+<a
+  href="#main-content"
+  (click)="skipToMain($event)"
+  class="sr-only focus:not-sr-only focus:fixed focus:top-4 focus:left-4 focus:z-[100] focus:px-5 focus:py-3 focus:rounded-2xl focus:bg-primary focus:text-on-primary focus:font-bold focus:shadow-elevation-3"
+>
+  Skip to content
+</a>
+
+<!-- Fixed at z-index -1, so it relies on <app-root> never forming a stacking context. -->
+<app-backdrop></app-backdrop>
+
 <app-navbar></app-navbar>
-<main class="  overflow-x-hidden min-h-screen max-w-screen">
-  <!-- <app-hero></app-hero> -->
-  <div [@routeAnimations]="getRouteAnimationData()">
+
+<!-- pb-nav-clearance keeps the fixed bottom nav from covering the end of the page;
+     the value is declared once as --nav-clearance in styles.css. -->
+<main id="main-content" tabindex="-1" class="min-h-screen focus:outline-none">
+  <div class="relative" [@routeAnimations]="getRouteAnimationData()">
     <router-outlet></router-outlet>
   </div>
 </main>
+
 <app-footer></app-footer>

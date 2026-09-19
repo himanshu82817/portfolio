@@ -1,93 +1,106 @@
-<section class="py-24 px-6 relative" id="about">
-  <div class="max-w-screen overflow-x-hidden mx-auto">
-    <div class="flex flex-col md:flex-row gap-16 items-start md:px-36">
-      
-      <div class="flex-1 space-y-8 relative">
-        <div class="absolute top-10 left-10 text-tertiary/10 dark:text-tertiary/20 ">
-          <svg width="120" height="120" viewBox="0 0 24 24" fill="currentColor"><path d="M12,0L15,9L24,12L15,15L12,24L9,15L0,12L9,9L12,0Z"></path></svg>
+<section class="relative px-6 py-24" id="about">
+  <div class="mx-auto max-w-6xl">
+    <!-- Splits at lg, not md: at 768px the two columns collapse to ~220px each. -->
+    <div class="flex flex-col items-start gap-16 lg:flex-row">
+      <div class="relative flex-1 space-y-8">
+        <div
+          class="pointer-events-none absolute left-10 top-10 text-tertiary/10 dark:text-tertiary/20"
+          aria-hidden="true"
+        >
+          <svg width="120" height="120" viewBox="0 0 24 24" fill="currentColor">
+            <path d="M12,0L15,9L24,12L15,15L12,24L9,15L0,12L9,9L12,0Z"></path>
+          </svg>
         </div>
 
         <div class="space-y-4">
-          <div class="inline-block px-3 py-1 rounded-md bg-tertiary-container dark:bg-tertiary/20 text-on-tertiary-container dark:text-tertiary-container text-xs font-bold uppercase tracking-wider">
+          <p
+            class="inline-block rounded-md bg-tertiary-container px-3 py-1 text-xs font-bold uppercase tracking-wider text-on-tertiary-container"
+          >
             Who I Am
-          </div>
-          <h2 class="text-4xl md:text-5xl font-bold leading-tight dark:text-white">
-            Architecting the future, <br>one line of code at a time.
-          </h2>
+          </p>
+          <h1 class="text-4xl font-bold leading-tight dark:text-white md:text-5xl">
+            Architecting the future, <br />one line of code at a time.
+          </h1>
         </div>
 
-        <p class="text-lg text-gray-600 dark:text-gray-300 leading-relaxed">
-          I am a passionate Full Stack Developer with a knack for building robust and scalable web applications. My journey in tech is driven by curiosity, much like exploring the cosmos. I specialize in modern JavaScript frameworks and cloud-native architectures.
+        <p class="text-lg leading-relaxed text-gray-600 dark:text-gray-300">
+          I’m a {{ site.role }} based in {{ site.location }}. Most of my work has been
+          in regulated domains — lending and financial operations — where the interesting
+          problems are less about novelty and more about making complex, high-stakes
+          workflows fast and hard to get wrong. I care about reactive form performance,
+          sensible caching, and interfaces the people who use them all day don’t have to
+          fight.
         </p>
 
-        <div class="bg-surface-elevated/50  dark:bg-white/5 backdrop-blur-sm p-6 rounded-3xl  border border-gray-200 dark:border-white/10 shadow-sm">
-          <h4 class="font-bold text-lg mb-4 flex items-center gap-2 dark:text-white">
-            <span class="material-symbols-outlined text-tertiary">handyman</span>
+        <div
+          class="rounded-3xl border border-gray-200 dark:border-white/10 bg-surface-elevated/50 dark:bg-surface-elevated/85 p-6 shadow-sm backdrop-blur-sm"
+        >
+          <h2 class="mb-4 flex items-center gap-2 text-lg font-bold dark:text-white">
+            <span class="material-symbols-outlined text-tertiary" aria-hidden="true"
+              >handyman</span
+            >
             Tech Skills
-          </h4>
-          <div class="flex flex-wrap gap-2">
-            <span *ngFor="let skill of skills" 
-                  class="px-4 py-2 bg-white dark:bg-[#2d2d2a] rounded-xl border border-gray-200 dark:border-white/10 text-sm font-semibold text-gray-800 dark:text-gray-200 flex items-center gap-2 hover:bg-tertiary hover:text-white dark:hover:bg-tertiary hover:border-tertiary transition-colors cursor-default shadow-sm">
-              {{ skill }}
-            </span>
+          </h2>
+
+          <div class="space-y-4">
+            @for (group of skillGroups; track group.name) {
+              <div>
+                <h3
+                  class="mb-2 text-xs font-bold uppercase tracking-widest text-gray-600 dark:text-gray-400"
+                >
+                  {{ group.name }}
+                </h3>
+                <ul class="flex list-none flex-wrap gap-2">
+                  @for (skill of group.skills; track skill) {
+                    <li
+                      class="rounded-xl border border-gray-200 dark:border-white/10 bg-surface-elevated px-3 py-1.5 text-sm font-semibold text-gray-800 dark:text-gray-200 shadow-sm"
+                    >
+                      {{ skill }}
+                    </li>
+                  }
+                </ul>
+              </div>
+            }
           </div>
         </div>
       </div>
 
-      <div class="flex-1 flex flex-col justify-center items-center w-full">
-        <div class="grid grid-cols-2 gap-4 w-full max-w-md relative">
-          
-          <div class="absolute -top-10 -right-10 w-32 h-32 bg-primary/20 rounded-full blur-2xl z-0"></div>
+      <div class="flex w-full flex-1 flex-col items-center justify-center">
+        <div class="relative grid w-full max-w-md gap-4">
+          <div
+            class="absolute -right-10 -top-10 z-0 h-32 w-32 rounded-full bg-primary/20 blur-2xl"
+            aria-hidden="true"
+          ></div>
 
-          <!-- <div class="bg-secondary-container dark:bg-yellow-900/30 p-6 rounded-[2.5rem] rounded-tr-none flex flex-col items-center justify-center text-center aspect-square hover:scale-[1.03] transition-transform duration-300 z-10 shadow-sm border border-yellow-200/50 dark:border-yellow-500/10">
-            <span class="material-symbols-outlined text-4xl mb-2 text-yellow-800 dark:text-yellow-400">school</span>
-            <span class="text-3xl font-black text-[#181811] dark:text-white">20+</span>
-            <span class="text-sm font-medium opacity-70 dark:text-gray-300">Comp Sci</span>
-          </div>
-          <div class="bg-secondary-container dark:bg-yellow-900/30 p-6 rounded-[2.5rem] rounded-tl-none flex flex-col items-center justify-center text-center aspect-square hover:scale-[1.03] transition-transform duration-300 z-10 shadow-sm border border-yellow-200/50 dark:border-yellow-500/10">
-            <span class="material-symbols-outlined text-4xl mb-2 text-yellow-800 dark:text-yellow-400">groups</span>
-            <span class="text-3xl font-black text-[#181811] dark:text-white">MS</span>
-            <span class="text-sm font-medium opacity-70 dark:text-gray-300">Happy Clients</span>
-          </div> -->
+          <p
+            class="mb-1 text-xs font-bold uppercase tracking-widest text-gray-600 dark:text-gray-400"
+          >
+            Expertise
+          </p>
 
-          <span class="text-xs font-bold text-gray-500 dark:text-gray-400 uppercase tracking-widest mb-1">Expertise</span>
-          <div class="bg-white dark:bg-[#2d2d2a] border border-gray-200 dark:border-white/10 py-2 px-8 rounded-[1.5rem] col-span-2 flex items-center justify-between hover:shadow-elevation-2 transition-shadow duration-300 z-10 relative overflow-hidden">
-            <div class="absolute top-0 right-0 w-20 h-20 bg-gray-50 dark:bg-white/5 rounded-bl-[4rem] -z-0"></div>
-            
-            <div class="flex flex-col text-left z-10">
-              <span class="text-2xl font-black dark:text-white">System Design</span>
+          @for (item of expertise; track item.title) {
+            <div
+              class="relative z-10 flex items-center justify-between gap-4 overflow-hidden rounded-[1.5rem] border border-gray-200 dark:border-white/10 bg-surface-elevated px-8 py-4 transition-shadow duration-300 hover:shadow-elevation-2"
+            >
+              <div
+                class="absolute right-0 top-0 -z-0 h-20 w-20 rounded-bl-[4rem] bg-gray-50 dark:bg-white/5"
+                aria-hidden="true"
+              ></div>
+              <span class="z-10 min-w-0 text-2xl font-black dark:text-white">{{
+                item.title
+              }}</span>
+              <!-- shrink-0 keeps this square; without it the flex row squashes it
+                   into a sliver next to the longer titles. -->
+              <span
+                class="z-10 flex h-14 w-14 shrink-0 rotate-3 items-center justify-center rounded-2xl bg-black dark:bg-white text-white dark:text-black"
+                aria-hidden="true"
+              >
+                <span class="material-symbols-outlined text-2xl">{{ item.icon }}</span>
+              </span>
             </div>
-            
-            <div class="h-14 w-14 rounded-2xl bg-black dark:bg-white text-white dark:text-black flex items-center justify-center z-10 rotate-3">
-              <span class="material-symbols-outlined text-2xl">architecture</span>
-            </div>
-          </div>
-          <div class="bg-white dark:bg-[#2d2d2a] border border-gray-200 dark:border-white/10 py-2 px-8 rounded-[1.5rem] col-span-2 flex items-center justify-between hover:shadow-elevation-2 transition-shadow duration-300 z-10 relative overflow-hidden">
-            <div class="absolute top-0 right-0 w-20 h-20 bg-gray-50 dark:bg-white/5 rounded-bl-[4rem] -z-0"></div>
-            
-            <div class="flex flex-col text-left z-10">
-              <span class="text-2xl font-black dark:text-white">Data Structure and Algorithms</span>
-            </div>
-            
-            <div class="h-14 w-14 rounded-2xl bg-black dark:bg-white text-white dark:text-black flex items-center justify-center z-10 rotate-3">
-              <span class="material-symbols-outlined text-2xl">code</span>
-            </div>
-          </div>
-          <div class="bg-white dark:bg-[#2d2d2a] border border-gray-200 dark:border-white/10 py-2 px-8 rounded-[1.5rem] col-span-2 flex items-center justify-between hover:shadow-elevation-2 transition-shadow duration-300 z-10 relative overflow-hidden">
-            <div class="absolute top-0 right-0 w-20 h-20 bg-gray-50 dark:bg-white/5 rounded-bl-[4rem] -z-0"></div>
-            
-            <div class="flex flex-col text-left z-10">
-              <span class="text-2xl font-black dark:text-white">Software Development</span>
-            </div>
-            
-            <div class="h-14 w-14 rounded-2xl bg-black dark:bg-white text-white dark:text-black flex items-center justify-center z-10 rotate-3">
-              <span class="material-symbols-outlined text-2xl">folder_code</span>
-            </div>
-          </div>
-
+          }
         </div>
       </div>
-
     </div>
   </div>
 </section>

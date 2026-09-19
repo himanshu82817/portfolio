@@ -1,13 +1,13 @@
-import { Component } from '@angular/core';
-import { CommonModule } from '@angular/common';
+import { ChangeDetectionStrategy, Component } from '@angular/core';
+import { SITE } from '../../../core/site.config';
 
 @Component({
   selector: 'app-footer',
   standalone: true,
-  imports: [CommonModule],
+  changeDetection: ChangeDetectionStrategy.OnPush,
   templateUrl: './footer.component.html',
-  styles: []
 })
 export class FooterComponent {
-  currentYear = new Date().getFullYear();
+  readonly site = SITE;
+  readonly currentYear = new Date().getFullYear();
 }

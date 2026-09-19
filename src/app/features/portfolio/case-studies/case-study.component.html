@@ -1,0 +1,550 @@
+@if (study(); as s) {
+  <article class="px-6 pb-16 pt-12 md:pt-16" aria-labelledby="cs-title">
+    <div class="mx-auto max-w-6xl">
+      <a
+        routerLink="/projects"
+        class="group -ml-3 inline-flex items-center gap-2 rounded-full px-3 py-2 text-sm font-bold text-gray-600 dark:text-gray-400 transition-colors hover:text-tertiary"
+      >
+        <span
+          class="material-symbols-outlined text-[18px] transition-transform group-hover:-translate-x-0.5"
+          aria-hidden="true"
+          >arrow_back</span
+        >
+        All projects
+      </a>
+
+      @if (!s.published) {
+        <div
+          role="note"
+          class="mt-6 flex items-start gap-3 rounded-2xl border border-amber-300/70 dark:border-amber-400/30 bg-amber-50 dark:bg-amber-400/10 p-4 text-sm text-amber-900 dark:text-amber-200"
+        >
+          <span class="material-symbols-outlined text-[20px]" aria-hidden="true">edit_note</span>
+          <p>
+            <strong>Draft.</strong> Visible only in development builds. Set
+            <code class="font-mono text-xs">published: true</code> in
+            <code class="font-mono text-xs">case-studies/data/{{ s.slug }}.ts</code> once it’s
+            reviewed.
+          </p>
+        </div>
+      }
+
+      <header class="mt-8">
+        <div class="flex flex-wrap items-center gap-2">
+          <span
+            class="rounded-lg bg-tertiary-container px-3 py-1 text-xs font-bold uppercase tracking-wider text-on-tertiary-container"
+            >{{ s.kind }}</span
+          >
+          <span
+            class="inline-flex items-center gap-1.5 rounded-lg px-3 py-1 text-xs font-bold"
+            [ngClass]="statusClass[s.status.tone]"
+          >
+            <span class="size-1.5 rounded-full bg-current" aria-hidden="true"></span>
+            {{ s.status.label }}
+          </span>
+        </div>
+
+        <h1
+          id="cs-title"
+          class="mt-5 text-5xl font-black leading-[1.05] tracking-tight text-gray-900 dark:text-white md:text-7xl"
+        >
+          {{ s.name }}
+        </h1>
+        <p
+          class="mt-5 max-w-3xl text-xl font-medium leading-relaxed text-gray-600 dark:text-gray-300 md:text-2xl"
+        >
+          {{ s.tagline }}
+        </p>
+
+        <dl
+          class="mt-10 grid grid-cols-2 gap-x-6 gap-y-5 border-y border-gray-200 dark:border-white/10 py-6 md:grid-cols-4"
+        >
+          <div>
+            <dt class="text-xs font-bold uppercase tracking-widest text-gray-600 dark:text-gray-400">
+              Role
+            </dt>
+            <dd class="mt-1 font-semibold text-gray-900 dark:text-white">{{ s.role }}</dd>
+          </div>
+          <div>
+            <dt class="text-xs font-bold uppercase tracking-widest text-gray-600 dark:text-gray-400">
+              Period
+            </dt>
+            <dd class="mt-1 font-semibold text-gray-900 dark:text-white">{{ s.period }}</dd>
+          </div>
+          <div>
+            <dt class="text-xs font-bold uppercase tracking-widest text-gray-600 dark:text-gray-400">
+              Engagement
+            </dt>
+            <dd class="mt-1 font-semibold text-gray-900 dark:text-white">
+              {{ engagementLabel[s.engagement] }}
+            </dd>
+          </div>
+          <div>
+            <dt class="text-xs font-bold uppercase tracking-widest text-gray-600 dark:text-gray-400">
+              Platforms
+            </dt>
+            <dd class="mt-1 font-semibold text-gray-900 dark:text-white">
+              {{ s.platforms.join(' · ') }}
+            </dd>
+          </div>
+        </dl>
+
+        @if (s.links.length) {
+          <ul class="mt-6 flex list-none flex-wrap gap-3">
+            @for (link of s.links; track link.url) {
+              <li>
+                <a
+                  [href]="link.url"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  class="inline-flex items-center gap-1.5 rounded-full bg-gray-900 dark:bg-white px-5 py-2.5 text-sm font-bold text-white dark:text-gray-900 transition-transform hover:-translate-y-0.5"
+                >
+                  {{ link.label }}
+                  <span class="material-symbols-outlined text-[16px]" aria-hidden="true"
+                    >open_in_new</span
+                  >
+                  <span class="sr-only">(opens in a new tab)</span>
+                </a>
+              </li>
+            }
+          </ul>
+        }
+      </header>
+
+      @if (s.confidentiality) {
+        <p
+          class="mt-6 flex items-start gap-3 rounded-2xl bg-surface-variant p-4 text-sm leading-relaxed text-gray-700 dark:text-gray-300"
+        >
+          <span class="material-symbols-outlined text-[20px] text-gray-500" aria-hidden="true"
+            >lock</span
+          >
+          <span>{{ s.confidentiality }}</span>
+        </p>
+      }
+
+      <nav aria-label="On this page" class="mt-8 flex flex-wrap gap-2">
+        @for (item of toc(); track item.id) {
+          <a
+            [routerLink]="[]"
+            [fragment]="item.id"
+            class="rounded-full border border-gray-200 dark:border-white/10 bg-surface-elevated px-4 py-2 text-sm font-bold text-gray-700 dark:text-gray-300 transition-colors hover:border-tertiary hover:text-tertiary"
+            >{{ item.label }}</a
+          >
+        }
+      </nav>
+
+      <!-- Overview -->
+      <section id="overview" class="mt-20" aria-labelledby="overview-h">
+        <div class="grid gap-12 lg:grid-cols-3">
+          <div class="lg:col-span-2">
+            <h2
+              id="overview-h"
+              class="text-3xl font-black tracking-tight text-gray-900 dark:text-white md:text-4xl"
+            >
+              Overview
+            </h2>
+            <div class="mt-6 space-y-5 text-lg leading-relaxed text-gray-700 dark:text-gray-300">
+              @for (paragraph of s.summary; track $index) {
+                <p>{{ paragraph }}</p>
+              }
+            </div>
+
+            @if (s.problem.length) {
+              <h3 class="mt-12 text-xl font-bold text-gray-900 dark:text-white">The problem</h3>
+              <div class="mt-4 space-y-4 leading-relaxed text-gray-700 dark:text-gray-300">
+                @for (paragraph of s.problem; track $index) {
+                  <p>{{ paragraph }}</p>
+                }
+              </div>
+            }
+          </div>
+
+          <aside class="space-y-6">
+            @if (s.metrics.length) {
+              <div
+                class="rounded-[2rem] border border-gray-200/80 dark:border-white/10 bg-surface-elevated p-6 shadow-elevation-1"
+              >
+                <h3 class="text-xs font-bold uppercase tracking-widest text-gray-600 dark:text-gray-400">
+                  By the numbers
+                </h3>
+                <ul class="mt-4 list-none space-y-5">
+                  @for (metric of s.metrics; track metric.label) {
+                    <li>
+                      <p class="text-3xl font-black tabular-nums text-gray-900 dark:text-white">
+                        {{ metric.value }}
+                      </p>
+                      <p class="mt-1 text-sm font-medium text-gray-700 dark:text-gray-300">
+                        {{ metric.label }}
+                      </p>
+                      @if (metricKindLabel[metric.kind]) {
+                        <p class="mt-1 text-xs font-bold uppercase tracking-wider text-tertiary">
+                          {{ metricKindLabel[metric.kind] }}
+                        </p>
+                      }
+                      @if (metric.note) {
+                        <p class="mt-1 text-xs text-gray-600 dark:text-gray-400">{{ metric.note }}</p>
+                      }
+                    </li>
+                  }
+                </ul>
+              </div>
+            }
+
+            <div
+              class="rounded-[2rem] border border-gray-200/80 dark:border-white/10 bg-surface-elevated p-6"
+            >
+              <h3 class="text-xs font-bold uppercase tracking-widest text-gray-600 dark:text-gray-400">
+                My role
+              </h3>
+              <p class="mt-3 text-sm leading-relaxed text-gray-700 dark:text-gray-300">
+                {{ s.ownership.statement }}
+              </p>
+              @if (s.ownership.collaborators?.length) {
+                <h4
+                  class="mt-5 text-xs font-bold uppercase tracking-widest text-gray-600 dark:text-gray-400"
+                >
+                  Worked with
+                </h4>
+                <ul class="mt-2 list-none space-y-2">
+                  @for (person of s.ownership.collaborators ?? []; track person.name) {
+                    <li class="text-sm text-gray-700 dark:text-gray-300">
+                      <span class="font-bold text-gray-900 dark:text-white">{{ person.name }}</span>
+                      — {{ person.contribution }}
+                    </li>
+                  }
+                </ul>
+              }
+            </div>
+          </aside>
+        </div>
+      </section>
+
+      <!-- Architecture -->
+      <section id="architecture" class="mt-24" aria-labelledby="architecture-h">
+        <h2
+          id="architecture-h"
+          class="text-3xl font-black tracking-tight text-gray-900 dark:text-white md:text-4xl"
+        >
+          Architecture
+        </h2>
+        <div class="mt-6 max-w-3xl space-y-4 text-lg leading-relaxed text-gray-700 dark:text-gray-300">
+          @for (paragraph of s.architecture.overview; track $index) {
+            <p>{{ paragraph }}</p>
+          }
+        </div>
+
+        <div class="mt-10">
+          <app-architecture-diagram [diagram]="s.architecture.diagram" />
+        </div>
+
+        <h3 class="mt-14 text-xl font-bold text-gray-900 dark:text-white">Components</h3>
+        <ul class="mt-6 grid list-none gap-4 md:grid-cols-2">
+          @for (component of s.architecture.components; track component.name) {
+            <li
+              class="flex flex-col rounded-3xl border border-gray-200/80 dark:border-white/10 bg-surface-elevated p-6"
+            >
+              <div class="flex flex-wrap items-start justify-between gap-3">
+                <h4 class="text-lg font-bold text-gray-900 dark:text-white">{{ component.name }}</h4>
+                @if (component.ownership) {
+                  <span
+                    class="rounded-md px-2 py-1 text-xs font-bold"
+                    [ngClass]="ownershipClass[component.ownership]"
+                    >{{ ownershipLabel[component.ownership] }}</span
+                  >
+                }
+              </div>
+              <p class="mt-1 text-sm font-semibold text-tertiary">{{ component.tech }}</p>
+              <p class="mt-3 text-sm leading-relaxed text-gray-700 dark:text-gray-300">
+                {{ component.responsibility }}
+              </p>
+            </li>
+          }
+        </ul>
+
+        @if (s.architecture.flows.length) {
+          <h3 class="mt-14 text-xl font-bold text-gray-900 dark:text-white">Key flows</h3>
+          <div class="mt-6 grid gap-6 lg:grid-cols-2">
+            @for (flow of s.architecture.flows; track flow.name) {
+              <div
+                class="rounded-3xl border border-gray-200/80 dark:border-white/10 bg-surface-elevated p-6"
+              >
+                <h4 class="font-bold text-gray-900 dark:text-white">{{ flow.name }}</h4>
+                <ol class="mt-4 list-none space-y-3">
+                  @for (step of flow.steps; track $index; let i = $index) {
+                    <li class="flex gap-3 text-sm">
+                      <span
+                        class="flex size-6 shrink-0 items-center justify-center rounded-full bg-tertiary-container text-xs font-bold text-on-tertiary-container"
+                        aria-hidden="true"
+                        >{{ i + 1 }}</span
+                      >
+                      <span class="pt-0.5 leading-relaxed text-gray-700 dark:text-gray-300">{{
+                        step
+                      }}</span>
+                    </li>
+                  }
+                </ol>
+              </div>
+            }
+          </div>
+        }
+      </section>
+
+      <!-- Decisions -->
+      @if (s.decisions.length) {
+        <section id="decisions" class="mt-24" aria-labelledby="decisions-h">
+          <h2
+            id="decisions-h"
+            class="text-3xl font-black tracking-tight text-gray-900 dark:text-white md:text-4xl"
+          >
+            Key decisions
+          </h2>
+          <p class="mt-4 max-w-3xl text-gray-600 dark:text-gray-400">
+            What I chose, what else was on the table, and what the choice cost.
+          </p>
+
+          <ol class="mt-10 list-none space-y-6">
+            @for (decision of s.decisions; track decision.title; let i = $index) {
+              <li
+                class="rounded-[2rem] border border-gray-200/80 dark:border-white/10 bg-surface-elevated p-6 md:p-8"
+              >
+                <div class="flex items-baseline gap-4">
+                  <span class="text-sm font-black tabular-nums text-tertiary" aria-hidden="true">{{
+                    pad(i)
+                  }}</span>
+                  <h3 class="text-xl font-bold text-gray-900 dark:text-white md:text-2xl">
+                    {{ decision.title }}
+                  </h3>
+                </div>
+                <p class="mt-3 leading-relaxed text-gray-600 dark:text-gray-400 md:pl-10">
+                  {{ decision.context }}
+                </p>
+
+                <dl class="mt-6 grid gap-6 md:grid-cols-2 md:pl-10">
+                  <div>
+                    <dt class="text-xs font-bold uppercase tracking-widest text-green-800 dark:text-primary">
+                      Chose
+                    </dt>
+                    <dd class="mt-2 font-semibold leading-relaxed text-gray-900 dark:text-white">
+                      {{ decision.choice }}
+                    </dd>
+                  </div>
+                  <div>
+                    <dt class="text-xs font-bold uppercase tracking-widest text-gray-600 dark:text-gray-400">
+                      Why
+                    </dt>
+                    <dd class="mt-2 leading-relaxed text-gray-700 dark:text-gray-300">
+                      {{ decision.why }}
+                    </dd>
+                  </div>
+                  <div>
+                    <dt class="text-xs font-bold uppercase tracking-widest text-gray-600 dark:text-gray-400">
+                      Considered
+                    </dt>
+                    <dd class="mt-2">
+                      <ul class="ml-4 list-disc space-y-1 text-gray-700 dark:text-gray-300">
+                        @for (alternative of decision.alternatives; track alternative) {
+                          <li>{{ alternative }}</li>
+                        }
+                      </ul>
+                    </dd>
+                  </div>
+                  <div>
+                    <dt class="text-xs font-bold uppercase tracking-widest text-gray-600 dark:text-gray-400">
+                      Trade-off
+                    </dt>
+                    <dd class="mt-2 leading-relaxed text-gray-700 dark:text-gray-300">
+                      {{ decision.tradeoff }}
+                    </dd>
+                  </div>
+                </dl>
+              </li>
+            }
+          </ol>
+        </section>
+      }
+
+      <!-- Features -->
+      @if (s.features.length) {
+        <section id="features" class="mt-24" aria-labelledby="features-h">
+          <h2
+            id="features-h"
+            class="text-3xl font-black tracking-tight text-gray-900 dark:text-white md:text-4xl"
+          >
+            Features
+          </h2>
+          <div class="mt-10 grid gap-10 md:grid-cols-2">
+            @for (group of s.features; track group.group) {
+              <div>
+                <h3 class="text-xs font-bold uppercase tracking-widest text-gray-600 dark:text-gray-400">
+                  {{ group.group }}
+                </h3>
+                <ul class="mt-4 list-none space-y-4">
+                  @for (feature of group.items; track feature.name) {
+                    <li class="border-l-2 border-primary/60 pl-4">
+                      <p class="font-bold text-gray-900 dark:text-white">{{ feature.name }}</p>
+                      <p class="mt-1 text-sm leading-relaxed text-gray-700 dark:text-gray-300">
+                        {{ feature.detail }}
+                      </p>
+                    </li>
+                  }
+                </ul>
+              </div>
+            }
+          </div>
+        </section>
+      }
+
+      <!-- Challenges -->
+      @if (s.challenges.length) {
+        <section id="challenges" class="mt-24" aria-labelledby="challenges-h">
+          <h2
+            id="challenges-h"
+            class="text-3xl font-black tracking-tight text-gray-900 dark:text-white md:text-4xl"
+          >
+            Hard problems
+          </h2>
+          <div class="mt-10 space-y-6">
+            @for (challenge of s.challenges; track challenge.title) {
+              <article
+                class="rounded-[2rem] border border-gray-200/80 dark:border-white/10 bg-surface-elevated p-6 md:p-8"
+              >
+                <h3 class="text-xl font-bold text-gray-900 dark:text-white md:text-2xl">
+                  {{ challenge.title }}
+                </h3>
+                <div class="mt-6 grid gap-6 md:grid-cols-3">
+                  <div>
+                    <p class="text-xs font-bold uppercase tracking-widest text-red-700 dark:text-red-400">
+                      Problem
+                    </p>
+                    <p class="mt-2 text-sm leading-relaxed text-gray-700 dark:text-gray-300">
+                      {{ challenge.problem }}
+                    </p>
+                  </div>
+                  <div>
+                    <p class="text-xs font-bold uppercase tracking-widest text-tertiary">Approach</p>
+                    <p class="mt-2 text-sm leading-relaxed text-gray-700 dark:text-gray-300">
+                      {{ challenge.approach }}
+                    </p>
+                  </div>
+                  <div>
+                    <p class="text-xs font-bold uppercase tracking-widest text-green-800 dark:text-primary">
+                      Outcome
+                    </p>
+                    <p class="mt-2 text-sm leading-relaxed text-gray-700 dark:text-gray-300">
+                      {{ challenge.outcome }}
+                    </p>
+                  </div>
+                </div>
+              </article>
+            }
+          </div>
+        </section>
+      }
+
+      <!-- Stack -->
+      @if (s.stack.length) {
+        <section id="stack" class="mt-24" aria-labelledby="stack-h">
+          <h2
+            id="stack-h"
+            class="text-3xl font-black tracking-tight text-gray-900 dark:text-white md:text-4xl"
+          >
+            Stack
+          </h2>
+          <div class="mt-8 grid gap-8 sm:grid-cols-2 lg:grid-cols-3">
+            @for (group of s.stack; track group.group) {
+              <div>
+                <h3 class="text-xs font-bold uppercase tracking-widest text-gray-600 dark:text-gray-400">
+                  {{ group.group }}
+                </h3>
+                <ul class="mt-3 flex list-none flex-wrap gap-2">
+                  @for (item of group.items; track item) {
+                    <li
+                      class="rounded-xl border border-gray-200 dark:border-white/10 bg-surface-elevated px-3 py-1.5 text-sm font-semibold text-gray-800 dark:text-gray-200"
+                    >
+                      {{ item }}
+                    </li>
+                  }
+                </ul>
+              </div>
+            }
+          </div>
+        </section>
+      }
+
+      <!-- Gallery -->
+      @if (s.gallery.length) {
+        <section id="gallery" class="mt-24" aria-labelledby="gallery-h">
+          <h2
+            id="gallery-h"
+            class="text-3xl font-black tracking-tight text-gray-900 dark:text-white md:text-4xl"
+          >
+            Screens
+          </h2>
+          <div class="mt-8 grid gap-6 md:grid-cols-2">
+            @for (image of s.gallery; track image.src) {
+              <figure>
+                <img
+                  [src]="image.src"
+                  [alt]="image.alt"
+                  loading="lazy"
+                  decoding="async"
+                  class="w-full rounded-3xl border border-gray-200/80 dark:border-white/10"
+                />
+                @if (image.caption) {
+                  <figcaption class="mt-2 text-sm text-gray-600 dark:text-gray-400">
+                    {{ image.caption }}
+                  </figcaption>
+                }
+              </figure>
+            }
+          </div>
+        </section>
+      }
+
+      @if (next(); as upNext) {
+        <a
+          [routerLink]="['/projects', upNext.slug]"
+          class="group mt-24 flex items-center justify-between gap-6 rounded-[2.5rem] border border-gray-200/80 dark:border-white/10 bg-surface-elevated p-8 transition-all hover:-translate-y-0.5 hover:shadow-elevation-2 md:p-10"
+        >
+          <div>
+            <p class="text-xs font-bold uppercase tracking-widest text-gray-600 dark:text-gray-400">
+              Next case study
+            </p>
+            <p class="mt-2 text-3xl font-black text-gray-900 transition-colors group-hover:text-tertiary dark:text-white">
+              {{ upNext.name }}
+            </p>
+            <p class="mt-1 text-gray-600 dark:text-gray-400">{{ upNext.tagline }}</p>
+          </div>
+          <span
+            class="material-symbols-outlined text-4xl text-tertiary transition-transform group-hover:translate-x-1"
+            aria-hidden="true"
+            >arrow_forward</span
+          >
+        </a>
+      }
+
+      @if (isDev && s.openQuestions.length) {
+        <aside
+          aria-labelledby="open-questions-h"
+          class="mt-16 rounded-[2rem] border-2 border-dashed border-amber-400/70 bg-amber-50/80 p-6 dark:bg-amber-400/5 md:p-8"
+        >
+          <h2
+            id="open-questions-h"
+            class="flex flex-wrap items-center gap-2 text-lg font-bold text-amber-900 dark:text-amber-200"
+          >
+            <span class="material-symbols-outlined" aria-hidden="true">help</span>
+            Still needed from you
+            <span
+              class="rounded-md bg-amber-200/70 px-2 py-0.5 text-[10px] font-bold uppercase tracking-wider text-amber-900 dark:bg-amber-400/20 dark:text-amber-200"
+              >Dev only</span
+            >
+          </h2>
+          <ul class="ml-5 mt-4 list-disc space-y-2 text-sm leading-relaxed text-amber-950 dark:text-amber-100">
+            @for (question of s.openQuestions; track question) {
+              <li>{{ question }}</li>
+            }
+          </ul>
+        </aside>
+      }
+    </div>
+  </article>
+}

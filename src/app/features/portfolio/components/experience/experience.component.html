@@ -1,62 +1,71 @@
-<section class="py-24 px-6 relative overflow-hidden" id="experience">
-  
-  <div class="max-w-4xl mx-auto relative">
-    
-    <div class="mb-16 relative z-10">
-      <h2 class="text-4xl font-black mb-4 dark:text-white">Experience</h2>
-      <p class="text-gray-600 dark:text-gray-400">My professional journey through the tech industry.</p>
-    </div>
+<section class="relative overflow-hidden px-6 py-24" id="experience">
+  <div class="relative mx-auto max-w-4xl">
+    <header class="relative z-10 mb-16">
+      <h1 class="mb-4 text-4xl font-black dark:text-white">Experience</h1>
+      <p class="text-gray-600 dark:text-gray-400">
+        My professional journey through the tech industry.
+      </p>
+    </header>
 
-    <div #timeline class="absolute left-1/2 md:left-1/2 top-32 bottom-10 w-0.5 bg-gradient-to-b from-gray-200 via-gray-300 to-gray-200 dark:from-white/10 dark:via-white/20 dark:to-white/10 -translate-x-1/2 rounded-full"></div>
+    <!-- The rail sits on the left on mobile and down the centre from md up, so it
+         always has dots attached to it rather than floating beside the cards.
+         Its gradient is painted from TypeScript as you scroll. -->
+    <div
+      #timeline
+      aria-hidden="true"
+      class="absolute bottom-10 left-4 top-32 w-0.5 -translate-x-1/2 rounded-full bg-gray-200 dark:bg-white/10 md:left-1/2"
+    ></div>
 
-    <div class="space-y-12 relative z-10">
-      
-      <div *ngFor="let job of experiences; let i = index; let isEven = even; let isOdd = odd" 
-           class="relative flex flex-col md:flex-row md:gap-8 items-center group">
-        
-        <div class="flex-1 w-full order-2 md:order-1" >
-          
-          <div #experienceCard *ngIf="isEven" class="bg-white dark:bg-[#2d2d2a] p-8 rounded-3xl rounded-tr-md shadow-elevation-1 border border-gray-100 dark:border-white/10 hover:shadow-elevation-2 transition-all ">
-            <h3 class="text-xl font-bold text-tertiary">{{ job.role }}</h3>
-            <h4 class="text-lg font-semibold mb-2 dark:text-white">{{ job.company }}</h4>
-            <p class="text-sm text-gray-500 dark:text-gray-400 mb-4 inline-block bg-gray-100 dark:bg-white/10 px-2 py-1 rounded-md">{{ job.period }}</p>
-            
-            <ul class="text-sm text-gray-600 dark:text-gray-300 space-y-2 list-none">
-              <li *ngFor="let point of job.description">{{ point }}</li>
+    <ol class="relative z-10 list-none space-y-12">
+      @for (job of experiences; track job.company; let isEven = $even) {
+        <li class="relative">
+          <span
+            aria-hidden="true"
+            class="absolute left-4 top-8 z-10 flex size-5 -translate-x-1/2 items-center justify-center rounded-full border-[3px] border-surface shadow-md md:left-1/2"
+            [ngClass]="job.current ? 'bg-primary' : 'bg-outline'"
+          >
+          </span>
+
+          <!-- One card definition for both sides. On mobile it clears the rail; from
+               md it is pushed into the left or right half by margin alone. -->
+          <article
+            class="ml-12 rounded-3xl border border-gray-100 dark:border-white/10 bg-surface-elevated p-8 shadow-elevation-1 transition-shadow hover:shadow-elevation-2 md:ml-0"
+            [ngClass]="
+              isEven
+                ? 'md:mr-[calc(50%+2rem)] md:rounded-tr-md'
+                : 'md:ml-[calc(50%+2rem)] md:rounded-tl-md'
+            "
+          >
+            <h2 class="text-xl font-bold text-tertiary">{{ job.role }}</h2>
+            <h3 class="mb-2 text-lg font-semibold dark:text-white">{{ job.company }}</h3>
+
+            <p
+              class="mb-4 inline-block rounded-md bg-gray-100 dark:bg-white/10 px-2 py-1 text-sm text-gray-600 dark:text-gray-400"
+            >
+              {{ job.period }}
+              @if (job.current) {
+                <span class="sr-only">(current role)</span>
+              }
+            </p>
+
+            <ul class="ml-4 list-disc space-y-2 text-sm text-gray-700 dark:text-gray-300">
+              @for (point of job.description; track point) {
+                <li class="pl-1">{{ point }}</li>
+              }
             </ul>
 
-            <div class="mt-4 flex flex-wrap gap-2">
-              <span *ngFor="let tag of job.tags" class="px-2 py-1 bg-tertiary-container dark:bg-tertiary/20 text-on-tertiary-container dark:text-tertiary-container rounded-md text-xs font-bold">{{ tag }}</span>
-            </div>
-          </div>
-
-        </div>
-
-        <div class="absolute left-4 md:left-1/2 -translate-x-1/2 w-6 h-6 rounded-full border-[3px] border-white dark:border-[#122017] shadow-md z-10 hidden md:flex items-center justify-center" 
-             [ngClass]="job.dotColor">
-           <div class="w-2 h-2 bg-black rounded-full"></div>
-        </div>
-
-        <div class="flex-1 w-full order-2 md:order-3">
-          
-          <div #experienceCard *ngIf="isOdd" class="bg-white dark:bg-[#2d2d2a] p-8 rounded-3xl rounded-tl-md shadow-elevation-1 border border-gray-100 dark:border-white/10 hover:shadow-elevation-2 transition-all ">
-            <h3 class="text-xl font-bold text-tertiary">{{ job.role }}</h3>
-            <h4 class="text-lg font-semibold mb-2 dark:text-white">{{ job.company }}</h4>
-            <p class="text-sm text-gray-500 dark:text-gray-400 mb-4 inline-block bg-gray-100 dark:bg-white/10 px-2 py-1 rounded-md">{{ job.period }}</p>
-            
-            <ul class="text-sm text-gray-600 dark:text-gray-300 space-y-2 list-none">
-              <li *ngFor="let point of job.description">{{ point }}</li>
+            <ul class="mt-4 flex list-none flex-wrap gap-2">
+              @for (tag of job.tags; track tag) {
+                <li
+                  class="rounded-md bg-tertiary-container px-2 py-1 text-xs font-bold text-on-tertiary-container"
+                >
+                  {{ tag }}
+                </li>
+              }
             </ul>
-
-            <div class="mt-4 flex flex-wrap gap-2">
-              <span *ngFor="let tag of job.tags" class="px-2 py-1 bg-tertiary-container dark:bg-tertiary/20 text-on-tertiary-container dark:text-tertiary-container rounded-md text-xs font-bold">{{ tag }}</span>
-            </div>
-          </div>
-
-        </div>
-
-      </div>
-
-    </div>
+          </article>
+        </li>
+      }
+    </ol>
   </div>
 </section>

@@ -1,114 +1,66 @@
-<!-- <nav class="fixed top-0 left-0 right-0 z-50 flex justify-center pt-4 px-4 pointer-events-none">
-  <div class="pointer-events-auto bg-white/80 dark:bg-[#2d2d2a]/80 backdrop-blur-xl rounded-full shadow-elevation-1 md:border border-white/40 dark:border-white/10 px-6 py-3 flex items-center justify-between gap-8 max-w-[960px] w-full transition-all duration-300 hover:shadow-elevation-2">
-    
-    <a href="#" class="flex items-center gap-2 group">
-      <div class="size-10 bg-primary rounded-xl rotate-3 group-hover:rotate-12 transition-transform duration-300 flex items-center justify-center text-on-primary font-bold text-xl shadow-sm">
-        H
-      </div>
-      <span class="font-bold text-lg tracking-tight hidden sm:block dark:text-white">Himanshu</span>
-    </a>
-
-    <div class="hidden md:flex items-center gap-1">
-      <a href="#about" class="px-4 py-2 rounded-full text-sm font-medium text-gray-700 dark:text-gray-200 hover:bg-surface-variant/50 dark:hover:bg-white/10 hover:text-tertiary transition-all">About</a>
-      <a href="#experience" class="px-4 py-2 rounded-full text-sm font-medium text-gray-700 dark:text-gray-200 hover:bg-surface-variant/50 dark:hover:bg-white/10 hover:text-tertiary transition-all">Experience</a>
-      <a href="#projects" class="px-4 py-2 rounded-full text-sm font-medium text-gray-700 dark:text-gray-200 hover:bg-surface-variant/50 dark:hover:bg-white/10 hover:text-tertiary transition-all">Projects</a>
-      <a href="#blog" class="px-4 py-2 rounded-full text-sm font-medium text-gray-700 dark:text-gray-200 hover:bg-surface-variant/50 dark:hover:bg-white/10 hover:text-tertiary transition-all">Blog</a>
-    </div>
-
-    <div class="flex items-center gap-3">
-      
-      <button 
-        (click)="toggleTheme()" 
-        class="size-10 rounded-full flex items-center justify-center hover:bg-gray-100 dark:hover:bg-white/10 text-gray-600 dark:text-gray-200 transition-colors"
-        aria-label="Toggle Dark Mode"
-      >
-        <span class="material-symbols-outlined">
-          {{ themeService.darkMode() ? 'light_mode' : 'dark_mode' }}
-        </span>
-      </button>
-
-      <a href="#contact" class="bg-black text-white dark:bg-white dark:text-black hover:bg-tertiary hover:text-white dark:hover:bg-tertiary px-6 py-2.5 rounded-full text-sm font-bold transition-all hover:shadow-lg active:scale-95 flex items-center gap-2">
-        <span>Let's Talk</span>
-      </a>
-    </div>
-
-  </div>
-</nav> -->
-
-<nav class="fixed bottom-6 left-0 right-0 z-50 flex justify-center px-4 pointer-events-none">
+<!-- Fixed bottom nav. The safe-area inset keeps it clear of the iOS home
+     indicator; --nav-clearance in styles.css reserves the matching page padding. -->
+<nav
+  aria-label="Main"
+  class="fixed left-0 right-0 z-50 flex justify-center px-3 pointer-events-none no-select"
+  style="bottom: calc(1.5rem + env(safe-area-inset-bottom))"
+>
   <div
-    class="pointer-events-auto bg-[#fdfdfc]/90 dark:bg-[#1a1a16]/90 backdrop-blur-3xl rounded-full shadow-elevation-2 border border-white/40 dark:border-white/10  py-2 px-6 flex items-center gap-3 transition-all duration-500 hover:shadow-elevation-3">
-    <a routerLink="/" class="flex items-center gap-2 group">
-      <div
-        class="size-10 bg-primary rounded-xl rotate-3 hover:rotate-12 transition-transform duration-300 flex items-center justify-center text-on-primary font-bold text-xl shadow-sm cursor-pointer">
-        H
-      </div>
+    class="pointer-events-auto flex max-w-full items-center gap-2 md:gap-3 rounded-full border border-black/5 dark:border-white/15 bg-[#fdfdfc]/90 dark:bg-surface-elevated/90 px-3 md:px-6 py-2 shadow-elevation-2 backdrop-blur-3xl transition-shadow duration-500 hover:shadow-elevation-3"
+  >
+    <a
+      routerLink="/"
+      routerLinkActive
+      #home="routerLinkActive"
+      [routerLinkActiveOptions]="{ exact: true }"
+      [attr.aria-current]="home.isActive ? 'page' : null"
+      aria-label="Home"
+      class="hidden sm:flex items-center group shrink-0"
+    >
+      <span
+        class="flex size-10 rotate-3 items-center justify-center rounded-xl bg-primary text-xl font-bold text-on-primary shadow-sm transition-transform duration-300 group-hover:rotate-12"
+        aria-hidden="true"
+        >H</span
+      >
     </a>
 
-    <div class="flex items-center bg-gray-200 dark:bg-white/5 rounded-full p-1 md:p-1.5 gap-1">
-      <a routerLink="/about"
-         routerLinkActive #rlaAbout="routerLinkActive"
-         [ngClass]="rlaAbout.isActive ? 'md:border bg-[#4286f5] text-on-primary shadow-elevation-1' : ' hover:text-tertiary custom-hover '"
-         class="py-2 px-4 md:px-5 md:py-3 rounded-full flex items-center justify-center gap-2 text-sm font-bold text-gray-700 dark:text-gray-200 active:scale-95 active:bg-secondary-container transition-all duration-300 group relative overflow-hidden"
-         (click)="triggerAnimation('about')" 
-         [@iconClick]="iconAnimationState['about']" 
-         (@iconClick.done)="onAnimationEnd('about')"
-      >
-        <span class="material-symbols-outlined text-[20px] group-hover:fill-1 transition-all">person</span>
-        <span class="hidden md:block">About</span>
-      </a>
-      <a routerLink="/experience"
-         routerLinkActive #rlaExp="routerLinkActive"
-         [ngClass]="rlaExp.isActive ? 'md:border bg-[#ea4335] text-on-primary shadow-elevation-1' : 'hover:text-tertiary custom-hover '"
-         class="py-2 px-4 md:px-5 md:py-3 rounded-full flex items-center justify-center gap-2 text-sm font-bold text-gray-700 dark:text-gray-200 active:scale-95 active:bg-secondary-container transition-all duration-300 group"
-         (click)="triggerAnimation('experience')" 
-         [@iconClick]="iconAnimationState['experience']" 
-         (@iconClick.done)="onAnimationEnd('experience')"
-      >
-        <span class="material-symbols-outlined text-[20px] group-hover:fill-1 transition-all">work_history</span>
-        <span class="hidden md:block">Experience</span>
-      </a>
-      <a routerLink="/projects"
-         routerLinkActive #rlaProj="routerLinkActive"
-         [ngClass]="rlaProj.isActive ? 'md:border bg-[#fabc05] text-on-primary shadow-elevation-1' : 'hover:text-tertiary custom-hover '"
-         class="py-2 px-4 md:px-5 md:py-3 rounded-full flex items-center justify-center gap-2 text-sm font-bold text-gray-700 dark:text-gray-200 active:scale-95 active:bg-secondary-container transition-all duration-300 group"
-         (click)="triggerAnimation('projects')" 
-         [@iconClick]="iconAnimationState['projects']" 
-         (@iconClick.done)="onAnimationEnd('projects')"
-      >
-        <span class="material-symbols-outlined text-[20px] group-hover:fill-1 transition-all">grid_view</span>
-        <span class="hidden md:block">Projects</span>
-      </a>
-      <!-- <a routerLink="/blog"
-         routerLinkActive #rlaBlog="routerLinkActive"
-         [ngClass]="rlaBlog.isActive ? 'md:border bg-[#4286f5] text-on-primary shadow-elevation-1' : 'hover:text-tertiary custom-hover '"
-         class="py-2 px-4 md:px-5 md:py-3 rounded-full flex items-center justify-center gap-2 text-sm font-bold text-gray-700 dark:text-gray-200 active:scale-95 active:bg-secondary-container transition-all duration-300 group">
-        <span class="material-symbols-outlined text-[20px] group-hover:fill-1 transition-all">rss_feed</span>
-        <span class="hidden md:block">Blog</span>
-      </a> -->
-      <a routerLink="/contact"
-         routerLinkActive #rlaContact="routerLinkActive"
-         [ngClass]="rlaContact.isActive ? 'md:border bg-[#36a852] text-on-primary shadow-elevation-1' : 'hover:text-tertiary custom-hover '"
-         class="py-2 px-4 md:px-5 md:py-3 rounded-full flex items-center justify-center gap-2 text-sm font-bold text-gray-700 dark:text-gray-200 active:scale-95 active:bg-secondary-container transition-all duration-300 group"
-         (click)="triggerAnimation('contact')" 
-         [@iconClick]="iconAnimationState['contact']" 
-         (@iconClick.done)="onAnimationEnd('contact')"
-      >
-        <span class="material-symbols-outlined text-[20px] group-hover:fill-1 transition-all">send</span>
-        <span class="hidden md:block">Let's Talk</span>
-      </a>
+    <div
+      class="flex min-w-0 items-center gap-1 rounded-full bg-gray-200/80 dark:bg-white/5 p-1 md:p-1.5"
+    >
+      @for (item of items; track item.path) {
+        <a
+          [routerLink]="item.path"
+          routerLinkActive
+          #rla="routerLinkActive"
+          ariaCurrentWhenActive="page"
+          [attr.aria-label]="item.label"
+          [ngClass]="
+            rla.isActive
+              ? item.activeClass
+              : 'text-gray-700 dark:text-gray-200 hover:text-tertiary custom-hover'
+          "
+          class="group flex min-h-[44px] items-center justify-center gap-2 rounded-full px-3 md:px-5 text-sm font-bold transition-colors duration-300 active:scale-95"
+        >
+          <span class="material-symbols-outlined text-[20px]" aria-hidden="true">{{
+            item.icon
+          }}</span>
+          <span class="hidden md:block">{{ item.label }}</span>
+        </a>
+      }
     </div>
-    <button (click)="toggleTheme()"
-      class="size-10 rounded-full flex items-center justify-center hover:bg-gray-100 dark:hover:bg-white/10 text-gray-600 dark:text-gray-200 transition-colors"
-      aria-label="Toggle Dark Mode">
-      <span class="material-symbols-outlined">
+
+    <button
+      type="button"
+      (click)="toggleTheme()"
+      [attr.aria-pressed]="themeService.darkMode()"
+      [attr.aria-label]="
+        themeService.darkMode() ? 'Switch to light theme' : 'Switch to dark theme'
+      "
+      class="flex size-11 shrink-0 items-center justify-center rounded-full text-gray-600 dark:text-gray-200 transition-colors hover:bg-gray-100 dark:hover:bg-white/10"
+    >
+      <span class="material-symbols-outlined" aria-hidden="true">
         {{ themeService.darkMode() ? 'light_mode' : 'dark_mode' }}
       </span>
     </button>
-    <!-- <a class="ml-1 md:ml-2 p-3 md:pl-5 md:pr-6 md:py-3 bg-tertiary text-on-tertiary-container rounded-full flex items-center justify-center gap-2 font-bold shadow-lg shadow-tertiary/20 hover:shadow-xl hover:shadow-tertiary/30 hover:scale-105 active:scale-95 transition-all duration-300 text-white group shrink-0"
-      href="#contact">
-      <span class="hidden md:block group-hover:translate-x-0.5 transition-transform">Let's Talk</span>
-      <span class="material-symbols-outlined text-[20px] group-hover:rotate-12 transition-transform">send</span>
-    </a> -->
   </div>
 </nav>

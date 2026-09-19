@@ -1,0 +1,25 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="600" height="600" viewBox="0 0 600 600">
+<!-- Seamless 600px crumpled-paper tile for mix-blend-mode:multiply on a cream ground. Crease net
+     blurred at two scales + stitched fractalNoise, lit by feDiffuseLighting; flats reach white so the
+     tile only ever darkens. Geometry is 3x3-repeated and the noise feTile-wrapped, so no edge seam. -->
+<defs>
+<filter id="p" filterUnits="userSpaceOnUse" x="-36" y="-36" width="672" height="672" color-interpolation-filters="sRGB">
+<feColorMatrix in="SourceGraphic" type="matrix" values="0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 1 0 0 0 0" result="m"/>
+<feGaussianBlur in="m" stdDeviation="11" result="w"/>
+<feGaussianBlur in="m" stdDeviation="3.5" result="t"/>
+<feComposite in="w" in2="t" operator="arithmetic" k2="0.88" k3="0.12" result="c"/>
+<feTurbulence type="fractalNoise" baseFrequency=".0022" numOctaves="3" seed="100" stitchTiles="stitch" x="0" y="0" width="600" height="600" result="u"/>
+<feTurbulence type="fractalNoise" baseFrequency="1.2" numOctaves="2" seed="104" stitchTiles="stitch" x="0" y="0" width="600" height="600"/>
+<feComposite in2="u" operator="arithmetic" k2="0.03" k3="0.45" k4="0.26"/>
+<feTile x="-36" y="-36" width="672" height="672"/>
+<feComposite in2="c" operator="arithmetic" k2="1" k3="0.8" k4="-0.4"/>
+<feDiffuseLighting surfaceScale="11" diffuseConstant="1.74"><feDistantLight azimuth="225" elevation="35"/></feDiffuseLighting>
+</filter>
+<g id="k" fill="none" stroke-linecap="round" stroke-linejoin="round">
+<rect width="600" height="600" fill="#808080"/>
+<path d="M145 373L331 446" stroke="#fff" stroke-width="6.5"/><path d="M186 111L223 214" stroke="#000" stroke-width="6.5"/><path d="M49 117L-36 267M-36 267L-89 346M-50 287L145 373M331 446L412 489M284 427L396 529M396 529L486 647M535 419L654 439M654 439L779 462" stroke="#b3b3b3" stroke-width="4.2"/><path d="M140 24L186 111M223 214L274 411M467 32L633 -29M633 -29L764 -48M279 117L89 109M89 109L-25 128" stroke="#4d4d4d" stroke-width="4.2"/><path d="M61 215L118 299M118 299L166 365M327 525L373 586M373 586L415 633M178 244L226 287M226 287L277 324M279 117L264 220M264 220L234 340M352 187L282 271M282 271L218 336M474 505L362 517M362 517L311 511M59 408L-38 351M-38 351L-116 299M419 236L442 137M442 137L474 55M144 521L224 538M224 538L306 558M382 365L406 441M406 441L442 543M413 192L477 196M356 465L387 497M69 549L125 543M171 313L219 330M234 340L272 379M197 393L191 429M246 525L220 511M411 489L431 464M107 110L104 70M304 219L352 251" stroke="#969696" stroke-width="2.6"/><path d="M535 419L514 497M514 497L472 610M225 79L256 148M256 148L299 206M206 272L267 173M267 173L304 91M576 161L476 105M476 105L406 75M22 91L40 110M576 161L595 109M492 558L455 535M452 336L413 306M503 90L536 50" stroke="#6a6a6a" stroke-width="2.6"/>
+</g>
+<g id="r"><use href="#k"/><use href="#k" x="-600"/><use href="#k" x="600"/></g>
+</defs>
+<g filter="url(#p)"><use href="#r"/><use href="#r" y="-600"/><use href="#r" y="600"/></g>
+</svg>

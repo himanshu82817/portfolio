@@ -1,15 +1,117 @@
 <!doctype html>
 <html lang="en">
+
 <head>
   <meta charset="utf-8">
-  <title>Portfolio</title>
   <base href="/">
   <meta name="viewport" content="width=device-width, initial-scale=1">
+
+  <!--
+    Applies the theme before the first paint, so dark-mode visitors never see a
+    white flash. Must stay in sync with ThemeService in
+    src/app/core/services/theme.service.ts — same storage key, same fallback.
+    Kept inline and blocking on purpose: it has to run before any CSS renders.
+  -->
+  <script>
+    (function () {
+      try {
+        var stored = localStorage.getItem('theme');
+        var dark = stored === 'dark' || stored === 'light'
+          ? stored === 'dark'
+          : window.matchMedia('(prefers-color-scheme: dark)').matches;
+        var root = document.documentElement;
+        if (dark) root.classList.add('dark');
+        root.style.colorScheme = dark ? 'dark' : 'light';
+      } catch (e) { /* storage blocked — fall through to the light default */ }
+    })();
+  </script>
+
+  <title>Himanshu Sehlangia — Full Stack Engineer</title>
+  <meta name="description"
+    content="Full Stack Engineer in New Delhi building Angular front-ends and Node/SQL services for fintech and edtech — loan origination, learning platforms, and the reporting systems behind them.">
+  <meta name="author" content="Himanshu Sehlangia">
+
+  <!-- ⚠️ PLACEHOLDER_DOMAIN — replace every occurrence with your real origin before deploying.
+       Also in: src/app/core/site.config.ts, public/robots.txt, public/sitemap.xml -->
+  <link rel="canonical" href="https://himanshusehlangia.com/">
+
+  <meta property="og:type" content="profile">
+  <meta property="og:site_name" content="Himanshu Sehlangia">
+  <meta property="og:title" content="Himanshu Sehlangia — Full Stack Engineer">
+  <meta property="og:description"
+    content="Full Stack Engineer in New Delhi building Angular front-ends and Node/SQL services for fintech and edtech.">
+  <meta property="og:url" content="https://himanshusehlangia.com/">
+  <meta property="og:image" content="https://himanshusehlangia.com/profile.webp">
+  <meta property="og:image:alt" content="Portrait of Himanshu Sehlangia">
+  <meta property="og:locale" content="en_IN">
+
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:title" content="Himanshu Sehlangia — Full Stack Engineer">
+  <meta name="twitter:description"
+    content="Full Stack Engineer in New Delhi building Angular front-ends and Node/SQL services for fintech and edtech.">
+  <meta name="twitter:image" content="https://himanshusehlangia.com/profile.webp">
+
   <link rel="icon" type="image/x-icon" href="favicon.ico">
+  <link rel="apple-touch-icon" href="icons/apple-touch-icon.png">
   <link rel="manifest" href="manifest.webmanifest">
-  <meta name="theme-color" content="#D0BCFF">
+
+  <meta name="theme-color" content="#f1e6d6" media="(prefers-color-scheme: light)">
+  <meta name="theme-color" content="#05060f" media="(prefers-color-scheme: dark)">
+
+  <!-- Fonts are requested from <head> rather than @import-ed inside styles.css, so
+       they are discovered immediately instead of queuing behind the stylesheet.
+       The icon font is subsetted to the glyphs this site actually uses via
+       icon_names — without it Google serves the full ~4 MB variable font. -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link rel="stylesheet"
+    href="https://fonts.googleapis.com/css2?family=Spline+Sans:wght@300;400;500;600;700&display=swap">
+  <link rel="stylesheet"
+    href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200&icon_names=architecture,arrow_back,arrow_forward,call,check_circle,code,code_blocks,dark_mode,download,edit_note,emoji_objects,error,folder_code,grid_view,handyman,help,layers,light_mode,location_on,lock,mail,open_in_new,person,rocket_launch,send,work_history&display=block">
+
+  <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@type": "Person",
+      "name": "Himanshu Sehlangia",
+      "jobTitle": "Full Stack Engineer",
+      "url": "https://himanshusehlangia.com/",
+      "image": "https://himanshusehlangia.com/profile.webp",
+      "email": "mailto:himanshu82817@gmail.com",
+      "address": {
+        "@type": "PostalAddress",
+        "addressLocality": "New Delhi",
+        "addressRegion": "DL",
+        "addressCountry": "IN"
+      },
+      "sameAs": [
+        "https://github.com/himanshu82817",
+        "https://www.linkedin.com/in/himanshu82817"
+      ],
+      "knowsAbout": [
+        "Angular", "TypeScript", "Node.js", "NestJS", "SQL", "System Design"
+      ]
+    }
+  </script>
 </head>
-<body class="bg-dot-grid" >
-  <app-root></app-root>
+
+<body class="site-backdrop">
+  <app-root>
+    <!-- Replaced on bootstrap. Gives crawlers and no-JS visitors something real. -->
+    <noscript>
+      <h1>Himanshu Sehlangia — Full Stack Engineer</h1>
+      <p>
+        Full Stack Engineer based in New Delhi, India, building Angular front-ends and
+        Node/SQL services for fintech and edtech.
+      </p>
+      <p>
+        Email: <a href="mailto:himanshu82817@gmail.com">himanshu82817&#64;gmail.com</a> ·
+        <a href="https://github.com/himanshu82817">GitHub</a> ·
+        <a href="https://www.linkedin.com/in/himanshu82817">LinkedIn</a>
+      </p>
+      <p>This site needs JavaScript enabled for the full experience.</p>
+    </noscript>
+  </app-root>
 </body>
+
 </html>

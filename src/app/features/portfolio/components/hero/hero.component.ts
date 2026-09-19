@@ -1,25 +1,32 @@
-import { Component } from '@angular/core';
-import { CommonModule } from '@angular/common';
+import { ChangeDetectionStrategy, Component } from '@angular/core';
 import { RouterLink } from '@angular/router';
+
+import { SITE, yearsOfExperience } from '../../../../core/site.config';
 
 @Component({
   selector: 'app-hero',
   standalone: true,
-  imports: [CommonModule,RouterLink],
+  imports: [RouterLink],
+  changeDetection: ChangeDetectionStrategy.OnPush,
   templateUrl: './hero.component.html',
-  styles: []
 })
 export class HeroComponent {
-  // You can easily update stats here without touching the HTML
-  stats = [
-    { label: 'Years Exp.', value: '5+', icon: 'code_blocks', colorClass: 'text-tertiary', bgClass: 'bg-tertiary/10' },
-    { label: 'Projects', value: '30+', icon: 'rocket_launch', colorClass: 'text-yellow-700', bgClass: 'bg-primary/20' }
-  ];
+  readonly site = SITE;
 
-  scrollTo(sectionId: string) {
-    const element = document.getElementById(sectionId);
-    if (element) {
-      element.scrollIntoView({ behavior: 'smooth' });
-    }
-  }
+  /** Derived from SITE.careerStart, so it can never contradict the timeline
+   *  on the Experience page or quietly go stale. */
+  readonly stats = [
+    {
+      label: 'Years experience',
+      value: `${yearsOfExperience()}+`,
+      icon: 'code_blocks',
+      iconClass: 'bg-tertiary/10 text-tertiary',
+    },
+    {
+      label: 'Projects shipped',
+      value: '20+',
+      icon: 'rocket_launch',
+      iconClass: 'bg-primary/20 text-yellow-700 dark:text-primary',
+    },
+  ];
 }

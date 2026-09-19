@@ -1,12 +1,13 @@
 {
   "name": "portfolio",
-  "version": "0.0.0",
+  "version": "1.0.0",
   "scripts": {
     "ng": "ng",
     "start": "ng serve",
     "build": "ng build",
     "watch": "ng build --watch --configuration development",
-    "test": "ng test"
+    "test": "ng test",
+    "test:ci": "ng test --watch=false --browsers=ChromeHeadless"
   },
   "private": true,
   "dependencies": {
@@ -39,5 +40,17 @@
     "postcss": "^8.4.33",
     "tailwindcss": "^3.4.1",
     "typescript": "~5.7.2"
+  },
+  "description": "Personal portfolio of Himanshu Sehlangia, Full Stack Engineer — Angular 19 + Tailwind CSS.",
+  "author": "Himanshu Sehlangia <himanshu82817@gmail.com>",
+  "license": "UNLICENSED",
+  "homepage": "https://github.com/himanshu82817/portfolio#readme",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/himanshu82817/portfolio.git"
+  },
+  "engines": {
+    "node": "^18.19 || ^20.11 || ^22.0",
+    "npm": ">=10"
   }
 }

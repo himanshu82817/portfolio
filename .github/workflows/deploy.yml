@@ -1,8 +1,17 @@
 name: Deploy Angular Portfolio
+
 on:
   push:
     branches:
-      - master # Triggers the deployment when you push to the main branch
+      - master
+  # Lets you redeploy the current master without pushing an empty commit.
+  workflow_dispatch:
+
+# Two pushes in quick succession would otherwise race and could land out of order,
+# leaving the docroot holding a mix of two builds.
+concurrency:
+  group: deploy-production
+  cancel-in-progress: true
 
 jobs:
   build-and-deploy:
@@ -10,18 +19,40 @@ jobs:
     steps:
       - name: Checkout Code
         uses: actions/checkout@v4
-        
+
       - name: Setup Node.js
         uses: actions/setup-node@v4
         with:
-          node-version: 20 # Ensure this matches your Angular requirement
-          
+          node-version-file: .nvmrc
+          cache: npm
+
       - name: Install Dependencies
         run: npm ci
-        
+
+      - name: Unit tests
+        run: npm run test:ci
+
       - name: Build Angular App
-        run: npm run build -- --configuration production
-        
+        run: npm run build
+
+      # Static hosts that do not have the nginx SPA fallback configured will still
+      # serve deep links correctly if a 404.html exists. Harmless alongside nginx.
+      - name: Add SPA fallback copy
+        run: cp dist/portfolio/browser/index.html dist/portfolio/browser/404.html
+
+      # NOTE: this copies over the docroot but never removes files, so hashed
+      # bundles from previous releases accumulate in /var/www/html indefinitely.
+      # To clean up, uncomment the step below once you have confirmed the path is
+      # correct for your VM — it deletes everything in the docroot first.
+      #
+      # - name: Clear docroot
+      #   uses: appleboy/ssh-action@v1.0.3
+      #   with:
+      #     host: ${{ secrets.GCP_HOST }}
+      #     username: ${{ secrets.GCP_USERNAME }}
+      #     key: ${{ secrets.GCP_SSH_KEY }}
+      #     script: rm -rf /var/www/html/*
+
       - name: Deploy to GCP VM
         uses: appleboy/scp-action@v0.1.7
         with:

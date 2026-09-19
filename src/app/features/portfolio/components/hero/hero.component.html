@@ -1,84 +1,142 @@
-<section class="relative min-h-screen pt-10 pb-20 px-6 flex flex-col justify-center overflow-hidden">
-    
-  
+<section
+  class="relative flex min-h-screen flex-col justify-center overflow-hidden px-6 pb-20 pt-10"
+>
+  <div class="mx-auto grid w-full max-w-7xl items-center gap-12 md:grid-cols-2">
+    <!-- Text first in the DOM so screen readers and crawlers meet the name before
+         the portrait; md:order-* preserves the original desktop arrangement. -->
+    <div class="z-10 flex flex-col items-start gap-8 md:order-first">
+      <p
+        class="inline-flex items-center gap-3 rounded-full border border-outline/20 dark:border-white/10 bg-surface-elevated/50 px-4 py-2 text-sm font-bold text-gray-700 dark:text-gray-300 shadow-sm backdrop-blur"
+      >
+        <span class="relative flex h-3 w-3" aria-hidden="true">
+          <span
+            class="absolute inline-flex h-full w-full animate-ping rounded-full bg-green-400 opacity-75"
+          ></span>
+          <span class="relative inline-flex h-3 w-3 rounded-full bg-green-500"></span>
+        </span>
+        Open to Full Stack roles
+      </p>
 
- 
-    <div class="max-w-7xl mx-auto w-full grid md:grid-cols-2 gap-12 items-center">
-        <!-- Hero Image (now first) -->
-        <div class="relative flex justify-center items-center lg:translate-x-10 md:order-last">
-            <div
-                class="relative w-full max-w-md aspect-[4/5] rounded-t-[10rem] rounded-b-[3rem] overflow-hidden shadow-elevation-3 hover:scale-[1.02] transition-transform duration-500 group bg-surface-elevated">
-                <div class="absolute inset-0 bg-gradient-to-t from-black/50 via-transparent to-transparent z-10"></div>
-                <img alt="Himanshu" class="w-full h-full object-cover"
-                    data-alt="Portrait of Himanshu looking confident with a slight smile" src="/profile.webp" />
-                <div
-                    class="absolute bottom-6 right-6 z-20 bg-white/90 backdrop-blur-md p-4 rounded-2xl shadow-lg border border-white/50 max-w-[180px]">
-                    <div class="flex items-center gap-2 text-tertiary mb-1">
-                        <span class="material-symbols-outlined text-xl">location_on</span>
-                        <span class="text-xs font-bold uppercase tracking-wider">Located in</span>
-                    </div>
-                    <p class="font-bold text-gray-900 leading-tight">New Delhi, India</p>
-                </div>
-            </div>
-            <div
-                class="absolute -bottom-8 left-10 w-[10%] h-[10%] bg-primary rounded-3xl rotate-12 flex items-center justify-center shadow-elevation-2 z-20 animate-float">
-                <span class="material-symbols-outlined text-4xl text-on-primary">emoji_objects</span>
-            </div>
-        </div>
+      <h1
+        class="font-display text-5xl font-black leading-[1.05] tracking-tight text-gray-900 dark:text-gray-100 md:text-6xl"
+      >
+        I’m <br />{{ site.name }}
+        <span class="mt-2 block text-3xl font-bold text-tertiary md:text-4xl">{{
+          site.role
+        }}</span>
+      </h1>
 
-        <!-- Text Div (now second) -->
-        <div class="flex flex-col gap-8 items-start z-10 md:order-first">
-            <div
-                class="inline-flex items-center gap-3 px-4 py-2 rounded-full bg-surface-elevated/50 backdrop-blur border border-outline/20 text-sm font-bold text-gray-600 shadow-sm">
-                <span class="relative flex h-3 w-3">
-                    <span
-                        class="animate-ping absolute inline-flex h-full w-full rounded-full bg-green-400 opacity-75"></span>
-                    <span class="relative inline-flex rounded-full h-3 w-3 bg-green-500"></span>
-                </span>
-                Hello World
-            </div>
-            <h1 class="text-5xl md:text-6xl font-display font-black dark:text-gray-300 leading-[1.05] tracking-tight">
-                I’m <br />Himanshu Sehlangia
-                <span class="block text-3xl md:text-4xl mt-2 font-bold text-tertiary">Full Stack Engineer</span>
-            </h1>
-            <p class="text-xl text-gray-600 dark:text-gray-300 max-w-lg leading-relaxed font-medium">
-                Crafting scalable web architectures and exploring the digital cosmos. I turn complex problems into
-                elegant, pixel-perfect solutions.
+      <p
+        class="max-w-lg text-xl font-medium leading-relaxed text-gray-600 dark:text-gray-300"
+      >
+        I build Angular front-ends and Node/SQL services for fintech and edtech — loan
+        origination systems, learning platforms, and the reporting that runs behind
+        them. Currently at SMC Finance in {{ site.locality }}.
+      </p>
+
+      <div class="mt-2 flex flex-wrap gap-4">
+        <a
+          routerLink="/contact"
+          class="group flex items-center gap-2 rounded-2xl bg-primary px-8 py-4 text-base font-bold text-on-primary shadow-elevation-1 transition-all duration-300 hover:-translate-y-1 hover:shadow-elevation-3"
+        >
+          Hire Me
+          <span
+            class="material-symbols-outlined transition-transform group-hover:translate-x-1"
+            aria-hidden="true"
+            >arrow_forward</span
+          >
+        </a>
+
+        <a
+          routerLink="/projects"
+          class="flex items-center gap-2 rounded-2xl border border-outline/20 dark:border-white/10 bg-surface-elevated px-8 py-4 text-base font-bold text-gray-900 dark:text-white transition-all duration-300 hover:shadow-elevation-1"
+        >
+          View Work
+          <span class="material-symbols-outlined" aria-hidden="true">layers</span>
+        </a>
+
+        <!-- Rendered only once SITE.resumeUrl points at a real file, so this can
+             never become a download button that 404s. -->
+        @if (site.resumeUrl) {
+          <a
+            [href]="site.resumeUrl"
+            download
+            class="flex items-center gap-2 rounded-2xl px-8 py-4 text-base font-bold text-gray-700 dark:text-gray-200 underline-offset-4 transition-all duration-300 hover:underline"
+          >
+            Résumé
+            <span class="material-symbols-outlined" aria-hidden="true">download</span>
+          </a>
+        }
+      </div>
+
+      <!-- A list, not a <dl>: dt/dd can't be nested inside the wrapper divs this
+           layout needs, and the value-above-label order would put dd before dt. -->
+      <ul class="mt-8 flex list-none gap-6">
+        @for (stat of stats; track stat.label; let last = $last) {
+          <li class="flex items-center gap-3">
+            <span
+              class="flex h-12 w-12 shrink-0 items-center justify-center rounded-xl"
+              [class]="stat.iconClass"
+              aria-hidden="true"
+            >
+              <span class="material-symbols-outlined">{{ stat.icon }}</span>
+            </span>
+            <p>
+              <span
+                class="block text-2xl font-black leading-none text-gray-900 dark:text-gray-100"
+                >{{ stat.value }}</span
+              >
+              <span class="block text-sm font-medium text-gray-600 dark:text-gray-300">{{
+                stat.label
+              }}</span>
             </p>
-            <div class="flex flex-wrap gap-4 mt-2">
-                <a class="bg-primary text-on-primary px-8 py-4 rounded-2xl text-base font-bold shadow-elevation-1 hover:shadow-elevation-3 hover:-translate-y-1 transition-all duration-300 flex items-center gap-2 group"
-                    routerLink="/contact">
-                    Hire Me
-                    <span
-                        class="material-symbols-outlined group-hover:translate-x-1 transition-transform">arrow_forward</span>
-                </a>
-                <a class="bg-surface-elevated border border-outline/20 text-[#181811] hover:bg-gray-50 px-8 py-4 rounded-2xl text-base font-bold transition-all duration-300 flex items-center gap-2 hover:shadow-elevation-1"
-                    routerLink="/projects">
-                    View Work
-                    <span class="material-symbols-outlined">layers</span>
-                </a>
-            </div>
-            <div class="mt-8 flex gap-6">
-                <div class="flex items-center gap-3">
-                    <div class="h-12 w-12 rounded-xl bg-tertiary/10 flex items-center justify-center text-tertiary">
-                        <span class="material-symbols-outlined">code_blocks</span>
-                    </div>
-                    <div>
-                        <p class="text-2xl dark:text-gray-300 font-black leading-none">4+</p>
-                        <p class="text-sm font-medium text-gray-500">Years Exp.</p>
-                    </div>
-                </div>
-                <div class="w-px h-12 bg-gray-200"></div>
-                <div class="flex items-center gap-3">
-                    <div class="h-12 w-12 rounded-xl bg-primary/20 flex items-center justify-center text-yellow-700">
-                        <span class="material-symbols-outlined">rocket_launch</span>
-                    </div>
-                    <div>
-                        <p class="text-2xl dark:text-gray-300 font-black leading-none">20+</p>
-                        <p class="text-sm font-medium text-gray-500">Projects</p>
-                    </div>
-                </div>
-            </div>
-        </div>
+          </li>
+          @if (!last) {
+            <li class="h-12 w-px bg-gray-200 dark:bg-white/10" aria-hidden="true"></li>
+          }
+        }
+      </ul>
     </div>
+
+    <div class="relative flex items-center justify-center md:order-last lg:translate-x-10">
+      <div
+        class="group relative aspect-[4/5] w-full max-w-md overflow-hidden rounded-b-[3rem] rounded-t-[10rem] bg-surface-elevated shadow-elevation-3 transition-transform duration-500 hover:scale-[1.02]"
+      >
+        <div
+          class="absolute inset-0 z-10 bg-gradient-to-t from-black/50 via-transparent to-transparent"
+        ></div>
+        <!-- LCP image: intrinsic dimensions reserve the box (no layout shift) and
+             fetchpriority pulls it out of the default low-priority queue. -->
+        <img
+          src="/profile.webp"
+          alt="Portrait of {{ site.name }}"
+          width="1696"
+          height="2528"
+          fetchpriority="high"
+          decoding="async"
+          class="h-full w-full object-cover"
+        />
+        <p
+          class="absolute bottom-6 right-6 z-20 max-w-[180px] rounded-2xl border border-white/50 dark:border-white/10 bg-white/90 dark:bg-surface/90 p-4 shadow-lg backdrop-blur-md"
+        >
+          <span class="mb-1 flex items-center gap-2 text-tertiary">
+            <span class="material-symbols-outlined text-xl" aria-hidden="true"
+              >location_on</span
+            >
+            <span class="text-xs font-bold uppercase tracking-wider">Located in</span>
+          </span>
+          <span class="block font-bold leading-tight text-gray-900 dark:text-white">{{
+            site.location
+          }}</span>
+        </p>
+      </div>
+
+      <div
+        class="absolute -bottom-4 left-6 z-20 flex size-14 rotate-12 items-center justify-center rounded-3xl bg-primary shadow-elevation-2 animate-float md:size-16"
+        aria-hidden="true"
+      >
+        <span class="material-symbols-outlined text-3xl text-on-primary">emoji_objects</span>
+      </div>
+    </div>
+  </div>
 </section>

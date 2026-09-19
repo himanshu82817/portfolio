@@ -1,0 +1,84 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 600 400" width="600" height="400" role="img" aria-label="Abstract illustration of the Fliptoe platform: a video call on a phone, connected through a realtime hub to a ledger and a live stream">
+  <defs>
+    <linearGradient id="fp-bg" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0%" stop-color="#1c1422"/>
+      <stop offset="100%" stop-color="#0d0b11"/>
+    </linearGradient>
+    <pattern id="fp-dots" width="24" height="24" patternUnits="userSpaceOnUse">
+      <circle cx="2" cy="2" r="1.2" fill="#ffffff" opacity="0.07"/>
+    </pattern>
+    <linearGradient id="fp-tile-a" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0%" stop-color="#3b2d6e"/>
+      <stop offset="100%" stop-color="#241b45"/>
+    </linearGradient>
+    <linearGradient id="fp-tile-b" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0%" stop-color="#1d4a33"/>
+      <stop offset="100%" stop-color="#12301f"/>
+    </linearGradient>
+  </defs>
+
+  <rect width="600" height="400" fill="url(#fp-bg)"/>
+  <rect width="600" height="400" fill="url(#fp-dots)"/>
+
+  <!-- connections: phone → hub → ledger / stream -->
+  <g stroke="#a791ff" stroke-opacity="0.45" stroke-width="2" fill="none" stroke-dasharray="3 7" stroke-linecap="round">
+    <path d="M222 170 C 262 170, 270 200, 306 200"/>
+    <path d="M354 200 C 390 200, 392 120, 420 120"/>
+    <path d="M354 200 C 390 200, 392 282, 420 282"/>
+  </g>
+
+  <!-- phone: 1:1 video call -->
+  <g transform="translate(72 44)">
+    <rect width="150" height="312" rx="26" fill="#17141c" stroke="#ffffff" stroke-opacity="0.12" stroke-width="2"/>
+
+    <rect x="10" y="12" width="130" height="136" rx="16" fill="url(#fp-tile-a)"/>
+    <circle cx="75" cy="68" r="22" fill="#a791ff" opacity="0.85"/>
+    <path d="M37 148 C 40 112, 110 112, 113 148 Z" fill="#a791ff" opacity="0.55"/>
+    <rect x="18" y="20" width="36" height="14" rx="7" fill="#ea4335"/>
+    <circle cx="26" cy="27" r="3" fill="#ffffff"/>
+    <rect x="32" y="24.5" width="16" height="5" rx="2.5" fill="#ffffff" opacity="0.9"/>
+
+    <rect x="10" y="156" width="130" height="104" rx="16" fill="url(#fp-tile-b)"/>
+    <circle cx="75" cy="196" r="17" fill="#39e079" opacity="0.85"/>
+    <path d="M45 260 C 48 230, 102 230, 105 260 Z" fill="#39e079" opacity="0.5"/>
+
+    <circle cx="43" cy="286" r="12" fill="#ffffff" opacity="0.14"/>
+    <circle cx="75" cy="286" r="14" fill="#ea4335"/>
+    <rect x="68" y="284" width="14" height="4" rx="2" fill="#ffffff"/>
+    <circle cx="107" cy="286" r="12" fill="#ffffff" opacity="0.14"/>
+  </g>
+
+  <!-- gift -->
+  <g transform="translate(240 78) rotate(12)">
+    <polygon points="0,-18 16,-5 0,20 -16,-5" fill="#a791ff"/>
+    <polygon points="0,-18 16,-5 0,-1 -16,-5" fill="#ffffff" opacity="0.35"/>
+    <line x1="-16" y1="-5" x2="16" y2="-5" stroke="#1c1422" stroke-opacity="0.4" stroke-width="1.5"/>
+  </g>
+
+  <!-- realtime hub -->
+  <g transform="translate(330 200)">
+    <circle r="46" fill="#39e079" opacity="0.06"/>
+    <circle r="34" fill="none" stroke="#39e079" stroke-opacity="0.35" stroke-width="1.5"/>
+    <circle r="24" fill="#39e079"/>
+    <path d="M-9 -7 h18 M-9 0 h18 M-9 7 h12" stroke="#181811" stroke-width="3" stroke-linecap="round"/>
+  </g>
+
+  <!-- ledger -->
+  <g transform="translate(420 70)">
+    <rect width="128" height="100" rx="16" fill="#ffffff" fill-opacity="0.06" stroke="#ffffff" stroke-opacity="0.1"/>
+    <polygon points="22,16 29,22 22,33 15,22" fill="#a791ff"/>
+    <rect x="38" y="19" width="64" height="9" rx="4.5" fill="#ffffff" opacity="0.55"/>
+    <rect x="16" y="46" width="96" height="7" rx="3.5" fill="#ffffff" opacity="0.2"/>
+    <rect x="16" y="62" width="74" height="7" rx="3.5" fill="#ffffff" opacity="0.2"/>
+    <rect x="16" y="78" width="86" height="7" rx="3.5" fill="#39e079" opacity="0.55"/>
+  </g>
+
+  <!-- live stream -->
+  <g transform="translate(420 232)">
+    <rect width="128" height="100" rx="16" fill="#ffffff" fill-opacity="0.06" stroke="#ffffff" stroke-opacity="0.1"/>
+    <rect x="12" y="12" width="104" height="54" rx="10" fill="#2a2145"/>
+    <path d="M58 29 L74 39 L58 49 z" fill="#ffffff"/>
+    <rect x="16" y="78" width="96" height="6" rx="3" fill="#ffffff" opacity="0.14"/>
+    <rect x="16" y="78" width="60" height="6" rx="3" fill="#ea4335"/>
+  </g>
+</svg>

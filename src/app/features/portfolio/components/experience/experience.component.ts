@@ -1,98 +1,125 @@
+import { NgClass } from '@angular/common';
+import {
+  AfterViewInit,
+  ChangeDetectionStrategy,
+  Component,
+  DestroyRef,
+  ElementRef,
+  NgZone,
+  inject,
+  viewChild,
+} from '@angular/core';
 
-import { CommonModule } from '@angular/common';
-import { Component, ElementRef, HostListener, ViewChild, AfterViewInit, ViewChildren, QueryList } from '@angular/core';
+interface Job {
+  role: string;
+  company: string;
+  period: string;
+  description: string[];
+  tags: string[];
+  current?: boolean;
+}
 
 @Component({
   selector: 'app-experience',
   standalone: true,
-  imports: [CommonModule],
-  templateUrl: './experience.component.html'
+  imports: [NgClass],
+  changeDetection: ChangeDetectionStrategy.OnPush,
+  templateUrl: './experience.component.html',
 })
 export class ExperienceComponent implements AfterViewInit {
-  @ViewChild('timeline') timeline: ElementRef | undefined;
+  private readonly zone = inject(NgZone);
+  private readonly destroyRef = inject(DestroyRef);
+  private readonly timeline = viewChild<ElementRef<HTMLElement>>('timeline');
 
-  experiences = [
+  readonly experiences: readonly Job[] = [
     {
       role: 'Software Developer',
       company: 'SMC Finance',
-      period: 'Oct 2023 - Present',
+      period: 'Oct 2023 – Present',
+      current: true,
       description: [
-        'Worked on a Loan Origination System used by credit and operations teams.',
-        'Built and enhanced multiple frontend modules using Angular.',
-        'Improved UI performance by optimizing Angular reactive forms, significantly reducing load time.',
-        'Reduced API calls by implementing caching and efficient state management.'
+        'Work on a Loan Origination System used daily by credit and operations teams.',
+        'Built and enhanced multiple frontend modules in Angular.',
+        'Cut page load time by optimising Angular reactive forms.',
+        'Reduced API calls through response caching and tighter state management.',
       ],
-      tags: ['Angular', 'TypeScript', 'Performance Optimization', 'Caching', 'SQL'],
-      dotColor: 'bg-primary'
+      tags: ['Angular', 'TypeScript', 'Performance', 'Caching', 'SQL'],
     },
     {
       role: 'Solution Developer',
       company: 'iTech Mission Pvt. Ltd.',
-      period: 'Sep 2022 - Aug 2023',
+      period: 'Sep 2022 – Aug 2023',
       description: [
-        'Built interactive data visualization and chart dashboards for internal and external stakeholders.',
-        'Integrated business intelligence modules with backend services to display real-time insights.',
-        'Worked on web application features using Angular and REST APIs.',
-        'Collaborated with cross-functional teams to refine requirements and implement UI enhancements.'
+        'Built interactive data visualisation and chart dashboards for internal and external stakeholders.',
+        'Integrated business intelligence modules with backend services for real-time insight.',
+        'Developed web application features using Angular and REST APIs.',
+        'Worked with cross-functional teams to refine requirements and ship UI improvements.',
       ],
-      tags: ['Angular', 'Data Visualization', 'TypeScript','React','MongoDB'],
-       dotColor: 'bg-surface-variant'
+      tags: ['Angular', 'React', 'Data Visualization', 'TypeScript', 'MongoDB'],
     },
     {
       role: 'Full Stack Developer',
       company: 'Almondz Global Securities Ltd.',
-      period: 'Dec 2021 - Sep 2022',
+      period: 'Dec 2021 – Sep 2022',
       description: [
-        'Developed the Learning Management System used for internal training and employee upskilling.',
+        'Developed the Learning Management System used for internal training and upskilling.',
         'Worked on internal financial and operations management systems.',
-        'Built frontend features using Angular and backend services with Node.js.',
-        'Integrated SQL databases and optimized complex queries for reporting modules.'
+        'Built frontend features in Angular and backend services in Node.js.',
+        'Integrated SQL databases and optimised complex reporting queries.',
       ],
-      tags: ['Angular', 'Node.js', 'SQL', 'Full Stack', 'JavaScript', 'MongoDB'],
-      dotColor: 'bg-surface-variant'
-    }
+      tags: ['Angular', 'Node.js', 'SQL', 'JavaScript', 'MongoDB'],
+    },
   ];
 
-  ngAfterViewInit() {
-    // Defer the initial call to ensure all elements are rendered
-    setTimeout(() => this.updateGlareEffect(), 0);
+  ngAfterViewInit(): void {
+    // The rail highlight is decorative and touches only inline styles, so it runs
+    // entirely outside Angular — no change detection is triggered by scrolling.
+    this.zone.runOutsideAngular(() => {
+      let ticking = false;
+
+      const onScroll = () => {
+        if (ticking) return;
+        ticking = true;
+        requestAnimationFrame(() => {
+          this.paintRailHighlight();
+          ticking = false;
+        });
+      };
+
+      window.addEventListener('scroll', onScroll, { passive: true });
+      window.addEventListener('resize', onScroll, { passive: true });
+      this.destroyRef.onDestroy(() => {
+        window.removeEventListener('scroll', onScroll);
+        window.removeEventListener('resize', onScroll);
+      });
+
+      this.paintRailHighlight();
+    });
   }
 
-  @HostListener('window:scroll', [])
-  onWindowScroll() {
-    this.updateGlareEffect();
-  }
+  /** Moves a bright band down the timeline rail as it passes the viewport centre. */
+  private paintRailHighlight(): void {
+    const el = this.timeline()?.nativeElement;
+    if (!el) return;
 
-  // Helper to convert hex color format to rgba
-  private hexToRgba(hex: string, alpha: number = 1): string {
-    let c: any;
-    if (/^#([A-Fa-f0-9]{3}){1,2}$/.test(hex)) {
-        c = hex.substring(1).split('');
-        if (c.length === 3) {
-            c = [c[0], c[0], c[1], c[1], c[2], c[2]];
-        }
-        c = '0x' + c.join('');
-        return `rgba(${[(c >> 16) & 255, (c >> 8) & 255, c & 255].join(',')},${alpha})`;
-    }
-    return hex; // Fallback if format is not hex
-  }
+    const rect = el.getBoundingClientRect();
+    if (rect.height === 0) return;
 
-  private updateGlareEffect() {
-    const style = getComputedStyle(document.documentElement);
-    const isDarkMode = document.documentElement.classList.contains('dark');
-    const viewportCenter = window.innerHeight / 2;
+    const progress = ((window.innerHeight / 2 - rect.top) / rect.height) * 100;
+    const clamped = Math.max(0, Math.min(100, progress));
 
-    // 1. Update Timeline Gradient
-    if (this.timeline) {
-      const timelineEl = this.timeline.nativeElement;
-      const timelineRect = timelineEl.getBoundingClientRect();
-      const centerRelativeToTimeline = viewportCenter - timelineRect.top;
-      const percentage = (centerRelativeToTimeline / timelineRect.height) * 100;
-      
-      const brightColor = style.getPropertyValue('--primary').trim() || '#FF4081';
-      const dullColor = isDarkMode ? 'rgba(255, 255, 255, 0.1)' : 'rgba(0, 0, 0, 0.1)';
+    // Reads the live theme token defined in styles.css. Previously this looked up
+    // a variable that was never declared and silently fell back to hot pink.
+    const channels = getComputedStyle(document.documentElement)
+      .getPropertyValue('--primary')
+      .trim();
+    const bright = channels ? `rgb(${channels})` : '#39e079';
+    const dull = document.documentElement.classList.contains('dark')
+      ? 'rgba(255, 255, 255, 0.12)'
+      : 'rgba(0, 0, 0, 0.10)';
 
-      timelineEl.style.background = `linear-gradient(to bottom, ${dullColor}, ${dullColor} ${percentage - 10}%, ${brightColor} ${percentage}%, ${dullColor} ${percentage + 10}%, ${dullColor})`;
-    }
+    el.style.backgroundImage =
+      `linear-gradient(to bottom, ${dull}, ${dull} ${clamped - 10}%, ` +
+      `${bright} ${clamped}%, ${dull} ${clamped + 10}%, ${dull})`;
   }
 }
