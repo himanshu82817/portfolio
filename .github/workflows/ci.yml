@@ -35,6 +35,11 @@ jobs:
       - name: Production build
         run: npm run build
 
+      # Already run by the build's postbuild step; repeated so the artifact below,
+      # which anyone signed in to GitHub can download, is checked however it was built.
+      - name: No unpublished case studies in the build
+        run: npm run check:dist
+
       - name: Upload build output
         uses: actions/upload-artifact@v4
         with:

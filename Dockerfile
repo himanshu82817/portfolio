@@ -15,7 +15,13 @@ COPY package.json package-lock.json ./
 RUN npm ci --no-audit --no-fund
 
 COPY . .
-RUN npm run build
+
+# Which npm script builds the site. The default is the production build, which
+# ends by running scripts/check-dist.mjs and so refuses to produce an image that
+# contains an unpublished case study. The dev environment passes build:staging
+# instead — the one deliberate exception; see deploy-dev.yml.
+ARG BUILD_SCRIPT=build
+RUN npm run "$BUILD_SCRIPT"
 
 # --- serve -------------------------------------------------------------------
 # The unprivileged image runs nginx as a non-root user and listens on 8080,

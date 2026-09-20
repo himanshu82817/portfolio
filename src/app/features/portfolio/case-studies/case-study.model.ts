@@ -6,8 +6,9 @@
  * system can't express (dangling diagram edges, empty sections on a published
  * study) live in case-studies.spec.ts.
  *
- * To add a project: create `data/<slug>.ts` exporting a `CaseStudy`, then add it
- * to `CASE_STUDIES` in registry.ts. Nothing else needs to change.
+ * To add a project: create `data/<slug>.ts` exporting a `CaseStudy`, then list it in
+ * data/drafts.development.ts and put its assets in public-drafts/. Nothing else needs
+ * to change until it is published — see `CaseStudy.published`.
  */
 
 /**
@@ -115,9 +116,18 @@ export interface CaseStudy {
   cover: { src: string; alt: string };
 
   /**
-   * Unpublished case studies are only reachable in development builds, where
-   * they render with a draft banner and their open questions. Production builds
-   * don't list or route to them at all.
+   * Unpublished case studies exist only in development builds, where they render
+   * with a draft banner and their open questions.
+   *
+   * This flag alone does not keep one out of production: it drives a runtime
+   * filter, and filtered text still ships in the bundle. What keeps a draft out is
+   * where it is listed. data/drafts.development.ts is compiled only by `ng serve`,
+   * development builds, the tests and the staging build for the dev site;
+   * data/published.ts is compiled by every build.
+   * So publishing is three moves: set this to `true` (and empty `openQuestions`),
+   * move the study from the first barrel to the second, and move its assets from
+   * public-drafts/ to public/. case-studies.spec.ts fails if the flag and the barrel
+   * disagree, and scripts/check-dist.mjs fails a build that contains a draft.
    */
   published: boolean;
 
@@ -139,7 +149,12 @@ export interface CaseStudy {
   links: { label: string; url: string; kind: 'live' | 'repo' | 'store' | 'docs' }[];
   gallery: { src: string; alt: string; caption?: string }[];
 
-  /** Things only the owner can supply. Rendered as a checklist on draft pages only. */
+  /**
+   * Things only the owner can supply. Rendered as a checklist on draft pages only.
+   * Internal notes: a published study must have none. A draft's are only ever
+   * rendered by a development build; the staging build hides the panel, though
+   * the text is still inside its bundle.
+   */
   openQuestions: string[];
 
   seo: { title: string; description: string };

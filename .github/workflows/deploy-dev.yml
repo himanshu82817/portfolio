@@ -82,9 +82,14 @@ jobs:
       # The image compiles the app itself (see Dockerfile), so this job needs no
       # Node. Tagged with the commit: every revision on Cloud Run traces back to
       # exactly one commit, and a rollback is a redeploy of an older tag.
+      #
+      # build:staging is the production build plus the unpublished case studies, so
+      # they can be reviewed on the dev site as a visitor would see them. It is the
+      # only place a draft is shipped on purpose: the dev site sends noindex on every
+      # response, but it is public — anyone with the URL can read a draft there.
       - name: Build and push image
         run: |
-          docker build --tag "$IMAGE:$GITHUB_SHA" .
+          docker build --build-arg BUILD_SCRIPT=build:staging --tag "$IMAGE:$GITHUB_SHA" .
           docker push "$IMAGE:$GITHUB_SHA"
 
       # Only the image changes. Port, scaling, the runtime service account and

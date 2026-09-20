@@ -129,7 +129,20 @@
    `background-attachment: fixed` repaints the viewport on every scroll frame
    and iOS Safari ignores it outright, whereas a fixed layer is rasterised once
    and composited. With no stacking context on <body>, z-index -1 lands the
-   layer above the canvas colour but beneath every piece of content. */
+   layer above the canvas colour but beneath every piece of content.
+
+   Every backdrop layer is a fixed SIZE, hung from the BOTTOM of the viewport,
+   and both halves of that matter on a phone. When the URL bar slides away the
+   visible viewport grows by the bar's height:
+   - a layer sized to the viewport (inset: 0) gets resized when the bar settles,
+     so the canvas is reallocated and everything drawn on it jumps;
+   - a layer hung from the top rides up with the bar, because on Android the
+     top edge is the one that moves.
+   The bottom edge is the one that stays put on screen. The nav pill hangs off it
+   and the black hole is drawn at the canvas's bottom edge right behind the pill,
+   so hanging the backdrop from the same edge, at the large-viewport height,
+   keeps all three still while the bar comes and goes. (The top of the layer is
+   simply hidden behind the bar while it is showing.) */
 .site-backdrop {
   background-color: rgb(var(--surface));
   transition: background-color 300ms ease;
@@ -139,11 +152,11 @@
 .site-backdrop::after {
   content: '';
   position: fixed;
-  top: 0;
+  bottom: 0;
   left: 0;
   width: 100%;
-  /* lvh is sized for a retracted mobile URL bar, so no strip of bare ground
-     shows while the bar slides away. vh is the fallback. */
+  /* lvh: the viewport with the URL bar retracted. Plain vh is the fallback, and
+     on mobile browsers it already means the same thing. */
   height: 100vh;
   height: 100lvh;
   z-index: -1;
@@ -201,10 +214,17 @@ html.dark .site-backdrop::after {
 
 /* Interactive layer (BackdropComponent) ------------------------------------
    Sits between the two body pseudo-elements in paint order: above the paper /
-   star tiles, below the doodle / twinkle layer. */
+   star tiles, below the doodle / twinkle layer. The same box as those two —
+   hung from the bottom, large-viewport tall — so the ink reveal stays
+   registered with the doodle tile and the canvas is never resized by the URL
+   bar. BackdropComponent converts pointer positions into this box. */
 .backdrop {
   position: fixed;
-  inset: 0;
+  right: 0;
+  bottom: 0;
+  left: 0;
+  height: 100vh;
+  height: 100lvh;
   z-index: -1;
   overflow: hidden;
   pointer-events: none;

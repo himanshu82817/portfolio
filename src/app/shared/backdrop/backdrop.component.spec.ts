@@ -79,4 +79,35 @@ describe('BackdropComponent', () => {
       done();
     });
   });
+
+  it('places a tap inside the backdrop box, which is taller than the screen while a phone’s URL bar shows', done => {
+    const el = create();
+    const box = el.querySelector<HTMLElement>('.backdrop')!;
+    // The box hangs from the bottom of the viewport at the large-viewport height,
+    // so with a 56px URL bar showing, its top edge is 56px above the visible area.
+    const bar = 56;
+    box.style.height = `${window.innerHeight + bar}px`;
+
+    // The component learns the new size from its ResizeObserver, a frame later.
+    requestAnimationFrame(() =>
+      requestAnimationFrame(() => {
+        window.dispatchEvent(
+          new PointerEvent('pointerdown', {
+            clientX: 40,
+            clientY: 100,
+            isPrimary: true,
+            button: 0,
+            pointerType: 'touch',
+          })
+        );
+
+        const ripple = el.querySelector('.backdrop__ripple')!;
+        const effect = ripple.getAnimations()[0].effect as KeyframeEffect;
+        expect(String(effect.getKeyframes()[0]['transform']))
+          .withContext('100px down the screen is 156px down the box')
+          .toContain(`translate(40px, ${100 + bar}px)`);
+        done();
+      })
+    );
+  });
 });

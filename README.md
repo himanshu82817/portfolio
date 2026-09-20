@@ -16,8 +16,10 @@ The dev server runs at `http://localhost:4200/` and reloads on change.
 | Command | What it does |
 | --- | --- |
 | `npm start` | Dev server with HMR |
-| `npm run build` | Production build into `dist/portfolio/browser` |
-| `npm run watch` | Development build, rebuilding on change |
+| `npm run build` | Production build into `dist/portfolio/browser`, then `check:dist` |
+| `npm run check:dist` | Fails if the build output contains an unpublished case study |
+| `npm run build:staging` | The production build plus the draft case studies — what the dev site runs |
+| `npm run watch` | Development build, rebuilding on change — contains drafts, never deploy it |
 | `npm test` | Unit tests, watch mode |
 | `npm run test:ci` | Unit tests once, headless — what CI runs |
 
@@ -71,6 +73,7 @@ that use that convention instead.
 | Deploys from | pushes to `master` — `.github/workflows/deploy.yml` | pushes to `dev` — `.github/workflows/deploy-dev.yml` |
 | Access to GCP | an SSH key in the `GCP_SSH_KEY` secret | keyless: Workload Identity Federation, nothing stored |
 | Search engines | indexed | `X-Robots-Tag: noindex` on every response |
+| Draft case studies | never compiled in (`check-dist` enforces it) | compiled in for review (`build:staging`) |
 
 To try something on the dev site, push it to the `dev` branch (or run the *Deploy dev*
 workflow by hand against any branch). Each deploy is an image tagged with its commit
@@ -97,8 +100,10 @@ src/app/
   shared/components/          Navbar, footer
   features/portfolio/         One component per route
 public/backgrounds/           Paper, doodle and star tiles behind every page
+public-drafts/                Assets of unpublished case studies — development builds only
 deploy/                       nginx config for the VM; cloudrun/ holds the dev container's
 scripts/generate-starfield.mjs  Regenerates the star tiles, deterministically
+scripts/check-dist.mjs          Fails a build that contains an unpublished case study
 ```
 
 **Theming.** Brand colours live once, as RGB channel triples on `:root` in
@@ -128,6 +133,40 @@ wherever WebGL is unavailable or software-rendered.
 
 **Routing.** Every route is lazy-loaded via `loadComponent`. Route `data.seo` drives
 the document title and meta description. A `**` route renders a real 404 page.
+
+**Case studies and drafts.** Each case study is one file in
+`features/portfolio/case-studies/data/`. An unpublished one is kept out of production
+**at build time**, not hidden at runtime — the site is public, so anything in the
+bundle is published whether or not a route leads to it.
+
+- `data/published.ts` lists the studies every build compiles. `data/drafts.ts` is an
+  empty list. `data/drafts.development.ts` lists the drafts, and `angular.json` swaps it
+  in for `drafts.ts` (`fileReplacements`) in the **development** and **staging**
+  configurations and the **test** target only. A production build never reads a
+  draft's file, so none of its text — `openQuestions` included — exists in the output.
+  A new build configuration gets no drafts unless it opts in.
+- Draft images live in `public-drafts/`, which only those same configurations copy.
+  `public/` ships everywhere.
+- **Staging** is how drafts are reviewed on the dev site. It holds only what differs
+  from production and is layered on it — `ng build --configuration production,staging`
+  (`npm run build:staging`) — so it is the same optimised, map-free build with the
+  drafts compiled in. Drafts are listed with a "Draft" badge and banner; the "Still
+  needed from you" panel stays development-only, though its text is in the bundle.
+  The dev site sends `noindex` but is **public**: anyone with the URL can read a draft
+  there. `deploy-dev.yml` selects it with `--build-arg BUILD_SCRIPT=build:staging`; the
+  image's default is the checked production build.
+- `npm start` is unchanged: drafts are listed, routable, and show the draft banner and
+  the "Still needed from you" panel.
+- To publish a study: set `published: true` and empty its `openQuestions`; move it from
+  `drafts.development.ts` to `published.ts`; move its folder from `public-drafts/` to
+  `public/`. A unit test fails if the flag and the barrel disagree.
+- `scripts/check-dist.mjs` runs after every `npm run build` and fails it if the output
+  contains a draft's name, slug, assets or text. It reports which fields it found, not
+  the text itself, because CI logs are public.
+
+Never deploy a development build, and never point a deployed environment at the
+development configuration to preview a draft: that publishes the drafts, their notes
+panel and the source maps. Preview drafts with `npm start`, or on the dev site.
 
 ## Testing
 

@@ -80,7 +80,17 @@ export class BackdropComponent {
   private revealId = 0;
   private liveTimer: ReturnType<typeof setTimeout> | undefined;
 
+  /** Last pointer position, in viewport coordinates as the events report it. */
   private readonly pointer = { x: -1, y: -1, inside: false };
+
+  /**
+   * Size of the backdrop box in CSS pixels. Not the window's: the box hangs from
+   * the bottom of the viewport at the large-viewport height (.backdrop in
+   * styles.css), so on a phone it is taller than the visible area while the URL
+   * bar is showing, and — the point of it — does not change when the bar moves.
+   */
+  private width = 0;
+  private height = 0;
 
   /** Cached because reading offsetWidth on every pointer move forces layout. */
   private revealHalf = 0;
@@ -123,10 +133,38 @@ export class BackdropComponent {
 
     on(window, 'pointermove', e => this.onMove(e as PointerEvent));
     on(window, 'pointerdown', e => this.onDown(e as PointerEvent));
-    on(window, 'resize', () => this.onResize());
     on(window, 'blur', () => this.leave());
     on(document.documentElement, 'pointerleave', () => this.leave());
     on(document, 'visibilitychange', () => this.onVisibility());
+
+    // The box is watched rather than the window. On a phone `resize` fires every
+    // time the URL bar slides in or out; resizing the canvas then is exactly the
+    // jump this layout exists to avoid. The box only changes for a real reason —
+    // a rotation, or a desktop window being resized.
+    const root = this.root().nativeElement;
+    this.setSize(root.clientWidth, root.clientHeight);
+    const observer = new ResizeObserver(([entry]) =>
+      this.setSize(entry.contentRect.width, entry.contentRect.height)
+    );
+    observer.observe(root);
+    this.destroyRef.onDestroy(() => observer.disconnect());
+  }
+
+  private setSize(width: number, height: number): void {
+    if (width === this.width && height === this.height) return;
+    this.width = width;
+    this.height = height;
+    this.onResize();
+  }
+
+  /**
+   * Viewport y → y inside the backdrop box. While a phone's URL bar is showing,
+   * the box's top edge sits above the visible area by the bar's height, so a tap
+   * at the top of the screen is that far down the box. On a desktop the box and
+   * the viewport are the same height and this changes nothing.
+   */
+  private toBoxY(clientY: number): number {
+    return this.height ? clientY - (window.innerHeight - this.height) : clientY;
   }
 
   private applyTheme(dark: boolean): void {
@@ -159,8 +197,9 @@ export class BackdropComponent {
     if (this.reducedMotion || !e.isPrimary) return;
     if (e.pointerType === 'mouse' && e.button !== 0) return;
 
-    if (this.hole) this.hole.pulse(e.clientX, e.clientY);
-    else this.splash(e.clientX, e.clientY);
+    const y = this.toBoxY(e.clientY);
+    if (this.hole) this.hole.pulse(e.clientX, y);
+    else this.splash(e.clientX, y);
   }
 
   private leave(): void {
@@ -181,7 +220,7 @@ export class BackdropComponent {
     if (!this.revealHalf) this.revealHalf = el.offsetWidth / 2;
 
     const x = this.pointer.x - this.revealHalf;
-    const y = this.pointer.y - this.revealHalf;
+    const y = this.toBoxY(this.pointer.y) - this.revealHalf;
     el.style.transform = `translate3d(${x}px, ${y}px, 0)`;
     el.style.backgroundPosition = `${-x}px ${-y}px`;
     el.classList.add('is-active');
@@ -283,7 +322,7 @@ export class BackdropComponent {
 
     // Until the pointer has been seen the renderer keeps it parked on the hole.
     if (this.pointer.x >= 0) {
-      this.hole.setPointer(this.pointer.x, this.pointer.y, this.pointer.inside);
+      this.hole.setPointer(this.pointer.x, this.toBoxY(this.pointer.y), this.pointer.inside);
     }
     this.hole.frame(t);
     if (this.settleFrames > 0 && --this.settleFrames === 0) this.calibrate();
@@ -293,13 +332,13 @@ export class BackdropComponent {
 
   private onResize(): void {
     this.revealHalf = 0;
-    if (!this.hole) return;
+    if (!this.hole || !this.width || !this.height) return;
 
-    this.hole.resize(window.innerWidth, window.innerHeight, this.dpr());
+    this.hole.resize(this.width, this.height, this.dpr());
     if (this.reducedMotion) this.hole.frame(0);
     // Shrinking never needs a re-measure, and measuring on every event of a
     // drag would stall the GPU throughout it.
-    if (window.innerWidth * window.innerHeight > this.calibratedArea * 1.5) {
+    if (this.width * this.height > this.calibratedArea * 1.5) {
       this.requestCalibration();
     }
   }
@@ -323,13 +362,13 @@ export class BackdropComponent {
    */
   private calibrate(): void {
     if (!this.hole) return;
-    this.calibratedArea = window.innerWidth * window.innerHeight;
+    this.calibratedArea = this.width * this.height;
 
     const sample = () => Math.min(this.hole!.measure(), this.hole!.measure());
     let ms = sample();
     while (ms > FRAME_BUDGET_MS && this.quality > 0.45) {
       this.quality *= 0.75;
-      this.hole.resize(window.innerWidth, window.innerHeight, this.dpr());
+      this.hole.resize(this.width, this.height, this.dpr());
       ms = sample();
     }
   }
