@@ -2,13 +2,12 @@
  * Single source of truth for site-wide facts that appear in more than one place
  * (SEO tags, structured data, the hero, the footer, the sitemap).
  *
- * ⚠️ BEFORE DEPLOYING: replace `siteUrl` with your real domain, and make the same
- * change in src/index.html, public/sitemap.xml and public/robots.txt. Search the
- * repo for PLACEHOLDER_DOMAIN to find every occurrence.
+ * `siteUrl` is the production origin. It is also written into src/index.html,
+ * public/sitemap.xml and public/robots.txt — change all four together.
  */
 export const SITE = {
   /** Absolute origin, no trailing slash. Used for canonical + Open Graph URLs. */
-  siteUrl: 'https://himanshusehlangia.com',
+  siteUrl: 'https://himanshusehlangia.dev',
 
   name: 'Himanshu Sehlangia',
   shortName: 'Himanshu',

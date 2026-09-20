@@ -1,5 +1,5 @@
 User-agent: *
 Allow: /
 
-# ⚠️ PLACEHOLDER_DOMAIN — replace with your real origin before deploying.
-Sitemap: https://himanshusehlangia.com/sitemap.xml
+# The production origin — also in src/index.html, site.config.ts and sitemap.xml.
+Sitemap: https://himanshusehlangia.dev/sitemap.xml

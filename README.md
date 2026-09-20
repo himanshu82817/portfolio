@@ -23,20 +23,19 @@ The dev server runs at `http://localhost:4200/` and reloads on change.
 
 Node is pinned in `.nvmrc` (20.19.0). Run `nvm use` before installing.
 
-## Before you deploy — three things to set
+## Before you deploy — two things to set
 
-Search the repo for `PLACEHOLDER_DOMAIN` to find every spot that needs the real value.
+The production origin, `https://himanshusehlangia.dev`, is written in four places:
+`siteUrl` in [`src/app/core/site.config.ts`](src/app/core/site.config.ts),
+`src/index.html` (canonical + `og:*` + JSON-LD), `public/robots.txt` and
+`public/sitemap.xml` — change all four together. Canonical URLs *inside* the running
+app are derived from `window.location.origin`, so only the static tags carry it.
 
-1. **Your domain.** Set `siteUrl` in [`src/app/core/site.config.ts`](src/app/core/site.config.ts),
-   then update the same origin in `src/index.html` (canonical + `og:*` + JSON-LD),
-   `public/robots.txt` and `public/sitemap.xml`. Canonical URLs *inside* the running
-   app are derived from `window.location.origin`, so only the static tags need this.
-
-2. **Your résumé.** Drop `resume.pdf` into `public/` and set `resumeUrl: '/resume.pdf'`
+1. **Your résumé.** Drop `resume.pdf` into `public/` and set `resumeUrl: '/resume.pdf'`
    in `site.config.ts`. Until that value is set, the download button is not rendered
    at all — deliberately, so there is never a button that 404s.
 
-3. **The contact form.** Get a free access key from [web3forms.com](https://web3forms.com)
+2. **The contact form.** Get a free access key from [web3forms.com](https://web3forms.com)
    and set `contactFormKey` in `site.config.ts`. The key is a public submission
    token, safe to commit. **Until it is set the form falls back to opening the
    visitor's mail client with the message pre-filled** — so it always does something
@@ -63,6 +62,29 @@ that use that convention instead.
 > step in `.github/workflows/deploy.yml` — enable it once you have confirmed the
 > docroot path, since it deletes the directory contents.
 
+## Environments
+
+| | Production | Dev |
+|---|---|---|
+| URL | https://himanshusehlangia.dev | https://dev.himanshusehlangia.dev |
+| Runs on | nginx on a Compute Engine VM | a container on Cloud Run (scales to zero) |
+| Deploys from | pushes to `master` — `.github/workflows/deploy.yml` | pushes to `dev` — `.github/workflows/deploy-dev.yml` |
+| Access to GCP | an SSH key in the `GCP_SSH_KEY` secret | keyless: Workload Identity Federation, nothing stored |
+| Search engines | indexed | `X-Robots-Tag: noindex` on every response |
+
+To try something on the dev site, push it to the `dev` branch (or run the *Deploy dev*
+workflow by hand against any branch). Each deploy is an image tagged with its commit
+SHA, so rolling back is redeploying an older tag.
+
+Both environments serve the same production build. The container is described by the
+`Dockerfile` and `deploy/cloudrun/nginx.conf`; the VM by `deploy/nginx.conf`. The two
+nginx files carry the same rules — change them together.
+
+Everything that exists in Google Cloud for the dev environment — the service, the image
+registry and its clean-up policy, the two service accounts and what each may do, the
+GitHub trust, the domain mapping and its DNS record — is recorded, with the reasons, in
+`deploy/cloudrun/setup-gcp.sh`. It checks before it creates, so it is safe to re-run.
+
 ## Architecture
 
 ```
@@ -75,6 +97,7 @@ src/app/
   shared/components/          Navbar, footer
   features/portfolio/         One component per route
 public/backgrounds/           Paper, doodle and star tiles behind every page
+deploy/                       nginx config for the VM; cloudrun/ holds the dev container's
 scripts/generate-starfield.mjs  Regenerates the star tiles, deterministically
 ```
 

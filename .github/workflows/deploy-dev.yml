@@ -1,0 +1,107 @@
+name: Deploy dev (Cloud Run)
+
+# The dev environment: every push to `dev` is built into a container and rolled
+# out to Cloud Run behind https://dev.himanshusehlangia.dev. Production is a
+# separate path — master goes to the VM via deploy.yml.
+on:
+  push:
+    branches: [dev]
+  # Lets you put any branch on the dev site without merging it into `dev`. GitHub
+  # only shows the "Run workflow" button once this file exists on master, and the
+  # branch you pick must contain this file and the Dockerfile itself.
+  workflow_dispatch:
+
+concurrency:
+  group: deploy-dev
+  cancel-in-progress: true
+
+# Nothing by default; each job asks for exactly what it needs.
+permissions: {}
+
+# Identifiers, not credentials: none of these grants anything on its own. Access
+# is decided in GCP, which only trusts tokens issued to this repository's
+# immutable ID (see deploy/cloudrun/setup-gcp.sh).
+env:
+  PROJECT_ID: portfolio-hub-488305
+  REGION: us-central1
+  SERVICE: portfolio-dev
+  IMAGE: us-central1-docker.pkg.dev/portfolio-hub-488305/portfolio/portfolio-dev
+  WIF_PROVIDER: projects/235217673562/locations/global/workloadIdentityPools/github/providers/portfolio-repo
+  DEPLOYER: github-deployer@portfolio-hub-488305.iam.gserviceaccount.com
+
+jobs:
+  # Kept apart from the deploy on purpose. `npm ci` runs the install scripts of
+  # the whole dependency tree and the tests drive a browser over it; none of
+  # that should execute in a job that is able to mint a Google Cloud token.
+  test:
+    name: Unit tests
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version-file: .nvmrc
+          cache: npm
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Unit tests
+        run: npm run test:ci
+
+  deploy:
+    name: Build image and deploy
+    needs: test
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+      # Lets this job mint the short-lived OIDC token that GCP exchanges for
+      # access. There is no service-account key stored anywhere.
+      id-token: write
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Authenticate to Google Cloud
+        uses: google-github-actions/auth@v3
+        with:
+          workload_identity_provider: ${{ env.WIF_PROVIDER }}
+          service_account: ${{ env.DEPLOYER }}
+
+      - name: Set up gcloud
+        uses: google-github-actions/setup-gcloud@v3
+
+      - name: Let Docker push to Artifact Registry
+        run: gcloud auth configure-docker us-central1-docker.pkg.dev --quiet
+
+      # The image compiles the app itself (see Dockerfile), so this job needs no
+      # Node. Tagged with the commit: every revision on Cloud Run traces back to
+      # exactly one commit, and a rollback is a redeploy of an older tag.
+      - name: Build and push image
+        run: |
+          docker build --tag "$IMAGE:$GITHUB_SHA" .
+          docker push "$IMAGE:$GITHUB_SHA"
+
+      # Only the image changes. Port, scaling, the runtime service account and
+      # public access were set once when the service was created, and the
+      # deployer is deliberately not allowed to change who can reach it.
+      - name: Deploy to Cloud Run
+        id: deploy
+        uses: google-github-actions/deploy-cloudrun@v3
+        with:
+          project_id: ${{ env.PROJECT_ID }}
+          region: ${{ env.REGION }}
+          service: ${{ env.SERVICE }}
+          image: ${{ env.IMAGE }}:${{ github.sha }}
+
+      - name: Summary
+        env:
+          RUN_URL: ${{ steps.deploy.outputs.url }}
+        run: |
+          echo "Deployed \`${GITHUB_SHA::7}\` to https://dev.himanshusehlangia.dev" >> "$GITHUB_STEP_SUMMARY"
+          echo "Cloud Run URL: $RUN_URL" >> "$GITHUB_STEP_SUMMARY"

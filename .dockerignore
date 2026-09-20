@@ -1,0 +1,18 @@
+# Keeps the build context small and the layer cache stable: none of this is
+# needed to build the site, and node_modules / dist from the host would shadow
+# the ones the image builds for its own platform.
+.git
+.github
+.angular
+.claude
+.vscode
+node_modules
+dist
+coverage
+*.log
+.env
+.env.*
+# google-github-actions/auth drops its credential file in the workspace, which
+# is this build context. It must never be copied into an image layer.
+gha-creds-*.json
+README.md

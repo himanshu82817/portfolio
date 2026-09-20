@@ -1,0 +1,12 @@
+[
+  {
+    "name": "keep-newest",
+    "action": { "type": "Keep" },
+    "mostRecentVersions": { "keepCount": 5 }
+  },
+  {
+    "name": "delete-older-than-a-week",
+    "action": { "type": "Delete" },
+    "condition": { "olderThan": "7d" }
+  }
+]
