@@ -3,14 +3,14 @@ import { SITE, yearsOfExperience } from './site.config';
 describe('site config', () => {
   describe('yearsOfExperience', () => {
     it('counts whole years from the career start date', () => {
-      // Career started December 2021.
-      expect(yearsOfExperience(new Date(2025, 11, 1))).toBe(4);
+      // Career started June 2021.
+      expect(yearsOfExperience(new Date(2025, 5, 1))).toBe(4);
       expect(yearsOfExperience(new Date(2026, 0, 1))).toBe(4);
     });
 
     it('does not count the current year until the anniversary month', () => {
-      expect(yearsOfExperience(new Date(2026, 10, 30))).toBe(4); // November
-      expect(yearsOfExperience(new Date(2026, 11, 1))).toBe(5); // December
+      expect(yearsOfExperience(new Date(2026, 4, 31))).toBe(4); // May
+      expect(yearsOfExperience(new Date(2026, 5, 1))).toBe(5); // June
     });
 
     it('never returns a negative number', () => {

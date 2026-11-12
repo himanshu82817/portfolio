@@ -22,33 +22,47 @@ export class AboutComponent {
    * (VS Code).
    */
   readonly skillGroups: readonly SkillGroup[] = [
-    { name: 'Languages', skills: ['TypeScript', 'JavaScript', 'C++', 'SQL'] },
+    { name: 'Languages', skills: ['Go', 'TypeScript', 'JavaScript', 'C++', 'SQL'] },
     {
-      name: 'Frontend',
+      name: 'Backend',
       skills: [
-        'Angular',
-        'React',
-        'React Native',
-        'Tailwind CSS',
-        'Angular Material',
-        'PrimeNG',
-        'Material UI',
+        'NestJS',
+        'Node.js',
+        'REST APIs',
+        'WebSockets',
+        'WebRTC',
+        'Microservices',
+        'Event-driven architecture',
       ],
     },
     {
-      name: 'Backend & data',
-      skills: ['Node.js', 'NestJS', 'REST APIs', 'MySQL', 'PostgreSQL', 'MongoDB'],
+      name: 'Data',
+      skills: ['PostgreSQL', 'SQL Server', 'MongoDB', 'Redis', 'TypeORM'],
     },
-    { name: 'Cloud & tooling', skills: ['Google Cloud Platform', 'Docker', 'Git'] },
+    {
+      name: 'Streaming & media',
+      skills: ['RTMP', 'HLS', 'FFmpeg', 'MediaPipe'],
+    },
+    {
+      name: 'Cloud & tooling',
+      skills: [
+        'Google Cloud Run',
+        'Pub/Sub',
+        'Cloud KMS',
+        'Cloud Storage',
+        'Docker',
+        'GitHub Actions',
+      ],
+    },
+    { name: 'Frontend', skills: ['Angular', 'RxJS', 'NgRx', 'React Native'] },
     {
       name: 'Foundations',
       skills: [
         'Data Structures & Algorithms',
         'System Design (HLD & LLD)',
         'OOP & Design Patterns',
-        'Operating Systems',
-        'DBMS',
-        'Computer Networks',
+        'Distributed Systems',
+        'Concurrency',
       ],
     },
   ];
@@ -56,6 +70,6 @@ export class AboutComponent {
   readonly expertise = [
     { title: 'System Design', icon: 'architecture' },
     { title: 'Data Structures & Algorithms', icon: 'code' },
-    { title: 'Software Development', icon: 'folder_code' },
+    { title: 'Distributed Systems', icon: 'folder_code' },
   ];
 }

@@ -4,6 +4,7 @@ import {
   caseStudyExists,
   caseStudySeo,
 } from './features/portfolio/case-studies/case-study.routes';
+import { hasPosts, postExists, postSeo } from './features/writing/writing.routes';
 
 /**
  * Every route is lazy-loaded. The landing route is the only component most
@@ -21,11 +22,11 @@ export const routes: Routes = [
     data: {
       animation: 'home',
       seo: {
-        title: 'Full Stack Engineer',
+        title: 'Backend Engineer',
         description:
-          'Full Stack Engineer in New Delhi building Angular front-ends and Node/SQL ' +
-          'services for fintech and edtech — loan origination, learning platforms, and ' +
-          'the reporting systems behind them.',
+          'Backend engineer in New Delhi building financial infrastructure and real-time ' +
+          'systems in Go and TypeScript on GCP — loan origination, credit decisioning, ' +
+          'live video and event-driven services.',
       },
     },
   },
@@ -40,8 +41,8 @@ export const routes: Routes = [
       seo: {
         title: 'About',
         description:
-          'Background, technical skills and education — Angular, TypeScript, Node.js, ' +
-          'NestJS, SQL and system design.',
+          'Background, technical skills and education — Go, TypeScript, NestJS, ' +
+          'distributed systems, GCP and system design.',
       },
     },
   },
@@ -56,8 +57,9 @@ export const routes: Routes = [
       seo: {
         title: 'Experience',
         description:
-          'Software engineering roles at SMC Finance, iTech Mission and Almondz Global ' +
-          'Securities — loan origination, BI dashboards and learning management systems.',
+          'Backend and full stack roles at SMC Finance, a live social video platform, iTech ' +
+          'Mission and Almondz Global Securities — loan origination, credit decisioning, ' +
+          'live streaming and real-time analytics.',
       },
     },
   },
@@ -90,6 +92,31 @@ export const routes: Routes = [
     data: { animation: 'case-study' },
   },
   {
+    // Both writing routes exist only while a post is visible in this build, so a
+    // site with nothing published has no empty Writing page — it 404s instead.
+    path: 'writing',
+    canMatch: [hasPosts],
+    loadComponent: () =>
+      import('./features/writing/writing-list.component').then(m => m.WritingListComponent),
+    data: {
+      animation: 'writing',
+      seo: {
+        title: 'Writing',
+        description:
+          'Notes on backend design — encryption, scheduling and delivery guarantees, ' +
+          'with the trade-offs behind each choice.',
+      },
+    },
+  },
+  {
+    path: 'writing/:slug',
+    canMatch: [postExists],
+    loadComponent: () =>
+      import('./features/writing/post.component').then(m => m.PostComponent),
+    resolve: { seo: postSeo },
+    data: { animation: 'post' },
+  },
+  {
     path: 'contact',
     loadComponent: () =>
       import('./features/portfolio/components/contact/contact.component').then(
@@ -100,8 +127,8 @@ export const routes: Routes = [
       seo: {
         title: 'Contact',
         description:
-          'Get in touch about full stack engineering roles and freelance work. ' +
-          'Based in New Delhi, open to remote and hybrid.',
+          'Get in touch about senior backend engineering roles. Based in New Delhi, ' +
+          'open to remote.',
       },
     },
   },
