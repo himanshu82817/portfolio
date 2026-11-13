@@ -21,7 +21,7 @@ export const FLIPTOE_PLATFORM: CaseStudy = {
   kind: 'Contract · Platform engineering',
   engagement: 'contract',
   status: { label: 'Ongoing', tone: 'building' },
-  period: 'Feb 2026 – present',
+  period: 'Sep 2025 – present',
   role: 'Lead backend & realtime engineer',
   platforms: ['Node.js API', 'Go realtime server', 'React Native app'],
   cover: {
@@ -38,7 +38,7 @@ export const FLIPTOE_PLATFORM: CaseStudy = {
     'Fliptoe is a social video app built around creators. People follow and chat with ' +
       'creators, pay by the second for one-to-one video calls, send virtual gifts, watch live ' +
       'broadcasts, and can be matched into random calls.',
-    'I joined in February 2026 on an existing Node.js backend and am now its sole engineer. ' +
+    'I joined in September 2025 on an existing Node.js backend and am now its sole engineer. ' +
       'I also built the Go realtime server that runs beside it, and worked on the React Native ' +
       'app alongside another developer. The product and business rules are the client’s; the ' +
       'technical decisions below are mine.',
