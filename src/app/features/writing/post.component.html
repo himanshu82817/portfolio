@@ -1,0 +1,140 @@
+@if (post(); as p) {
+  <article class="px-6 pb-20 pt-12 md:pt-16" aria-labelledby="post-title">
+    <div class="mx-auto max-w-3xl">
+      <a
+        routerLink="/writing"
+        class="group -ml-3 inline-flex items-center gap-2 rounded-full px-3 py-2 text-sm font-bold text-gray-600 dark:text-gray-400 transition-colors hover:text-tertiary"
+      >
+        <span
+          class="material-symbols-outlined text-[18px] transition-transform group-hover:-translate-x-0.5"
+          aria-hidden="true"
+          >arrow_back</span
+        >
+        All writing
+      </a>
+
+      @if (!p.published) {
+        <div
+          role="note"
+          class="mt-6 flex items-start gap-3 rounded-2xl border border-amber-300/70 dark:border-amber-400/30 bg-amber-50 dark:bg-amber-400/10 p-4 text-sm text-amber-900 dark:text-amber-200"
+        >
+          <span class="material-symbols-outlined text-[20px]" aria-hidden="true">edit_note</span>
+          <p>
+            <strong>Draft.</strong> Compiled into development and staging builds only — never
+            production. Once it’s checked, set
+            <code class="font-mono text-xs">published: true</code> in
+            <code class="font-mono text-xs">posts/{{ p.slug }}.meta.ts</code> and move it from
+            <code class="font-mono text-xs">drafts.development.ts</code> to
+            <code class="font-mono text-xs">published.ts</code>.
+          </p>
+        </div>
+      }
+
+      <header class="mt-8 border-b border-gray-200 dark:border-white/10 pb-8">
+        <p
+          class="flex flex-wrap items-center gap-x-3 gap-y-1 text-xs font-bold uppercase tracking-widest text-gray-600 dark:text-gray-400"
+        >
+          <time [attr.datetime]="p.date">{{ p.date | date: 'd MMM y' }}</time>
+          <span aria-hidden="true">·</span>
+          <span>{{ p.readingMinutes }} min read</span>
+        </p>
+        <h1
+          id="post-title"
+          class="mt-4 text-4xl font-black leading-[1.1] tracking-tight text-gray-900 dark:text-white md:text-5xl"
+        >
+          {{ p.title }}
+        </h1>
+        <p class="mt-5 text-xl font-medium leading-relaxed text-gray-600 dark:text-gray-300">
+          {{ p.description }}
+        </p>
+      </header>
+
+      <div class="mt-10 text-[1.0625rem] leading-[1.75] text-gray-700 dark:text-gray-300">
+        @for (block of blocks(); track $index) {
+          @switch (block.kind) {
+            @case ('heading') {
+              @if (block.level === 2) {
+                <h2
+                  class="mb-4 mt-12 text-2xl font-black leading-tight text-gray-900 dark:text-white md:text-3xl"
+                >
+                  {{ block.text }}
+                </h2>
+              } @else {
+                <h3 class="mb-3 mt-9 text-xl font-bold leading-tight text-gray-900 dark:text-white">
+                  {{ block.text }}
+                </h3>
+              }
+            }
+            @case ('paragraph') {
+              <p class="my-5"><app-inline-text [text]="block.text" /></p>
+            }
+            @case ('list') {
+              @if (block.ordered) {
+                <ol class="my-5 list-decimal space-y-2.5 pl-6 marker:font-bold marker:text-gray-500">
+                  @for (item of block.items; track $index) {
+                    <li class="pl-1"><app-inline-text [text]="item" /></li>
+                  }
+                </ol>
+              } @else {
+                <ul class="my-5 list-disc space-y-2.5 pl-6 marker:text-gray-400">
+                  @for (item of block.items; track $index) {
+                    <li class="pl-1"><app-inline-text [text]="item" /></li>
+                  }
+                </ul>
+              }
+            }
+            @case ('code') {
+              <pre
+                class="my-6 overflow-x-auto rounded-2xl border border-gray-200 dark:border-white/10 bg-gray-950 p-5 text-sm leading-relaxed text-gray-100"
+                tabindex="0"
+                [attr.aria-label]="block.language ? block.language + ' code' : 'Code'"
+              ><code class="font-mono">{{ block.code }}</code></pre>
+            }
+            @case ('table') {
+              <div class="my-6 overflow-x-auto rounded-2xl border border-gray-200 dark:border-white/10">
+                <table class="w-full border-collapse text-left text-[0.95rem]">
+                  <thead class="bg-gray-50 dark:bg-white/5">
+                    <tr>
+                      @for (cell of block.head; track $index) {
+                        <th scope="col" class="px-4 py-3 font-bold text-gray-900 dark:text-white">
+                          <app-inline-text [text]="cell" />
+                        </th>
+                      }
+                    </tr>
+                  </thead>
+                  <tbody>
+                    @for (row of block.rows; track $index) {
+                      <tr class="border-t border-gray-200 dark:border-white/10">
+                        @for (cell of row; track $index) {
+                          <td class="px-4 py-3 align-top"><app-inline-text [text]="cell" /></td>
+                        }
+                      </tr>
+                    }
+                  </tbody>
+                </table>
+              </div>
+            }
+          }
+        }
+      </div>
+
+      <footer class="mt-14 border-t border-gray-200 dark:border-white/10 pt-8">
+        <p class="text-gray-600 dark:text-gray-400">
+          Written by <strong class="text-gray-900 dark:text-white">{{ site.name }}</strong>,
+          {{ site.role.toLowerCase() }}.
+          <a routerLink="/contact" class="font-semibold text-tertiary underline underline-offset-4"
+            >Get in touch</a
+          >
+          or find me on
+          <a
+            [href]="site.social.linkedin"
+            target="_blank"
+            rel="noopener noreferrer"
+            class="font-semibold text-tertiary underline underline-offset-4"
+            >LinkedIn</a
+          >.
+        </p>
+      </footer>
+    </div>
+  </article>
+}

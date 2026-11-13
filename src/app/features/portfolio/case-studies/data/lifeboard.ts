@@ -1,9 +1,10 @@
 import { CaseStudy } from '../case-study.model';
 
 /**
- * DRAFT. Written from a read of LifeBoard-Web and LifeBoard-Server, then
- * fact-checked claim by claim against the code (Sep 2026). Unpublished until
- * reviewed — see openQuestions.
+ * Written from a read of LifeBoard-Web and LifeBoard-Server, then fact-checked
+ * claim by claim against the code (Sep 2026). Encryption, reminders and trackers
+ * were re-checked against the server's main branch in Nov 2026, when this was
+ * published.
  *
  * Deliberately left out: deployment hostnames, credential locations, the OAuth
  * token hand-off detail, and anything describing past or open weaknesses.
@@ -18,16 +19,16 @@ export const LIFEBOARD: CaseStudy = {
   engagement: 'personal',
   status: { label: 'In development', tone: 'building' },
   period: 'Dec 2025 – present',
-  role: 'Founder & engineer',
+  role: 'Co-builder · led backend design',
   platforms: ['Web (installable PWA)', 'REST API'],
   cover: {
     src: '/case-studies/lifeboard/cover.svg',
     alt: 'Abstract illustration of notes pinned on an infinite canvas above an activity heatmap',
   },
-  published: false,
+  published: true,
 
   summary: [
-    'LifeBoard is my own product. It treats a person’s notes, tasks, photos and check-ins ' +
+    'LifeBoard is a product I co-build. It treats a person’s notes, tasks, photos and check-ins ' +
       'as an archive worth trusting: every day gets its own infinite canvas, and a Life Map ' +
       'zooms out from that day through weeks, years and decades to a grid of a whole life.',
     'It’s two applications. The web client is an Angular 21 PWA built on signals, with a ' +
@@ -49,8 +50,8 @@ export const LIFEBOARD: CaseStudy = {
   ],
   ownership: {
     statement:
-      'Founder. I own the product end to end, and made the product, design and architecture ' +
-      'decisions on this page.',
+      'Co-built with one collaborator. I led the backend design, and the architecture ' +
+      'decisions on this page are ones I made or shared.',
   },
 
   architecture: {
@@ -313,6 +314,52 @@ export const LIFEBOARD: CaseStudy = {
         'A day laid out on a large screen can open partly off-screen on a phone until fit is ' +
         'pressed.',
     },
+    {
+      title: 'Seal what people write, with one key per person',
+      context:
+        'A journal holds things people would not say out loud. Disk encryption does nothing ' +
+        'about a leaked backup or a stolen connection string.',
+      choice:
+        'Envelope encryption. Each person has their own AES-256 data key, stored wrapped by a ' +
+        'Cloud KMS key that only the API’s service account may use. Every sealed value is ' +
+        'bound to its owner, collection and field, and one file declares every sealed field.',
+      why:
+        'A copy of the database on its own is unreadable, ciphertext copied onto another ' +
+        'record fails to decrypt, and deleting one key row makes everything a person wrote ' +
+        'unreadable, backups included. Reads accept both formats, so the rollout moves ' +
+        'through off, write and strict with an idempotent backfill and every step reversible.',
+      alternatives: [
+        'Provider disk encryption only',
+        'One global application key',
+        'End-to-end encryption in the browser',
+      ],
+      tradeoff:
+        'It is not end-to-end: the API decrypts on the server, so the server stays trusted. ' +
+        'Dates, positions and ids stay readable because the server filters and sorts on them.',
+    },
+    {
+      title: 'Drive reminders from outside the process',
+      context:
+        'On Cloud Run an in-process timer is not a clock: CPU is throttled between requests ' +
+        'and an idle service scales to zero, so reminders fire only while people are already ' +
+        'in the app.',
+      choice:
+        'Cloud Scheduler calls a sweep endpoint every minute. The endpoint admits one service ' +
+        'account by OIDC token, finishes the sweep before it responds, and records each ' +
+        'firing under a unique index before pushing it.',
+      why:
+        'A request is the one thing that wakes an instance and holds its CPU. The unique ' +
+        'index makes each reminder fire once when instances race, without a lock, and ' +
+        'shutdown waits for a sweep in flight so a deploy does not drop a push.',
+      alternatives: [
+        'An in-process interval',
+        'One scheduled task per reminder',
+        'Always-on CPU with a minimum instance',
+      ],
+      tradeoff:
+        'Delivery is at most once: a hard crash between recording and pushing loses that ' +
+        'push. Resolution is one minute.',
+    },
   ],
 
   features: [
@@ -411,17 +458,23 @@ export const LIFEBOARD: CaseStudy = {
       ],
     },
     {
-      group: 'In progress',
+      group: 'Reminders, tracking & privacy',
       items: [
         {
           name: 'Reminders and web push',
           detail:
             'Reminders that fire in each user’s own time zone, recorded exactly once and ' +
-            'delivered as web push. Not yet released.',
+            'delivered as web push, with Snooze and Done on the notification itself.',
         },
         {
           name: 'Custom trackers and multi-day cards',
           detail: 'User-defined trackers with totals, and cards that span several days.',
+        },
+        {
+          name: 'Field encryption',
+          detail:
+            'Everything a person types is sealed with their own key before it reaches the ' +
+            'database.',
         },
       ],
     },
@@ -530,22 +583,23 @@ export const LIFEBOARD: CaseStudy = {
   stack: [
     { group: 'Frontend', items: ['Angular 21', 'Signals', 'Angular CDK', 'Tailwind CSS 4', 'RxJS'] },
     { group: 'Client storage', items: ['Service worker', 'IndexedDB', 'localStorage'] },
-    { group: 'Backend', items: ['NestJS 11', 'MongoDB', 'Mongoose 9', 'Passport'] },
-    { group: 'Cloud', items: ['Google Cloud Run', 'Google Cloud Storage', 'Docker'] },
+    { group: 'Backend', items: ['NestJS 11', 'MongoDB', 'Mongoose 9', 'Passport', 'Web Push'] },
+    { group: 'Cloud', items: ['Google Cloud Run', 'Cloud Storage', 'Cloud KMS', 'Cloud Scheduler', 'Docker'] },
     { group: 'Testing', items: ['Vitest', 'Jest'] },
   ],
-  links: [],
+  links: [{ label: 'lifeboardos.com', url: 'https://lifeboardos.com', kind: 'live' }],
   gallery: [],
 
-  openQuestions: [
-    'Is there a public LifeBoard URL you’re happy to link? A dev deployment exists, but I haven’t named it.',
-    'Reminders, web push, custom trackers and multi-day cards are uncommitted work. Keep them under “In progress”, or leave them out?',
-    'Any real usage to share, like testers or active users? There are no numbers in the repos, so the page shows none.',
-    'In a sentence, what made you build LifeBoard? That would sharpen “The problem”.',
-    'The original auth module was mostly written by a collaborator, so the page describes it as a feature, not as your implementation. Add a credit line, or leave it?',
-    'The repos include AI-assistant configuration and a generated audit. Do you want AI-assisted development mentioned, and how?',
-    'A screenshot of the board and the Life Map would help most. Can you add two?',
-  ],
+  // Published Nov 2026. Questions that were still open at that point, kept
+  // here so they are not lost:
+  //  - Is there a public LifeBoard URL you’re happy to link? A dev deployment exists, but I haven’t named it.
+  //  - Reminders, web push, custom trackers and multi-day cards are uncommitted work. Keep them under “In progress”, or leave them out?
+  //  - Any real usage to share, like testers or active users? There are no numbers in the repos, so the page shows none.
+  //  - In a sentence, what made you build LifeBoard? That would sharpen “The problem”.
+  //  - The original auth module was mostly written by a collaborator, so the page describes it as a feature, not as your implementation. Add a credit line, or leave it?
+  //  - The repos include AI-assistant configuration and a generated audit. Do you want AI-assisted development mentioned, and how?
+  //  - A screenshot of the board and the Life Map would help most. Can you add two?
+  openQuestions: [],
 
   seo: {
     title: 'LifeBoard — case study',

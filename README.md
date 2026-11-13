@@ -1,6 +1,6 @@
 # Portfolio — Himanshu Sehlangia
 
-Personal portfolio of **Himanshu Sehlangia**, Full Stack Engineer based in New Delhi.
+Personal portfolio of **Himanshu Sehlangia**, backend engineer based in New Delhi.
 Built with Angular 19 (standalone, zone-based) and Tailwind CSS 3, deployed to a GCP
 VM by GitHub Actions on every push to `master`.
 
@@ -33,9 +33,9 @@ The production origin, `https://himanshusehlangia.dev`, is written in four place
 `public/sitemap.xml` — change all four together. Canonical URLs *inside* the running
 app are derived from `window.location.origin`, so only the static tags carry it.
 
-1. **Your résumé.** Drop `resume.pdf` into `public/` and set `resumeUrl: '/resume.pdf'`
-   in `site.config.ts`. Until that value is set, the download button is not rendered
-   at all — deliberately, so there is never a button that 404s.
+1. **Your résumé.** `public/resume.pdf` is what the Résumé button downloads; replace the
+   file to update it. If `resumeUrl` in `site.config.ts` is set to `null`, the button is
+   not rendered at all — deliberately, so there is never a button that 404s.
 
 2. **The contact form.** Get a free access key from [web3forms.com](https://web3forms.com)
    and set `contactFormKey` in `site.config.ts`. The key is a public submission
@@ -98,12 +98,13 @@ src/app/
     services/seo.service.ts   Per-route title, description, canonical, OG tags
   shared/backdrop/            Interactive theme backdrop (ink reveal, WebGL black hole)
   shared/components/          Navbar, footer
-  features/portfolio/         One component per route
+  features/portfolio/         One component per route, plus the case studies
+  features/writing/           Blog posts as typed data, with a draft flag per post
 public/backgrounds/           Paper, doodle and star tiles behind every page
 public-drafts/                Assets of unpublished case studies — development builds only
 deploy/                       nginx config for the VM; cloudrun/ holds the dev container's
 scripts/generate-starfield.mjs  Regenerates the star tiles, deterministically
-scripts/check-dist.mjs          Fails a build that contains an unpublished case study
+scripts/check-dist.mjs          Fails a build that contains an unpublished case study or post
 ```
 
 **Theming.** Brand colours live once, as RGB channel triples on `:root` in
@@ -167,6 +168,26 @@ bundle is published whether or not a route leads to it.
 Never deploy a development build, and never point a deployed environment at the
 development configuration to preview a draft: that publishes the drafts, their notes
 panel and the source maps. Preview drafts with `npm start`, or on the dev site.
+
+## Writing
+
+Posts live in `src/app/features/writing/`. Each post is two files: `posts/<slug>.meta.ts`
+(title, description, date, tags, `published`) and `posts/<slug>.ts`, exporting
+`BODY: Block[]` (headings, paragraphs, lists, code and tables). Inline text supports `code`, **bold**, *emphasis* and
+links.
+
+Drafts are kept out of production the same way case studies are, at build time:
+`published.ts` lists the posts every build compiles, `drafts.ts` is empty, and
+`angular.json` swaps in `drafts.development.ts` for the development and staging
+configurations and the test target. Draft posts therefore show on `npm start` and on
+the dev site, with a draft banner, and are absent from a production bundle.
+`scripts/check-dist.mjs` fails a production build that contains one.
+
+While no post is published, a production build has no Writing link in the navbar and
+`/writing` renders the 404 page. To publish a post: set `published: true` in its
+`posts/<slug>.meta.ts`, move its entry from `drafts.development.ts` to `published.ts`,
+and add its URL to `public/sitemap.xml`. A unit test fails if the flag and the barrel
+disagree.
 
 ## Testing
 

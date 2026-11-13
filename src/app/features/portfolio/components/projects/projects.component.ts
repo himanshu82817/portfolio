@@ -56,14 +56,14 @@ export class ProjectsComponent {
       subCategory: 'Enterprise',
       year: '2023 – present',
       description:
-        'A production loan origination platform used daily by credit and operations ' +
-        'teams to move applications from submission through underwriting to disbursal.',
+        'A production loan origination platform that moves thousands of applications a ' +
+        'month from submission through underwriting to disbursal.',
       highlights: [
-        'Cut page load time by restructuring heavy Angular reactive forms',
-        'Reduced API traffic with response caching and tighter state management',
-        'Automated workflow validations that credit analysts previously ran by hand',
+        'Configuration-driven workflow engine: stage flows and validation rules change without a release',
+        'Underwriting decisioning engine with isolated transactions for concurrent approvals',
+        'Event-driven collateral workflows on GCP Pub/Sub, replacing manual verification steps',
       ],
-      tech: ['Angular', 'TypeScript', 'RxJS', 'SQL', 'REST'],
+      tech: ['NestJS', 'TypeScript', 'SQL Server', 'TypeORM', 'GCP Pub/Sub'],
       imageUrl: '/projects/loan-origination.svg',
       imageAlt: 'Abstract illustration of a multi-stage loan approval pipeline',
       accessNote: 'Internal system — not publicly accessible',

@@ -1,9 +1,9 @@
 import { CaseStudy } from '../case-study.model';
 
 /**
- * DRAFT. Written from a read of FliptoeFace and its integration in the Fliptoe app,
- * then fact-checked claim by claim against the code (Sep 2026). Unpublished until
- * reviewed.
+ * Written from a read of FliptoeFace and its integration in the Fliptoe app, then
+ * fact-checked claim by claim against the code (Sep 2026). Published Nov 2026 on
+ * the owner's decision.
  *
  * Deliberately left out: repository links (they sit under the client's account),
  * colleague names, the host app's configuration details, and the build artefact.
@@ -24,7 +24,7 @@ export const FLIPTOEFACE: CaseStudy = {
     src: '/case-studies/fliptoeface/cover.svg',
     alt: 'Abstract illustration of a triangulated face mesh with landmark contours and effect sliders',
   },
-  published: false,
+  published: true,
 
   confidentiality:
     'Built during a client engagement. The SDK’s design is shared in full here; the source ' +
@@ -489,15 +489,16 @@ export const FLIPTOEFACE: CaseStudy = {
   links: [],
   gallery: [],
 
-  openQuestions: [
-    'The ~62ms p95 figure comes from a single line in a design note that doesn’t name a device. Which device was it, and are there logs? I’d like to show the device next to the number.',
-    'The newest SDK code (face slim, the extracted compositor, the in-call processor) exists only in the copy inside the client’s app, on an unmerged branch. Is that the right source to describe, and has the in-call work shipped?',
-    'Was it confirmed on a second device that the other person actually sees the effects?',
-    'Most FaceMesh commits carry a Claude co-author trailer. Do you want AI-assisted development mentioned, and how?',
-    'Keep the name FliptoeFace, or present it under a neutral name like “FaceMesh SDK”?',
-    'Are iOS, a published package, and RTMP/WHIP streaming still planned?',
-    'A short screen recording of the Filters preview would make this page. Can you capture one?',
-  ],
+  // Published Nov 2026. Questions that were still open at that point, kept
+  // here so they are not lost:
+  //  - The ~62ms p95 figure comes from a single line in a design note that doesn’t name a device. Which device was it, and are there logs? I’d like to show the device next to the number.
+  //  - The newest SDK code (face slim, the extracted compositor, the in-call processor) exists only in the copy inside the client’s app, on an unmerged branch. Is that the right source to describe, and has the in-call work shipped?
+  //  - Was it confirmed on a second device that the other person actually sees the effects?
+  //  - Most FaceMesh commits carry a Claude co-author trailer. Do you want AI-assisted development mentioned, and how?
+  //  - Keep the name FliptoeFace, or present it under a neutral name like “FaceMesh SDK”?
+  //  - Are iOS, a published package, and RTMP/WHIP streaming still planned?
+  //  - A short screen recording of the Filters preview would make this page. Can you capture one?
+  openQuestions: [],
 
   seo: {
     title: 'FliptoeFace — case study',
