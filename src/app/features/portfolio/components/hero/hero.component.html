@@ -8,12 +8,7 @@
       <p
         class="inline-flex items-center gap-3 rounded-full border border-outline/20 dark:border-white/10 bg-surface-elevated/50 px-4 py-2 text-sm font-bold text-gray-700 dark:text-gray-300 shadow-sm backdrop-blur"
       >
-        <span class="relative flex h-3 w-3" aria-hidden="true">
-          <span
-            class="absolute inline-flex h-full w-full animate-ping rounded-full bg-green-400 opacity-75"
-          ></span>
-          <span class="relative inline-flex h-3 w-3 rounded-full bg-green-500"></span>
-        </span>
+        <span class="inline-flex h-3 w-3 rounded-full bg-green-500" aria-hidden="true"></span>
         Open to remote senior backend roles
       </p>
 
@@ -30,8 +25,14 @@
         class="max-w-lg text-xl font-medium leading-relaxed text-gray-600 dark:text-gray-300"
       >
         I build financial infrastructure and real-time systems in Go and TypeScript on
-        GCP — loan origination and credit decisioning engines, live video streaming, and
-        event-driven services. Currently at SMC Finance in {{ site.locality }}.
+        GCP. I also design and build the product on top — Angular front ends, design
+        systems and the UX itself.
+        <a
+          routerLink="/projects/lifeboard"
+          class="font-bold text-tertiary underline underline-offset-4"
+          >LifeBoard</a
+        >
+        is where the two meet.
       </p>
 
       <div class="mt-2 flex flex-wrap gap-4">
@@ -100,7 +101,7 @@
 
     <div class="relative flex items-center justify-center md:order-last lg:translate-x-10">
       <div
-        class="group relative aspect-[4/5] w-full max-w-md overflow-hidden rounded-b-[3rem] rounded-t-[10rem] bg-surface-elevated shadow-elevation-3 transition-transform duration-500 hover:scale-[1.02]"
+        class="group relative aspect-[4/5] w-full max-w-md overflow-hidden rounded-b-[3rem] rounded-t-[10rem] bg-surface-elevated shadow-elevation-3"
       >
         <div
           class="absolute inset-0 z-10 bg-gradient-to-t from-black/50 via-transparent to-transparent"
@@ -129,13 +130,6 @@
             site.location
           }}</span>
         </p>
-      </div>
-
-      <div
-        class="absolute -bottom-4 left-6 z-20 flex size-14 rotate-12 items-center justify-center rounded-3xl bg-primary shadow-elevation-2 animate-float md:size-16"
-        aria-hidden="true"
-      >
-        <span class="material-symbols-outlined text-3xl text-on-primary">emoji_objects</span>
       </div>
     </div>
   </div>

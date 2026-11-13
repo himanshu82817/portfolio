@@ -25,8 +25,8 @@ export const routes: Routes = [
         title: 'Backend Engineer',
         description:
           'Backend engineer in New Delhi building financial infrastructure and real-time ' +
-          'systems in Go and TypeScript on GCP — loan origination, credit decisioning, ' +
-          'live video and event-driven services.',
+          'systems in Go and TypeScript on GCP — and the Angular front ends, design ' +
+          'systems and UX on top of them.',
       },
     },
   },
@@ -41,8 +41,8 @@ export const routes: Routes = [
       seo: {
         title: 'About',
         description:
-          'Background, technical skills and education — Go, TypeScript, NestJS, ' +
-          'distributed systems, GCP and system design.',
+          'Background, technical skills and education — backend and distributed systems ' +
+          'in Go and TypeScript, plus front-end engineering and UI/UX.',
       },
     },
   },
@@ -57,9 +57,8 @@ export const routes: Routes = [
       seo: {
         title: 'Experience',
         description:
-          'Backend and full stack roles at SMC Finance, a live social video platform, iTech ' +
-          'Mission and Almondz Global Securities — loan origination, credit decisioning, ' +
-          'live streaming and real-time analytics.',
+          'Five years across fintech and real-time systems: SMC Finance, Fliptoe, iTech ' +
+          'Mission and Almondz Global Securities — what I built at each, back end and front.',
       },
     },
   },

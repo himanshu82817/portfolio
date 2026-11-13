@@ -1,4 +1,5 @@
 import { ChangeDetectionStrategy, Component } from '@angular/core';
+import { RouterLink } from '@angular/router';
 import { SITE } from '../../../../core/site.config';
 
 interface SkillGroup {
@@ -9,6 +10,7 @@ interface SkillGroup {
 @Component({
   selector: 'app-about',
   standalone: true,
+  imports: [RouterLink],
   changeDetection: ChangeDetectionStrategy.OnPush,
   templateUrl: './about.component.html',
 })
@@ -36,6 +38,20 @@ export class AboutComponent {
       ],
     },
     {
+      name: 'Frontend & UI',
+      skills: [
+        'Angular',
+        'Signals',
+        'RxJS',
+        'NgRx',
+        'Tailwind CSS',
+        'React Native',
+        'Design systems',
+        'Accessibility',
+        'PWA & offline-first',
+      ],
+    },
+    {
       name: 'Data',
       skills: ['PostgreSQL', 'SQL Server', 'MongoDB', 'Redis', 'TypeORM'],
     },
@@ -54,7 +70,6 @@ export class AboutComponent {
         'GitHub Actions',
       ],
     },
-    { name: 'Frontend', skills: ['Angular', 'RxJS', 'NgRx', 'React Native'] },
     {
       name: 'Foundations',
       skills: [
@@ -68,8 +83,25 @@ export class AboutComponent {
   ];
 
   readonly expertise = [
-    { title: 'System Design', icon: 'architecture' },
-    { title: 'Data Structures & Algorithms', icon: 'code' },
-    { title: 'Distributed Systems', icon: 'folder_code' },
+    {
+      title: 'Backend & distributed systems',
+      detail: 'Workflow engines, event-driven services, concurrency.',
+      icon: 'dns',
+    },
+    {
+      title: 'Frontend & UI/UX',
+      detail: 'Angular, design systems, accessible and offline-first interfaces.',
+      icon: 'palette',
+    },
+    {
+      title: 'System design',
+      detail: 'Trade-offs written down: what was chosen, and what it cost.',
+      icon: 'architecture',
+    },
+    {
+      title: 'Algorithms',
+      detail: 'LeetCode Knight, top 2.71% in contest rating.',
+      icon: 'code',
+    },
   ];
 }

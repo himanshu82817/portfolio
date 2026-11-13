@@ -26,8 +26,8 @@ export const SITE = {
 
   description:
     'Backend engineer in New Delhi building financial infrastructure and real-time ' +
-    'systems in Go and TypeScript on GCP — loan origination, credit decisioning, ' +
-    'live video and event-driven services.',
+    'systems in Go and TypeScript on GCP — and the Angular front ends, design systems ' +
+    'and UX on top of them.',
 
   social: {
     github: 'https://github.com/himanshu82817',
