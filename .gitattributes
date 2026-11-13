@@ -1,0 +1,6 @@
+# Git on Windows (core.autocrlf=true) would otherwise check these out with CRLF.
+# bash then fails on the script (`set: pipefail\r: invalid option name`) and every
+# variable carries a stray \r into the gcloud command it is passed to.
+*.sh        text eol=lf
+Dockerfile  text eol=lf
+*.conf      text eol=lf

@@ -1,4 +1,5 @@
 import { ChangeDetectionStrategy, Component } from '@angular/core';
+import { RouterLink } from '@angular/router';
 import { SITE } from '../../../../core/site.config';
 
 interface SkillGroup {
@@ -9,6 +10,7 @@ interface SkillGroup {
 @Component({
   selector: 'app-about',
   standalone: true,
+  imports: [RouterLink],
   changeDetection: ChangeDetectionStrategy.OnPush,
   templateUrl: './about.component.html',
 })
@@ -22,40 +24,84 @@ export class AboutComponent {
    * (VS Code).
    */
   readonly skillGroups: readonly SkillGroup[] = [
-    { name: 'Languages', skills: ['TypeScript', 'JavaScript', 'C++', 'SQL'] },
+    { name: 'Languages', skills: ['Go', 'TypeScript', 'JavaScript', 'C++', 'SQL'] },
     {
-      name: 'Frontend',
+      name: 'Backend',
       skills: [
-        'Angular',
-        'React',
-        'React Native',
-        'Tailwind CSS',
-        'Angular Material',
-        'PrimeNG',
-        'Material UI',
+        'NestJS',
+        'Node.js',
+        'REST APIs',
+        'WebSockets',
+        'WebRTC',
+        'Microservices',
+        'Event-driven architecture',
       ],
     },
     {
-      name: 'Backend & data',
-      skills: ['Node.js', 'NestJS', 'REST APIs', 'MySQL', 'PostgreSQL', 'MongoDB'],
+      name: 'Frontend & UI',
+      skills: [
+        'Angular',
+        'Signals',
+        'RxJS',
+        'NgRx',
+        'Tailwind CSS',
+        'React Native',
+        'Design systems',
+        'Accessibility',
+        'PWA & offline-first',
+      ],
     },
-    { name: 'Cloud & tooling', skills: ['Google Cloud Platform', 'Docker', 'Git'] },
+    {
+      name: 'Data',
+      skills: ['PostgreSQL', 'SQL Server', 'MongoDB', 'Redis', 'TypeORM'],
+    },
+    {
+      name: 'Streaming & media',
+      skills: ['RTMP', 'HLS', 'FFmpeg', 'MediaPipe'],
+    },
+    {
+      name: 'Cloud & tooling',
+      skills: [
+        'Google Cloud Run',
+        'Pub/Sub',
+        'Cloud KMS',
+        'Cloud Storage',
+        'Docker',
+        'GitHub Actions',
+      ],
+    },
     {
       name: 'Foundations',
       skills: [
         'Data Structures & Algorithms',
         'System Design (HLD & LLD)',
         'OOP & Design Patterns',
-        'Operating Systems',
-        'DBMS',
-        'Computer Networks',
+        'Distributed Systems',
+        'Concurrency',
       ],
     },
   ];
 
   readonly expertise = [
-    { title: 'System Design', icon: 'architecture' },
-    { title: 'Data Structures & Algorithms', icon: 'code' },
-    { title: 'Software Development', icon: 'folder_code' },
+    {
+      title: 'Backend & distributed systems',
+      detail: 'Workflow engines, event-driven services, concurrency.',
+      icon: 'dns',
+    },
+    {
+      title: 'Frontend & UI/UX',
+      detail: 'Angular, design systems, accessible and offline-first interfaces.',
+      icon: 'palette',
+    },
+    {
+      title: 'System design',
+      detail: 'Trade-offs written down: what was chosen, and what it cost.',
+      icon: 'architecture',
+    },
+    {
+      title: 'Algorithms',
+      detail: 'LeetCode Knight, top 2.71% in contest rating.',
+      icon: 'code',
+    },
   ];
 }

@@ -17,7 +17,7 @@ import { BackdropComponent } from './shared/backdrop/backdrop.component';
       transition('* <=> *', [
         query(
           ':enter',
-          [style({ opacity: 0, transform: 'translateY(20px)' })],
+          [style({ opacity: 0 })],
           { optional: true }
         ),
         // The leaving view is taken out of flow only for the duration of the
@@ -27,13 +27,13 @@ import { BackdropComponent } from './shared/backdrop/backdrop.component';
           ':leave',
           [
             style({ position: 'absolute', inset: 0, opacity: 1 }),
-            animate('150ms ease-in', style({ opacity: 0 })),
+            animate('120ms ease-in', style({ opacity: 0 })),
           ],
           { optional: true }
         ),
         query(
           ':enter',
-          [animate('300ms ease-out', style({ opacity: 1, transform: 'translateY(0)' }))],
+          [animate('160ms ease-out', style({ opacity: 1 }))],
           { optional: true }
         ),
       ]),

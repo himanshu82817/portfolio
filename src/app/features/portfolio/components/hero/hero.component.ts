@@ -19,13 +19,13 @@ export class HeroComponent {
     {
       label: 'Years experience',
       value: `${yearsOfExperience()}+`,
-      icon: 'code_blocks',
+      icon: 'dns',
       iconClass: 'bg-tertiary/10 text-tertiary',
     },
     {
-      label: 'Projects shipped',
-      value: '20+',
-      icon: 'rocket_launch',
+      label: 'LeetCode Knight',
+      value: 'Top 2.71%',
+      icon: 'emoji_events',
       iconClass: 'bg-primary/20 text-yellow-700 dark:text-primary',
     },
   ];

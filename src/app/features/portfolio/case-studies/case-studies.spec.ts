@@ -1,4 +1,6 @@
 import { CaseStudy } from './case-study.model';
+import { DRAFT_CASE_STUDIES as DEVELOPMENT_DRAFTS } from './data/drafts.development';
+import { PUBLISHED_CASE_STUDIES } from './data/published';
 import {
   CASE_STUDIES,
   findCaseStudy,
@@ -98,8 +100,40 @@ function assertPublishable(study: CaseStudy): void {
     .toEqual([]);
 }
 
+/**
+ * A draft stays out of production because it is listed in a file production never
+ * compiles, not because of its `published` flag. These keep the two in step. The
+ * bytes of a real build are checked separately, by scripts/check-dist.mjs.
+ */
+describe('case study barrels', () => {
+  it('lists only published studies in the barrel that ships with every build', () => {
+    for (const study of PUBLISHED_CASE_STUDIES) {
+      expect(study.published)
+        .withContext(`${study.slug} is in data/published.ts, so its text ships to production, but it is not published`)
+        .toBeTrue();
+    }
+  });
+
+  it('lists only unpublished studies in the development-only barrel', () => {
+    for (const study of DEVELOPMENT_DRAFTS) {
+      expect(study.published)
+        .withContext(`${study.slug} is published but still in data/drafts.development.ts, so production leaves it out`)
+        .toBeFalse();
+    }
+  });
+
+  it('gives this test build every draft, so the content checks above are not vacuous', () => {
+    const compiled = CASE_STUDIES.map(study => study.slug);
+    for (const draft of DEVELOPMENT_DRAFTS) {
+      expect(compiled)
+        .withContext('the test target in angular.json must swap data/drafts.ts for data/drafts.development.ts')
+        .toContain(draft.slug);
+    }
+  });
+});
+
 describe('case study registry', () => {
-  it('hides drafts from production builds and shows them in development', () => {
+  it('filters drafts at runtime too, as a second line of defence', () => {
     const drafts = CASE_STUDIES.filter(study => !study.published);
 
     for (const draft of drafts) {

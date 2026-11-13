@@ -1,9 +1,9 @@
 import { CaseStudy } from '../case-study.model';
 
 /**
- * DRAFT. Written from a read of Fliptoe-Backend, streaming-server and the Fliptoe
- * app, then fact-checked claim by claim against the code (Sep 2026). Client work —
- * unpublished until reviewed.
+ * Written from a read of Fliptoe-Backend, streaming-server and the Fliptoe app,
+ * then fact-checked claim by claim against the code (Sep 2026). Client work,
+ * published Nov 2026 on the owner's decision.
  *
  * Deliberately left out: all prices, rates, levels, thresholds and exchange rates;
  * hostnames and infrastructure identifiers; client and colleague names; and every
@@ -21,14 +21,14 @@ export const FLIPTOE_PLATFORM: CaseStudy = {
   kind: 'Contract · Platform engineering',
   engagement: 'contract',
   status: { label: 'Ongoing', tone: 'building' },
-  period: 'Feb 2026 – present',
+  period: 'Sep 2025 – present',
   role: 'Lead backend & realtime engineer',
   platforms: ['Node.js API', 'Go realtime server', 'React Native app'],
   cover: {
     src: '/case-studies/fliptoe/cover.svg',
     alt: 'Abstract illustration of a video call on a phone, connected through a realtime hub to a ledger and a live stream',
   },
-  published: false,
+  published: true,
 
   confidentiality:
     'Client work. The code is private, and pricing, infrastructure and client details are ' +
@@ -38,7 +38,7 @@ export const FLIPTOE_PLATFORM: CaseStudy = {
     'Fliptoe is a social video app built around creators. People follow and chat with ' +
       'creators, pay by the second for one-to-one video calls, send virtual gifts, watch live ' +
       'broadcasts, and can be matched into random calls.',
-    'I joined in February 2026 on an existing Node.js backend and am now its sole engineer. ' +
+    'I joined in September 2025 on an existing Node.js backend and am now its sole engineer. ' +
       'I also built the Go realtime server that runs beside it, and worked on the React Native ' +
       'app alongside another developer. The product and business rules are the client’s; the ' +
       'technical decisions below are mine.',
@@ -502,15 +502,16 @@ export const FLIPTOE_PLATFORM: CaseStudy = {
   links: [],
   gallery: [],
 
-  openQuestions: [
-    'Does the client allow naming Fliptoe and describing how it works (paid calls, gifts, random matching)? The page shows no prices, rates or thresholds.',
-    'Is the app live on Google Play or the App Store? A store link would help, if allowed.',
-    'Any usage you can share, like concurrent connections or calls per day? The repos have none. Were the WebSocket load-test tools ever run?',
-    'Why was realtime split into a separate Go service? It isn’t written down anywhere, and it’s the first thing an interviewer will ask.',
-    'Is live broadcasting used by the current app build? The server supports it, but publishing is stubbed on the app branch I read.',
-    'Many recent commits carry a Claude co-author trailer. Do you want AI-assisted development mentioned, and how?',
-    'Is “Ongoing” the right status, or should it say the platform is in production?',
-  ],
+  // Published Nov 2026. Questions that were still open at that point, kept
+  // here so they are not lost:
+  //  - Does the client allow naming Fliptoe and describing how it works (paid calls, gifts, random matching)? The page shows no prices, rates or thresholds.
+  //  - Is the app live on Google Play or the App Store? A store link would help, if allowed.
+  //  - Any usage you can share, like concurrent connections or calls per day? The repos have none. Were the WebSocket load-test tools ever run?
+  //  - Why was realtime split into a separate Go service? It isn’t written down anywhere, and it’s the first thing an interviewer will ask.
+  //  - Is live broadcasting used by the current app build? The server supports it, but publishing is stubbed on the app branch I read.
+  //  - Many recent commits carry a Claude co-author trailer. Do you want AI-assisted development mentioned, and how?
+  //  - Is “Ongoing” the right status, or should it say the platform is in production?
+  openQuestions: [],
 
   seo: {
     title: 'Fliptoe — case study',

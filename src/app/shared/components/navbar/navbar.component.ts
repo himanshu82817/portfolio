@@ -3,6 +3,7 @@ import { NgClass } from '@angular/common';
 import { RouterLink, RouterLinkActive } from '@angular/router';
 
 import { ThemeService } from '../../../core/services/theme.service';
+import { visiblePosts } from '../../../features/writing/registry';
 
 interface NavItem {
   path: string;
@@ -23,7 +24,7 @@ interface NavItem {
 export class NavbarComponent {
   readonly themeService = inject(ThemeService);
 
-  readonly items: readonly NavItem[] = [
+  private readonly allItems: readonly NavItem[] = [
     {
       path: '/about',
       label: 'About',
@@ -44,12 +45,23 @@ export class NavbarComponent {
       activeClass: 'bg-[#fabc05] text-[#181811] shadow-elevation-1',
     },
     {
+      path: '/writing',
+      label: 'Writing',
+      icon: 'article',
+      activeClass: 'bg-[#7b61ff] text-white shadow-elevation-1',
+    },
+    {
       path: '/contact',
       label: "Let's Talk",
       icon: 'send',
       activeClass: 'bg-[#36a852] text-white shadow-elevation-1',
     },
   ];
+
+  /** Writing appears only while there is a post to read in this build. */
+  readonly items: readonly NavItem[] = this.allItems.filter(
+    item => item.path !== '/writing' || visiblePosts().length > 0
+  );
 
   toggleTheme(): void {
     this.themeService.toggleTheme();

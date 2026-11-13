@@ -40,6 +40,12 @@ jobs:
       - name: Add SPA fallback copy
         run: cp dist/portfolio/browser/index.html dist/portfolio/browser/404.html
 
+      # `npm run build` already ran this as its postbuild step. It runs again here, on
+      # exactly the files about to be copied, so the gate doesn't depend on how the
+      # build step above is spelled.
+      - name: Refuse to deploy unpublished case studies
+        run: npm run check:dist
+
       # NOTE: this copies over the docroot but never removes files, so hashed
       # bundles from previous releases accumulate in /var/www/html indefinitely.
       # To clean up, uncomment the step below once you have confirmed the path is

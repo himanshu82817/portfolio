@@ -129,7 +129,20 @@
    `background-attachment: fixed` repaints the viewport on every scroll frame
    and iOS Safari ignores it outright, whereas a fixed layer is rasterised once
    and composited. With no stacking context on <body>, z-index -1 lands the
-   layer above the canvas colour but beneath every piece of content. */
+   layer above the canvas colour but beneath every piece of content.
+
+   Every backdrop layer is a fixed SIZE, hung from the BOTTOM of the viewport,
+   and both halves of that matter on a phone. When the URL bar slides away the
+   visible viewport grows by the bar's height:
+   - a layer sized to the viewport (inset: 0) gets resized when the bar settles,
+     so the canvas is reallocated and everything drawn on it jumps;
+   - a layer hung from the top rides up with the bar, because on Android the
+     top edge is the one that moves.
+   The bottom edge is the one that stays put on screen. The nav pill hangs off it
+   and the black hole is drawn at the canvas's bottom edge right behind the pill,
+   so hanging the backdrop from the same edge, at the large-viewport height,
+   keeps all three still while the bar comes and goes. (The top of the layer is
+   simply hidden behind the bar while it is showing.) */
 .site-backdrop {
   background-color: rgb(var(--surface));
   transition: background-color 300ms ease;
@@ -139,72 +152,72 @@
 .site-backdrop::after {
   content: '';
   position: fixed;
-  top: 0;
+  bottom: 0;
   left: 0;
   width: 100%;
-  /* lvh is sized for a retracted mobile URL bar, so no strip of bare ground
-     shows while the bar slides away. vh is the fallback. */
+  /* lvh: the viewport with the URL bar retracted. Plain vh is the fallback, and
+     on mobile browsers it already means the same thing. */
   height: 100vh;
   height: 100lvh;
   z-index: -1;
   pointer-events: none;
 }
 
-/* Deliberately faint: at these values grey-600 body copy still clears 4.5:1
-   where it crosses a paper crease and an ink line at the same time. The
-   doodles come up to full strength only under the pointer (.backdrop__reveal).
+/* The backdrop is scenery for a page people came to read, so it is kept quiet:
+   a trace of paper grain, and the sketchbook doodles only in the margins. The
+   mask clears the middle of the page, where the text column is, and lets the
+   doodles come up towards the left and right edges. Below the md breakpoint
+   the text column IS the page, so the doodles are dropped altogether.
    The paper's odd offset keeps its 600px repeat off the viewport edges, where
    a tile boundary is easiest to spot. */
 .site-backdrop::before {
   background: url('/backgrounds/paper-grain.svg') -137px -211px / 600px 600px;
   mix-blend-mode: multiply;
-  opacity: 0.55;
+  opacity: 0.2;
 }
 
 .site-backdrop::after {
-  background: url('/backgrounds/sketchbook-doodles.svg') 0 0 / 1000px 1000px;
-  opacity: 0.12;
+  display: none;
 }
 
-/* Tile sizes are deliberately non-multiples of each other so the layers never
-   line up into a visible repeat. The washes are repeated inside black-hole.ts
-   (ground()) so the canvas fading in over them changes nothing; the warm one
-   at the bottom-left is the accretion disk's light spilling onto the sky. */
+@media (min-width: 768px) {
+  .site-backdrop::after {
+    display: block;
+    background: url('/backgrounds/sketchbook-doodles.svg') 0 0 / 1000px 1000px;
+    opacity: 0.09;
+    -webkit-mask-image: linear-gradient(to right, #000 0%, transparent 22%, transparent 78%, #000 100%);
+    mask-image: linear-gradient(to right, #000 0%, transparent 22%, transparent 78%, #000 100%);
+  }
+}
+
+/* The night sky: one sparse layer of distant stars and two faint washes, all
+   still. The washes are repeated inside black-hole.ts (ground()) so the canvas
+   fading in over them changes nothing. There used to be a second, nearer star
+   layer and a twinkle animation; both drew the eye away from the text. */
 html.dark .site-backdrop::before {
   background:
-    url('/backgrounds/stars-near.svg') 0 0 / 740px 740px,
     url('/backgrounds/stars-far.svg') 0 0 / 420px 420px,
-    radial-gradient(ellipse 55% 45% at 10% 90%, rgb(255 120 41 / 0.07), transparent 70%),
-    radial-gradient(ellipse 45% 35% at 90% 15%, rgb(56 88 200 / 0.12), transparent 70%),
-    radial-gradient(ellipse 40% 30% at 30% 20%, rgb(var(--tertiary) / 0.06), transparent 70%);
+    radial-gradient(ellipse 55% 45% at 10% 90%, rgb(255 120 41 / 0.05), transparent 70%),
+    radial-gradient(ellipse 45% 35% at 90% 15%, rgb(56 88 200 / 0.09), transparent 70%);
   mix-blend-mode: normal;
-  opacity: 1;
+  opacity: 0.7;
 }
 
-/* The twinkle tile gets a layer to itself so that only its opacity animates —
-   a compositor-only change that never repaints the sky behind it. The global
-   reduced-motion rule collapses this to a still sky. */
 html.dark .site-backdrop::after {
-  background: url('/backgrounds/stars-twinkle.svg') 137px 211px / 560px 560px;
-  opacity: 1;
-  animation: twinkle 6s ease-in-out infinite alternate;
+  display: none;
 }
 
-@keyframes twinkle {
-  from {
-    opacity: 0.2;
-  }
-  to {
-    opacity: 1;
-  }
-}
-
-/* Interactive layer (BackdropComponent) ------------------------------------
-   Sits between the two body pseudo-elements in paint order: above the paper /
-   star tiles, below the doodle / twinkle layer. */
+/* Scripted layer (BackdropComponent) ----------------------------------------
+   Holds the dark-mode canvas. The same box as the body pseudo-elements — hung
+   from the bottom, large-viewport tall — so the canvas is never resized by a
+   phone's URL bar. */
 .backdrop {
   position: fixed;
-  inset: 0;
+  right: 0;
+  bottom: 0;
+  left: 0;
+  height: 100vh;
+  height: 100lvh;
   z-index: -1;
   overflow: hidden;
   pointer-events: none;
@@ -223,75 +236,22 @@ html.dark .site-backdrop::after {
   opacity: 1;
 }
 
+/* The canvas is opaque, so it cannot simply be made translucent to calm it —
+   the page ground would show through as grey. A veil in the ground colour over
+   it does the same job: it pulls the disk's glow back until it reads as
+   atmosphere behind the text rather than as the subject of the page. */
+html.dark .backdrop::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: rgb(var(--surface) / 0.45);
+}
+
 /* Once the canvas is painting the sky, the CSS stars beneath it are dead
-   weight — and the twinkle layer above it would double the stars. */
+   weight. */
 html.dark .site-backdrop.has-canvas::before,
 html.dark .site-backdrop.has-canvas::after {
   display: none;
-}
-
-/* The ink reveal: the doodle tile, masked to a soft disc, positioned by
-   BackdropComponent so it stays registered with the static layer beneath. */
-.backdrop__reveal {
-  position: absolute;
-  top: 0;
-  left: 0;
-  width: 380px;
-  height: 380px;
-  background: url('/backgrounds/sketchbook-doodles.svg') 0 0 / 1000px 1000px;
-  opacity: 0;
-  transition: opacity 400ms ease;
-  will-change: transform;
-  -webkit-mask-image: radial-gradient(circle closest-side, #000 15%, transparent 100%);
-  mask-image: radial-gradient(circle closest-side, #000 15%, transparent 100%);
-}
-
-.backdrop__reveal.is-active {
-  opacity: 0.3;
-}
-
-/* Nothing to reveal in the dark; and a finger has no hover position. */
-html.dark .backdrop__reveal {
-  display: none;
-}
-
-@media (hover: none) {
-  .backdrop__reveal {
-    display: none;
-  }
-}
-
-/* Click splash: an ink ring with a few dots that the ring's own scale-up
-   throws outward. Dark mode without WebGL reuses it in the accent violet. */
-.backdrop__ripple {
-  position: absolute;
-  top: -80px;
-  left: -80px;
-  width: 160px;
-  height: 160px;
-  border-radius: 50%;
-  border: 2px solid rgb(35 28 20 / 0.6);
-  will-change: transform, opacity;
-}
-
-.backdrop__ripple > i {
-  position: absolute;
-  top: 50%;
-  left: 50%;
-  width: 6px;
-  height: 6px;
-  margin: -3px 0 0 -3px;
-  border-radius: 50%;
-  background: rgb(35 28 20 / 0.7);
-}
-
-html.dark .backdrop__ripple {
-  border-color: rgb(var(--tertiary) / 0.55);
-  box-shadow: 0 0 24px rgb(var(--tertiary) / 0.25);
-}
-
-html.dark .backdrop__ripple > i {
-  background: rgb(255 255 255 / 0.8);
 }
 
 /* Forced-colours mode swaps in system text colours, which carry no contrast

@@ -3,14 +3,6 @@
     <!-- Splits at lg, not md: at 768px the two columns collapse to ~220px each. -->
     <div class="flex flex-col items-start gap-16 lg:flex-row">
       <div class="relative flex-1 space-y-8">
-        <div
-          class="pointer-events-none absolute left-10 top-10 text-tertiary/10 dark:text-tertiary/20"
-          aria-hidden="true"
-        >
-          <svg width="120" height="120" viewBox="0 0 24 24" fill="currentColor">
-            <path d="M12,0L15,9L24,12L15,15L12,24L9,15L0,12L9,9L12,0Z"></path>
-          </svg>
-        </div>
 
         <div class="space-y-4">
           <p
@@ -19,17 +11,29 @@
             Who I Am
           </p>
           <h1 class="text-4xl font-bold leading-tight dark:text-white md:text-5xl">
-            Architecting the future, <br />one line of code at a time.
+            Backend at the core, <br />front end to match.
           </h1>
         </div>
 
         <p class="text-lg leading-relaxed text-gray-600 dark:text-gray-300">
           I’m a {{ site.role }} based in {{ site.location }}. Most of my work has been
-          in regulated domains — lending and financial operations — where the interesting
+          in regulated domains — lending and credit decisioning — where the interesting
           problems are less about novelty and more about making complex, high-stakes
-          workflows fast and hard to get wrong. I care about reactive form performance,
-          sensible caching, and interfaces the people who use them all day don’t have to
-          fight.
+          workflows correct under concurrency and hard to get wrong. Alongside that I
+          build real-time systems in Go: live video streaming and WebRTC signalling.
+        </p>
+
+        <p class="text-lg leading-relaxed text-gray-600 dark:text-gray-300">
+          I’m also a front-end engineer, and I care about UI and UX as much as the
+          systems behind them. I started full stack, and I still design and build
+          interfaces end to end: design tokens, accessible components, offline-first
+          clients, and layouts that stay readable.
+          <a
+            routerLink="/projects/lifeboard"
+            class="font-bold text-tertiary underline underline-offset-4"
+            >LifeBoard</a
+          >
+          is the clearest example — and so is this site.
         </p>
 
         <div
@@ -67,10 +71,6 @@
 
       <div class="flex w-full flex-1 flex-col items-center justify-center">
         <div class="relative grid w-full max-w-md gap-4">
-          <div
-            class="absolute -right-10 -top-10 z-0 h-32 w-32 rounded-full bg-primary/20 blur-2xl"
-            aria-hidden="true"
-          ></div>
 
           <p
             class="mb-1 text-xs font-bold uppercase tracking-widest text-gray-600 dark:text-gray-400"
@@ -80,19 +80,24 @@
 
           @for (item of expertise; track item.title) {
             <div
-              class="relative z-10 flex items-center justify-between gap-4 overflow-hidden rounded-[1.5rem] border border-gray-200 dark:border-white/10 bg-surface-elevated px-8 py-4 transition-shadow duration-300 hover:shadow-elevation-2"
+              class="relative z-10 flex items-center justify-between gap-4 overflow-hidden rounded-[1.5rem] border border-gray-200 dark:border-white/10 bg-surface-elevated px-8 py-5"
             >
               <div
                 class="absolute right-0 top-0 -z-0 h-20 w-20 rounded-bl-[4rem] bg-gray-50 dark:bg-white/5"
                 aria-hidden="true"
               ></div>
-              <span class="z-10 min-w-0 text-2xl font-black dark:text-white">{{
-                item.title
-              }}</span>
+              <span class="z-10 min-w-0">
+                <span class="block text-2xl font-black leading-tight dark:text-white">{{
+                  item.title
+                }}</span>
+                <span class="mt-1 block text-sm text-gray-600 dark:text-gray-400">{{
+                  item.detail
+                }}</span>
+              </span>
               <!-- shrink-0 keeps this square; without it the flex row squashes it
                    into a sliver next to the longer titles. -->
               <span
-                class="z-10 flex h-14 w-14 shrink-0 rotate-3 items-center justify-center rounded-2xl bg-black dark:bg-white text-white dark:text-black"
+                class="z-10 flex h-14 w-14 shrink-0 items-center justify-center rounded-2xl bg-black dark:bg-white text-white dark:text-black"
                 aria-hidden="true"
               >
                 <span class="material-symbols-outlined text-2xl">{{ item.icon }}</span>

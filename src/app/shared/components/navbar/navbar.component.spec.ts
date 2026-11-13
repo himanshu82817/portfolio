@@ -46,6 +46,16 @@ describe('NavbarComponent', () => {
       .toBeTrue();
   });
 
+  it('keeps the home link on screen at every width', () => {
+    // It used to be `hidden sm:flex`, which left phones with no route back to the hero.
+    const home: HTMLAnchorElement = fixture.nativeElement.querySelector('nav a[aria-label="Home"]');
+    const classes = Array.from(home.classList);
+    expect(classes).not.toContain('hidden');
+    expect(classes.some(c => /^(sm|md|lg):(flex|block|inline)/.test(c)))
+      .withContext('visibility must not depend on a breakpoint')
+      .toBeFalse();
+  });
+
   it('hides decorative icon ligatures from screen readers', () => {
     const icons = fixture.nativeElement.querySelectorAll('.material-symbols-outlined');
     expect(icons.length).toBeGreaterThan(0);

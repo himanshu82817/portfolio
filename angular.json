@@ -48,10 +48,54 @@
               ],
               "outputHashing": "all"
             },
+            "staging": {
+              "assets": [
+                {
+                  "glob": "**/*",
+                  "input": "public"
+                },
+                {
+                  "glob": "**/*",
+                  "input": "public-drafts"
+                },
+                "src/manifest.webmanifest"
+              ],
+              "fileReplacements": [
+                {
+                  "replace": "src/app/features/portfolio/case-studies/data/drafts.ts",
+                  "with": "src/app/features/portfolio/case-studies/data/drafts.development.ts"
+                },
+                {
+                  "replace": "src/app/features/writing/drafts.ts",
+                  "with": "src/app/features/writing/drafts.development.ts"
+                }
+              ]
+            },
             "development": {
               "optimization": false,
               "extractLicenses": false,
-              "sourceMap": true
+              "sourceMap": true,
+              "assets": [
+                {
+                  "glob": "**/*",
+                  "input": "public"
+                },
+                {
+                  "glob": "**/*",
+                  "input": "public-drafts"
+                },
+                "src/manifest.webmanifest"
+              ],
+              "fileReplacements": [
+                {
+                  "replace": "src/app/features/portfolio/case-studies/data/drafts.ts",
+                  "with": "src/app/features/portfolio/case-studies/data/drafts.development.ts"
+                },
+                {
+                  "replace": "src/app/features/writing/drafts.ts",
+                  "with": "src/app/features/writing/drafts.development.ts"
+                }
+              ]
             }
           },
           "defaultConfiguration": "production"
@@ -79,10 +123,24 @@
               "zone.js/testing"
             ],
             "tsConfig": "tsconfig.spec.json",
+            "fileReplacements": [
+              {
+                "replace": "src/app/features/portfolio/case-studies/data/drafts.ts",
+                "with": "src/app/features/portfolio/case-studies/data/drafts.development.ts"
+              },
+              {
+                "replace": "src/app/features/writing/drafts.ts",
+                "with": "src/app/features/writing/drafts.development.ts"
+              }
+            ],
             "assets": [
               {
                 "glob": "**/*",
                 "input": "public"
+              },
+              {
+                "glob": "**/*",
+                "input": "public-drafts"
               },
               "src/manifest.webmanifest"
             ],

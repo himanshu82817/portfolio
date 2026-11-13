@@ -2,17 +2,16 @@
  * Single source of truth for site-wide facts that appear in more than one place
  * (SEO tags, structured data, the hero, the footer, the sitemap).
  *
- * ⚠️ BEFORE DEPLOYING: replace `siteUrl` with your real domain, and make the same
- * change in src/index.html, public/sitemap.xml and public/robots.txt. Search the
- * repo for PLACEHOLDER_DOMAIN to find every occurrence.
+ * `siteUrl` is the production origin. It is also written into src/index.html,
+ * public/sitemap.xml and public/robots.txt — change all four together.
  */
 export const SITE = {
   /** Absolute origin, no trailing slash. Used for canonical + Open Graph URLs. */
-  siteUrl: 'https://himanshusehlangia.com',
+  siteUrl: 'https://himanshusehlangia.dev',
 
   name: 'Himanshu Sehlangia',
   shortName: 'Himanshu',
-  role: 'Full Stack Engineer',
+  role: 'Backend Engineer',
   location: 'New Delhi, India',
   locality: 'New Delhi',
   region: 'DL',
@@ -23,12 +22,12 @@ export const SITE = {
 
   /** The month work experience began — years of experience are derived from this,
    *  so the number on the site can never drift out of date. */
-  careerStart: new Date(2021, 11), // December 2021
+  careerStart: new Date(2021, 5), // June 2021
 
   description:
-    'Full Stack Engineer in New Delhi building Angular front-ends and Node/SQL ' +
-    'services for fintech and edtech — loan origination, learning platforms, and ' +
-    'the reporting systems behind them.',
+    'Backend engineer in New Delhi building financial infrastructure and real-time ' +
+    'systems in Go and TypeScript on GCP — and the Angular front ends, design systems ' +
+    'and UX on top of them.',
 
   social: {
     github: 'https://github.com/himanshu82817',
@@ -40,7 +39,7 @@ export const SITE = {
    * While this is null the download buttons are not rendered at all —
    * better no button than a button that 404s.
    */
-  resumeUrl: null as string | null,
+  resumeUrl: '/resume.pdf' as string | null,
 
   /**
    * Web3Forms access key (https://web3forms.com — free, no account needed).
