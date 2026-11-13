@@ -2,9 +2,9 @@ import { CaseStudy } from '../case-study.model';
 
 /**
  * Written from a read of LifeBoard-Web and LifeBoard-Server, then fact-checked
- * claim by claim against the code (Sep 2026). Encryption, reminders and trackers
- * were re-checked against the server's main branch in Nov 2026, when this was
- * published.
+ * claim by claim against the code (Sep 2026). Brought up to date against both
+ * repos' main branches on 13 Nov 2026: boards, routines, events, search, encryption,
+ * reminders and the test counts.
  *
  * Deliberately left out: deployment hostnames, credential locations, the OAuth
  * token hand-off detail, and anything describing past or open weaknesses.
@@ -13,8 +13,8 @@ export const LIFEBOARD: CaseStudy = {
   slug: 'lifeboard',
   name: 'LifeBoard',
   tagline:
-    'A personal life archive: an infinite canvas for every day, and a Life Map that ' +
-    'zooms from a single day out to a whole life.',
+    'A scrapbook for your days: every day is a page you compose, and a Life Map zooms ' +
+    'from that page out to a picture of your whole life.',
   kind: 'Personal product',
   engagement: 'personal',
   status: { label: 'In development', tone: 'building' },
@@ -23,30 +23,34 @@ export const LIFEBOARD: CaseStudy = {
   platforms: ['Web (installable PWA)', 'REST API'],
   cover: {
     src: '/case-studies/lifeboard/cover.svg',
-    alt: 'Abstract illustration of notes pinned on an infinite canvas above an activity heatmap',
+    alt: 'Abstract illustration of notes pinned on a day’s page above an activity heatmap',
   },
   published: true,
 
   summary: [
-    'LifeBoard is a product I co-build. It treats a person’s notes, tasks, photos and check-ins ' +
-      'as an archive worth trusting: every day gets its own infinite canvas, and a Life Map ' +
-      'zooms out from that day through weeks, years and decades to a grid of a whole life.',
+    'LifeBoard is a product I co-build: a scrapbook for your days. Each day is a page of ' +
+      'notes, photos, quotes and task lists placed wherever you like, and a Life Map zooms ' +
+      'out from that page through weeks, years and decades to a grid of a whole life. ' +
+      'Boards of your own hold what doesn’t belong to a day, and routines ask the same ' +
+      'questions each day, week, month or year.',
     'It’s two applications. The web client is an Angular 21 PWA built on signals, with a ' +
       'sync engine that paints from IndexedDB first and batches edits into bulk writes. The ' +
       'API is a NestJS 11 modular monolith on MongoDB, containerised for Google Cloud Run, ' +
-      'with images in Google Cloud Storage.',
+      'with images in Google Cloud Storage and everything a person types sealed with their ' +
+      'own key before it is stored.',
     'Most of what’s interesting sits where product and engineering meet: a canvas that has ' +
       'to feel instant but never lose a keystroke, and personal data that has to stay ' +
-      'correct across devices, time zones and flaky connections.',
+      'private and correct across devices, time zones and flaky connections.',
   ],
   problem: [
-    'Most journaling tools are lists. LifeBoard gives each surface its own question: the ' +
-      'board asks what did I do that day, the Tasks view asks what’s being asked of me and ' +
-      'by when, and the Life Map asks whether I showed up, and what happened.',
-    'That makes durability the first requirement. Life chapters once lived only in browser ' +
-      'storage, where clearing a cache could erase the most personal data in the product. ' +
-      'Moving that data to the server without making the canvas feel any slower shaped most ' +
-      'of the architecture.',
+    'Most journaling tools are a text box and a list. LifeBoard gives each surface its own ' +
+      'question: the day’s page asks what happened, the Tasks view asks what’s being asked ' +
+      'of me and by when, routines ask the things worth asking again, and the Life Map ' +
+      'asks whether I showed up.',
+    'That makes durability and privacy the first requirements. Life chapters once lived ' +
+      'only in browser storage, where clearing a cache could erase the most personal data ' +
+      'in the product. Moving that data to the server — sealed, and without making the ' +
+      'canvas feel any slower — shaped most of the architecture.',
   ],
   ownership: {
     statement:
@@ -68,8 +72,10 @@ export const LIFEBOARD: CaseStudy = {
         'replays unsaved work on the next visit.',
       'On the server, every domain collection is scoped by user, calendar days are stored as ' +
         'civil dates rather than UTC instants, and races between devices are settled by ' +
-        'unique indexes rather than locks. Images are uploaded once through the API, checked, ' +
-        'de-duplicated and written to object storage under unguessable keys.',
+        'unique indexes rather than locks. Text is sealed with the owner’s key on the way ' +
+        'in and opened on the way out. Images are uploaded once through the API, checked, ' +
+        'de-duplicated and written to object storage; a card holds the object’s key, and ' +
+        'the API turns it into a link each time it hands the picture out.',
     ],
     diagram: {
       caption: 'LifeBoard: a cache-first Angular client over a NestJS API on Google Cloud',
@@ -79,11 +85,12 @@ export const LIFEBOARD: CaseStudy = {
         { id: 'local', label: 'Local cache', sublabel: 'IndexedDB + buffer', tier: 'client', ownership: 'built' },
         { id: 'api', label: 'NestJS API', sublabel: 'Throttle → JWT guard', tier: 'edge', ownership: 'built' },
         { id: 'auth', label: 'Auth & sessions', sublabel: 'OTP · OAuth · JWT', tier: 'service' },
-        { id: 'domain', label: 'Board & Life Map', sublabel: 'Cards, chapters, tracks', tier: 'service', ownership: 'built' },
+        { id: 'domain', label: 'Boards & Life Map', sublabel: 'Cards, events, routines', tier: 'service', ownership: 'built' },
         { id: 'media', label: 'Media service', sublabel: 'Type check · dedupe', tier: 'service', ownership: 'built' },
         { id: 'mongo', label: 'MongoDB', sublabel: 'Per-user indexes', tier: 'data' },
-        { id: 'gcs', label: 'Cloud Storage', sublabel: 'Unguessable keys', tier: 'data' },
+        { id: 'gcs', label: 'Cloud Storage', sublabel: 'Keys · signed links', tier: 'data' },
         { id: 'google', label: 'Google OAuth', tier: 'external' },
+        { id: 'kms', label: 'Cloud KMS', sublabel: 'Wraps per-user keys', tier: 'external' },
       ],
       edges: [
         { from: 'sw', to: 'web', label: 'app shell' },
@@ -95,6 +102,7 @@ export const LIFEBOARD: CaseStudy = {
         { from: 'domain', to: 'mongo', label: 'bulkWrite' },
         { from: 'media', to: 'gcs', label: 'put' },
         { from: 'auth', to: 'google', label: 'OAuth' },
+        { from: 'domain', to: 'kms', label: 'keys' },
       ],
     },
     components: [
@@ -102,8 +110,8 @@ export const LIFEBOARD: CaseStudy = {
         name: 'LifeBoard Web',
         tech: 'Angular 21 · signals · Tailwind CSS 4',
         responsibility:
-          'The day canvas, dashboard, Tasks agenda and Life Map, as standalone OnPush ' +
-          'components over root-provided signal stores. No NgRx.',
+          'The day’s page, boards, dashboard, Tasks agenda, search and Life Map, as ' +
+          'standalone OnPush components over root-provided signal stores. No NgRx.',
         ownership: 'built',
       },
       {
@@ -126,16 +134,17 @@ export const LIFEBOARD: CaseStudy = {
         name: 'Life Map',
         tech: 'Seven zoom levels · heat and story lenses',
         responsibility:
-          'Day-to-Life views computed from one date, with a points-based heat ramp, ' +
-          'lane-packed chapter rails, and a life-in-months grid anchored to date of birth.',
+          'Day-to-Life views computed from one date, with a points-based heat ramp, events ' +
+          'and chapters packed into lanes, and a life-in-months grid anchored to date of birth.',
         ownership: 'built',
       },
       {
         name: 'LifeBoard API',
         tech: 'NestJS 11 · Mongoose 9 · Docker',
         responsibility:
-          'Feature modules for board items, chapters, tracks, check-ins, focus sessions and ' +
-          'media, behind a rate limiter and a JWT guard, with one uniform error envelope.',
+          'Feature modules for boards, board items, calendar events, check-ins, focus ' +
+          'sessions, reminders, push and media, behind a rate limiter and a JWT guard, with ' +
+          'one uniform error envelope and field encryption at the service boundary.',
         ownership: 'built',
       },
       {
@@ -183,7 +192,7 @@ export const LIFEBOARD: CaseStudy = {
           'The API identifies the real format from the file’s first bytes and hashes it.',
           'If this user already stored those bytes, the existing record is returned with no quota charge.',
           'Otherwise the quota is checked and the object is written under a random, unguessable key.',
-          'The card stores the image URL. A clean-up sweep later deletes any object nothing references.',
+          'The card stores the object’s key, not a URL. A clean-up sweep later deletes any object nothing references.',
         ],
       },
     ],
@@ -389,6 +398,18 @@ export const LIFEBOARD: CaseStudy = {
           name: 'Delete with undo',
           detail: 'Deletes are immediate, with a six-second undo shared across the app.',
         },
+        {
+          name: 'Boards of your own',
+          detail:
+            'Named boards beside the daily pages, for what doesn’t belong to a day. One card ' +
+            'can sit on several boards and days without being copied.',
+        },
+        {
+          name: 'Link previews and picture colours',
+          detail:
+            'A pasted link becomes a preview fetched by the server, and a card can take its ' +
+            'colour from its own photo or video still.',
+        },
       ],
     },
     {
@@ -403,8 +424,8 @@ export const LIFEBOARD: CaseStudy = {
         {
           name: 'Heat and Story lenses',
           detail:
-            'Heat shows how much was recorded, priced in points. Story shows named chapters ' +
-            'and moments as rails. Both are offered from Month up to Century.',
+            'Heat shows how much was recorded, priced in points. Story shows events and ' +
+            'chapters as rails. Both are offered from Month up to Century.',
         },
         {
           name: 'Life in months',
@@ -413,8 +434,16 @@ export const LIFEBOARD: CaseStudy = {
             'guessing when that date is missing.',
         },
         {
-          name: 'Check-ins and focus sessions',
-          detail: 'Daily mood and energy check-ins, plus a focus timer kept alive by heartbeats.',
+          name: 'A calendar underneath',
+          detail:
+            'Chapters and moments are one kind of thing, an event: timed or all-day, ' +
+            'single or repeating, queried by date range in the viewer’s own time zone.',
+        },
+        {
+          name: 'Runs and focus sessions',
+          detail:
+            'Runs of days, weeks, months and years on the dashboard, plus a focus timer kept ' +
+            'alive by heartbeats.',
         },
       ],
     },
@@ -433,16 +462,32 @@ export const LIFEBOARD: CaseStudy = {
             'The same task items filed into overdue, today, tomorrow, this week, later, ' +
             'someday, needs a date, and done.',
         },
+        {
+          name: 'Routines',
+          detail:
+            'A list can repeat every day, week, month or year, and a task can ask for more ' +
+            'than a tick: a note, a number, an option, a rating, mood or energy. Answers are ' +
+            'filed by period, so a routine has a history and totals.',
+        },
+        {
+          name: 'Due dates and reminders',
+          detail:
+            'Every task and list can carry its own due date, kept separate from its reminder.',
+        },
       ],
     },
     {
-      group: 'Sync & accounts',
+      group: 'Sync, search & accounts',
       items: [
         {
           name: 'Cache-first, crash-safe sync',
           detail:
             'Paints from IndexedDB before the network answers, keeps unsaved writes across ' +
             'crashes, and replays them on the next load, retrying failed flushes with backoff.',
+        },
+        {
+          name: 'Search',
+          detail: 'One search across every card, with results shown as the cards themselves.',
         },
         {
           name: 'Installable PWA',
@@ -459,7 +504,7 @@ export const LIFEBOARD: CaseStudy = {
       ],
     },
     {
-      group: 'Reminders, tracking & privacy',
+      group: 'Reminders & privacy',
       items: [
         {
           name: 'Reminders and web push',
@@ -468,8 +513,14 @@ export const LIFEBOARD: CaseStudy = {
             'delivered as web push, with Snooze and Done on the notification itself.',
         },
         {
-          name: 'Custom trackers and multi-day cards',
-          detail: 'User-defined trackers with totals, and cards that span several days.',
+          name: 'Notification inbox',
+          detail: 'Every reminder is also recorded in the app, read or unread, pushed or not.',
+        },
+        {
+          name: 'Private photos',
+          detail:
+            'Pictures are stored under keys and can be handed out as signed, expiring links, ' +
+            'so the bucket itself can be private.',
         },
         {
           name: 'Field encryption',
@@ -572,7 +623,8 @@ export const LIFEBOARD: CaseStudy = {
 
   metrics: [
     { value: '7', label: 'Life Map zoom levels, from one day to a whole life', kind: 'count' },
-    { value: '432', label: 'Unit tests in the web client', kind: 'count', note: 'Vitest, committed.' },
+    { value: '1,400+', label: 'Unit tests in the web client', kind: 'count', note: 'Vitest, across 116 spec files.' },
+    { value: '690+', label: 'Unit tests in the API', kind: 'count', note: 'Jest, across 53 spec files.' },
     {
       value: '4.86:1',
       label: 'Worst-case secondary text contrast on task cards, across all 12 colours',
@@ -591,21 +643,18 @@ export const LIFEBOARD: CaseStudy = {
   links: [{ label: 'lifeboardos.com', url: 'https://lifeboardos.com', kind: 'live' }],
   gallery: [],
 
-  // Published Nov 2026. Questions that were still open at that point, kept
-  // here so they are not lost:
-  //  - Is there a public LifeBoard URL you’re happy to link? A dev deployment exists, but I haven’t named it.
-  //  - Reminders, web push, custom trackers and multi-day cards are uncommitted work. Keep them under “In progress”, or leave them out?
-  //  - Any real usage to share, like testers or active users? There are no numbers in the repos, so the page shows none.
+  // Questions that were still open when this was published, kept so they are not lost:
+  //  - Any real usage to share, like testers or active users? The page shows no numbers.
   //  - In a sentence, what made you build LifeBoard? That would sharpen “The problem”.
   //  - The original auth module was mostly written by a collaborator, so the page describes it as a feature, not as your implementation. Add a credit line, or leave it?
-  //  - The repos include AI-assistant configuration and a generated audit. Do you want AI-assisted development mentioned, and how?
-  //  - A screenshot of the board and the Life Map would help most. Can you add two?
+  //  - Do you want AI-assisted development mentioned, and how?
+  //  - A screenshot of the day’s page and the Life Map would help most. Can you add two?
   openQuestions: [],
 
   seo: {
     title: 'LifeBoard — case study',
     description:
-      'How LifeBoard, a cache-first life archive built with Angular 21 and NestJS, keeps an ' +
-      'infinite canvas instant without ever losing an edit.',
+      'How LifeBoard, a scrapbook for your days built with Angular 21 and NestJS, keeps a ' +
+      'canvas instant without losing an edit, and seals what people write with their own key.',
   },
 };

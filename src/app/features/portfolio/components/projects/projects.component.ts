@@ -8,15 +8,13 @@ import { visibleCaseStudies } from '../../case-studies/registry';
 
 interface Project {
   title: string;
+  /** One or two words for what kind of system it is, e.g. "Fintech · Enterprise". */
   category: string;
-  subCategory: string;
   year: string;
   description: string;
   /** Headline outcomes. Kept short — these are what a reader actually scans. */
   highlights: string[];
   tech: string[];
-  imageUrl: string;
-  imageAlt: string;
   liveUrl?: string;
   repoUrl?: string;
   /** Set for employer systems that cannot be linked or screenshotted. */
@@ -44,16 +42,25 @@ export class ProjectsComponent {
     internal: 'bg-gray-200 text-gray-800 dark:bg-white/10 dark:text-gray-300',
   };
 
-  /** The first few technologies across all stack groups, for the card. */
-  stackPreview(study: CaseStudy): string[] {
-    return study.stack.flatMap(group => group.items).slice(0, 6);
+  /**
+   * A few technologies for the card, taken two at a time from each stack group in
+   * turn. Taking the first six outright showed only the first group — LifeBoard's
+   * card listed six front-end tools and nothing of its API or cloud.
+   */
+  stackPreview(study: CaseStudy, limit = 7): string[] {
+    const picked: string[] = [];
+    for (let start = 0; picked.length < limit; start += 2) {
+      const round = study.stack.flatMap(group => group.items.slice(start, start + 2));
+      if (!round.length) break;
+      picked.push(...round);
+    }
+    return picked.slice(0, limit);
   }
 
   readonly projects: readonly Project[] = [
     {
       title: 'Loan Origination System',
-      category: 'Fintech',
-      subCategory: 'Enterprise',
+      category: 'Fintech · Enterprise',
       year: '2023 – present',
       description:
         'A production loan origination platform that moves thousands of applications a ' +
@@ -64,14 +71,11 @@ export class ProjectsComponent {
         'Event-driven collateral workflows on GCP Pub/Sub, replacing manual verification steps',
       ],
       tech: ['NestJS', 'TypeScript', 'SQL Server', 'TypeORM', 'GCP Pub/Sub'],
-      imageUrl: '/projects/loan-origination.svg',
-      imageAlt: 'Abstract illustration of a multi-stage loan approval pipeline',
-      accessNote: 'Internal system — not publicly accessible',
+      accessNote: 'Internal system',
     },
     {
       title: 'Learning Management System',
-      category: 'EdTech',
-      subCategory: 'Web App',
+      category: 'EdTech · Internal platform',
       year: '2022',
       description:
         'An internal training platform covering course management, student progress ' +
@@ -82,27 +86,22 @@ export class ProjectsComponent {
         'Integrated REST APIs and optimised reporting queries against SQL',
       ],
       tech: ['Angular', 'Node.js', 'SQL', 'REST', 'RBAC'],
-      imageUrl: '/projects/learning-management.svg',
-      imageAlt: 'Abstract illustration of course cards with completion progress',
-      accessNote: 'Internal system — not publicly accessible',
+      accessNote: 'Internal system',
     },
     {
       title: 'This Portfolio',
-      category: 'Personal',
-      subCategory: 'Open Source',
+      category: 'Personal · Open source',
       year: '2026',
       description:
-        'The site you are reading. A statically built Angular application with ' +
-        'class-based theming, lazy-loaded routes and a CI pipeline that deploys to a ' +
-        'GCP VM on every push to master.',
+        'The site you are reading. A statically built Angular application, designed to ' +
+        'be read: a still backdrop, one type scale, and case studies and posts kept as ' +
+        'typed data.',
       highlights: [
         'Design tokens defined once as CSS custom properties, consumed by Tailwind and TypeScript',
         'Theme applied before first paint, so dark-mode visitors never see a flash',
-        'Every route lazy-loaded behind its own chunk',
+        'Drafts are left out of production at build time, and a script fails any build that contains one',
       ],
       tech: ['Angular 19', 'Tailwind CSS', 'TypeScript', 'GitHub Actions', 'GCP'],
-      imageUrl: '/projects/portfolio.svg',
-      imageAlt: 'Abstract illustration of this portfolio: a dot grid with the H monogram',
       repoUrl: 'https://github.com/himanshu82817/portfolio',
     },
   ];
