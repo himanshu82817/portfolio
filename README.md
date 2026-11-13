@@ -104,7 +104,7 @@ public/backgrounds/           Paper, doodle and star tiles behind every page
 public-drafts/                Assets of unpublished case studies — development builds only
 deploy/                       nginx config for the VM; cloudrun/ holds the dev container's
 scripts/generate-starfield.mjs  Regenerates the star tiles, deterministically
-scripts/check-dist.mjs          Fails a build that contains an unpublished case study
+scripts/check-dist.mjs          Fails a build that contains an unpublished case study or post
 ```
 
 **Theming.** Brand colours live once, as RGB channel triples on `:root` in
@@ -171,15 +171,23 @@ panel and the source maps. Preview drafts with `npm start`, or on the dev site.
 
 ## Writing
 
-Posts live in `src/app/features/writing/`. Each post is a `posts/<slug>.ts` file
-exporting `BODY: Block[]` (headings, paragraphs, lists, code and tables), plus a
-metadata entry in `registry.ts`. Inline text supports `code`, **bold**, *emphasis* and
+Posts live in `src/app/features/writing/`. Each post is two files: `posts/<slug>.meta.ts`
+(title, description, date, tags, `published`) and `posts/<slug>.ts`, exporting
+`BODY: Block[]` (headings, paragraphs, lists, code and tables). Inline text supports `code`, **bold**, *emphasis* and
 links.
 
-A post with `published: false` is listed and routed only in development builds, where
-it carries a draft banner. While no post is published, a production build has no
-Writing link in the navbar and `/writing` renders the 404 page. Set `published: true`
-in `registry.ts` to release a post, and add its URL to `public/sitemap.xml`.
+Drafts are kept out of production the same way case studies are, at build time:
+`published.ts` lists the posts every build compiles, `drafts.ts` is empty, and
+`angular.json` swaps in `drafts.development.ts` for the development and staging
+configurations and the test target. Draft posts therefore show on `npm start` and on
+the dev site, with a draft banner, and are absent from a production bundle.
+`scripts/check-dist.mjs` fails a production build that contains one.
+
+While no post is published, a production build has no Writing link in the navbar and
+`/writing` renders the 404 page. To publish a post: set `published: true` in its
+`posts/<slug>.meta.ts`, move its entry from `drafts.development.ts` to `published.ts`,
+and add its URL to `public/sitemap.xml`. A unit test fails if the flag and the barrel
+disagree.
 
 ## Testing
 

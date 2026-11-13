@@ -1,49 +1,35 @@
 import { isDevMode } from '@angular/core';
 
+import { DRAFT_POSTS } from './drafts';
 import { PostMeta } from './post.model';
+import { PUBLISHED_POSTS } from './published';
 
 /**
- * Every post, newest first.
+ * Every post this build was compiled with: published ones first, then drafts.
  *
- * To add one: create `posts/<slug>.ts` exporting `BODY: Block[]`, and add its
- * metadata here. Set `published: true` once it has been checked.
+ * Which drafts that is gets decided at build time, exactly as for case studies.
+ * `./drafts` is an empty list unless angular.json swaps in drafts.development.ts,
+ * which only the development and staging configurations and the test target do. A
+ * production bundle therefore doesn't contain a draft post at all.
+ *
+ * To add one: create `posts/<slug>.meta.ts` and `posts/<slug>.ts`, and list it in
+ * drafts.development.ts. Move it to published.ts when it goes live.
  */
-export const POSTS: readonly PostMeta[] = [
-  {
-    slug: 'reminders-on-cloud-run',
-    title: 'A timer is not a clock on Cloud Run',
-    description:
-      'Why setInterval silently fails on a scale-to-zero service, and how LifeBoard ' +
-      'delivers reminders exactly once with Cloud Scheduler, an OIDC-guarded endpoint ' +
-      'and a unique index.',
-    date: '2026-11-12',
-    tags: ['GCP', 'Cloud Run', 'NestJS', 'MongoDB', 'Web Push'],
-    readingMinutes: 9,
-    published: false,
-    load: () => import('./posts/reminders-on-cloud-run').then(m => m.BODY),
-  },
-  {
-    slug: 'per-user-envelope-encryption',
-    title: 'Per-user envelope encryption with Cloud KMS, rolled out without downtime',
-    description:
-      'How LifeBoard seals what people write before it reaches MongoDB, and how it was ' +
-      'turned on for existing data without a migration window.',
-    date: '2026-11-12',
-    tags: ['Encryption', 'GCP', 'Cloud KMS', 'NestJS', 'MongoDB'],
-    readingMinutes: 8,
-    published: false,
-    load: () => import('./posts/per-user-envelope-encryption').then(m => m.BODY),
-  },
-];
+export const POSTS: readonly PostMeta[] = [...PUBLISHED_POSTS, ...DRAFT_POSTS];
 
-/** Published posts, plus drafts when running a development build. */
-export function visiblePosts(includeDrafts: boolean = isDevMode()): readonly PostMeta[] {
+/** A draft is only compiled in by a configuration that asked for it. */
+function showsDrafts(): boolean {
+  return DRAFT_POSTS.length > 0 || isDevMode();
+}
+
+/** Published posts, plus drafts in a build that was compiled with them. */
+export function visiblePosts(includeDrafts: boolean = showsDrafts()): readonly PostMeta[] {
   return POSTS.filter(post => post.published || includeDrafts);
 }
 
 export function findPost(
   slug: string | null | undefined,
-  includeDrafts: boolean = isDevMode()
+  includeDrafts: boolean = showsDrafts()
 ): PostMeta | undefined {
   if (!slug) return undefined;
   return visiblePosts(includeDrafts).find(post => post.slug === slug);

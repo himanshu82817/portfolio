@@ -1,4 +1,4 @@
-import { Block } from '../post.model';
+import type { Block } from '../post.model';
 
 export const BODY: Block[] = [
   {

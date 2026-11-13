@@ -1,4 +1,6 @@
 import { isInternal, parseInline } from './inline';
+import { DRAFT_POSTS as DEVELOPMENT_DRAFTS } from './drafts.development';
+import { PUBLISHED_POSTS } from './published';
 import { POSTS, findPost, visiblePosts } from './registry';
 
 describe('inline text', () => {
@@ -30,6 +32,38 @@ describe('inline text', () => {
     expect(isInternal('/writing/a-post')).toBeTrue();
     expect(isInternal('https://example.com')).toBeFalse();
     expect(isInternal('//example.com')).toBeFalse();
+  });
+});
+
+/**
+ * A draft stays out of production because it is listed in a file production never
+ * compiles, not because of its `published` flag. These keep the two in step. The
+ * bytes of a real build are checked separately, by scripts/check-dist.mjs.
+ */
+describe('post barrels', () => {
+  it('lists only published posts in the barrel that ships with every build', () => {
+    for (const post of PUBLISHED_POSTS) {
+      expect(post.published)
+        .withContext(`${post.slug} is in published.ts, so it ships to production, but it is not published`)
+        .toBeTrue();
+    }
+  });
+
+  it('lists only unpublished posts in the development-only barrel', () => {
+    for (const post of DEVELOPMENT_DRAFTS) {
+      expect(post.published)
+        .withContext(`${post.slug} is published but still in drafts.development.ts, so production leaves it out`)
+        .toBeFalse();
+    }
+  });
+
+  it('gives this test build every draft, so the content checks below are not vacuous', () => {
+    const compiled = POSTS.map(post => post.slug);
+    for (const draft of DEVELOPMENT_DRAFTS) {
+      expect(compiled)
+        .withContext('the test target in angular.json must swap writing/drafts.ts for writing/drafts.development.ts')
+        .toContain(draft.slug);
+    }
   });
 });
 

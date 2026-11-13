@@ -20,10 +20,12 @@
         >
           <span class="material-symbols-outlined text-[20px]" aria-hidden="true">edit_note</span>
           <p>
-            <strong>Draft.</strong> Visible only in development builds. Set
-            <code class="font-mono text-xs">published: true</code> for
-            <code class="font-mono text-xs">{{ p.slug }}</code> in
-            <code class="font-mono text-xs">writing/registry.ts</code> once it’s checked.
+            <strong>Draft.</strong> Compiled into development and staging builds only — never
+            production. Once it’s checked, set
+            <code class="font-mono text-xs">published: true</code> in
+            <code class="font-mono text-xs">posts/{{ p.slug }}.meta.ts</code> and move it from
+            <code class="font-mono text-xs">drafts.development.ts</code> to
+            <code class="font-mono text-xs">published.ts</code>.
           </p>
         </div>
       }
