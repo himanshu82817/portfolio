@@ -96,7 +96,7 @@ src/app/
     site.config.ts            Single source of truth: name, contact, links, career start
     services/theme.service.ts Owns the `dark` class on <html>
     services/seo.service.ts   Per-route title, description, canonical, OG tags
-  shared/backdrop/            Interactive theme backdrop (ink reveal, WebGL black hole)
+  shared/backdrop/            Theme backdrop: the dark-mode WebGL black hole, as a still frame
   shared/components/          Navbar, footer
   features/portfolio/         One component per route, plus the case studies
   features/writing/           Blog posts as typed data, with a draft flag per post
@@ -121,16 +121,16 @@ system) theme before the first paint. `ThemeService` uses identical resolution l
 `system` is the default and is deliberately *not* persisted, so a visitor who never
 touched the toggle keeps following their OS.
 
-**Backdrop.** Light mode is the sketchbook the portrait is drawn on — crumpled paper
-and faint ink doodles — and dark mode is the sky those doodles are of. The static
-layers are plain CSS on `<body>` (`.site-backdrop` in `src/styles.css`), so they paint
-before Angular boots. `shared/backdrop/` adds what needs script: in light mode the
-doodles darken under the pointer and a click leaves an ink splash; in dark mode a
-framework-free WebGL black hole (`black-hole.ts`) lenses a procedural star field, with
-pointer parallax and a gravitational ripple on click. It is one full-screen fragment
-shader that calibrates its resolution against the GPU once the page has settled, draws a
-single still frame under `prefers-reduced-motion`, and falls back to the CSS star field
-wherever WebGL is unavailable or software-rendered.
+**Backdrop.** Light mode is the sketchbook the portrait is drawn on, and dark mode is the
+sky those doodles are of. Both are deliberately quiet, because the page is for reading:
+nothing in the backdrop moves and nothing in it reacts to the pointer. The static layers
+are plain CSS on `<body>` (`.site-backdrop` in `src/styles.css`), so they paint before
+Angular boots — a trace of paper grain with doodles only in the left and right margins
+(none below the `md` breakpoint), or one sparse layer of stars. `shared/backdrop/` adds
+the one thing that needs script: in dark mode a framework-free WebGL black hole
+(`black-hole.ts`), drawn as a single still frame behind a veil in the page colour. It
+calibrates its resolution against the GPU once the page has settled, and falls back to
+the CSS star field wherever WebGL is unavailable or software-rendered.
 
 **Routing.** Every route is lazy-loaded via `loadComponent`. Route `data.seo` drives
 the document title and meta description. A `**` route renders a real 404 page.
@@ -194,7 +194,7 @@ disagree.
 Unit tests run in headless Chrome via Karma + Jasmine. They cover the theme service's
 persistence and OS-preference behaviour, contact form validation and the honeypot, the
 navbar's accessibility contract (accessible names, `aria-current`, decorative icons
-hidden), the backdrop's click splash and pointer reveal, and the derived
+hidden), that the backdrop stays still and ignores the pointer, and the derived
 years-of-experience calculation.
 
 ```bash

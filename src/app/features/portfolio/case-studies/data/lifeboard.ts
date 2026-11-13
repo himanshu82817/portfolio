@@ -19,7 +19,7 @@ export const LIFEBOARD: CaseStudy = {
   engagement: 'personal',
   status: { label: 'In development', tone: 'building' },
   period: 'Dec 2025 – present',
-  role: 'Co-builder · led backend design',
+  role: 'Co-builder · backend design, front end & UX',
   platforms: ['Web (installable PWA)', 'REST API'],
   cover: {
     src: '/case-studies/lifeboard/cover.svg',
@@ -50,8 +50,9 @@ export const LIFEBOARD: CaseStudy = {
   ],
   ownership: {
     statement:
-      'Co-built with one collaborator. I led the backend design, and the architecture ' +
-      'decisions on this page are ones I made or shared.',
+      'Co-built with one collaborator. I led the backend design, and designed and built ' +
+      'the web client’s interface. The architecture decisions on this page are ones I ' +
+      'made or shared.',
   },
 
   architecture: {
